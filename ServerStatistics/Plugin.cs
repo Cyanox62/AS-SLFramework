@@ -1,18 +1,15 @@
 ﻿using Exiled.API.Features;
 using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServerStatistics
 {
-	public class Plugin : Plugin<Config>
+	public class Plugin : Plugin<Config, Translation>
 	{
 		internal static Plugin singleton;
 
 		private Harmony hInstance;
+
+		private EventHandlers ev;
 
 		public override void OnEnabled()
 		{
@@ -21,12 +18,39 @@ namespace ServerStatistics
 			hInstance = new Harmony("cyan.serverstatistics");
 			hInstance.PatchAll();
 
+			ev = new EventHandlers();
+			Exiled.Events.Handlers.Server.RoundStarted += ev.OnRoundStart;
+			Exiled.Events.Handlers.Server.RoundEnded += ev.OnRoundEnd;
+			Exiled.Events.Handlers.Server.RestartingRound += ev.OnRoundRestart;
+			Exiled.Events.Handlers.Server.WaitingForPlayers += ev.OnWaitingForPlayers;
+			Exiled.Events.Handlers.Server.RespawningTeam += ev.OnTeamRespawn;
+
+			Exiled.Events.Handlers.Warhead.Starting += ev.OnNukeStart;
+			Exiled.Events.Handlers.Warhead.Stopping += ev.OnNukeStop;
+			Exiled.Events.Handlers.Warhead.Detonated += ev.OnNukeDetonate;
+
+			Exiled.Events.Handlers.Map.Decontaminating += ev.OnDecontamination;
+
 			singleton = this;
 		}
 
 		public override void OnDisabled()
 		{
 			base.OnDisabled();
+
+			Exiled.Events.Handlers.Server.RoundStarted -= ev.OnRoundStart;
+			Exiled.Events.Handlers.Server.RoundEnded -= ev.OnRoundEnd;
+			Exiled.Events.Handlers.Server.RestartingRound -= ev.OnRoundRestart;
+			Exiled.Events.Handlers.Server.WaitingForPlayers -= ev.OnWaitingForPlayers;
+			Exiled.Events.Handlers.Server.RespawningTeam -= ev.OnTeamRespawn;
+
+			Exiled.Events.Handlers.Warhead.Starting -= ev.OnNukeStart;
+			Exiled.Events.Handlers.Warhead.Stopping -= ev.OnNukeStop;
+			Exiled.Events.Handlers.Warhead.Detonated -= ev.OnNukeDetonate;
+
+			Exiled.Events.Handlers.Map.Decontaminating -= ev.OnDecontamination;
+
+			ev = null;
 
 			hInstance.UnpatchAll(hInstance.Id);
 			hInstance = null;

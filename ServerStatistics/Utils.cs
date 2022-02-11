@@ -1,10 +1,6 @@
 ﻿using Exiled.API.Features;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServerStatistics
 {
@@ -34,7 +30,11 @@ namespace ServerStatistics
 								dcWeb.ProfilePicture = Plugin.singleton.Config.BanLogAvatarURL;
 								dcWeb.UserName = Plugin.singleton.Config.BanLogName;
 								dcWeb.WebHook = Plugin.singleton.Config.BanLogWebhook;
-								dcWeb.SendMessage($":hammer: Player {player.Nickname} ({player.UserId}) was kicked by {sender.Nickname} ({player.UserId}).");
+								dcWeb.SendMessage(Plugin.singleton.Translation.KickMessage
+									.Replace("{targetNickname}", player.Nickname)
+									.Replace("{targetUserid}", player.UserId)
+									.Replace("{senderNickname}", sender.Nickname)
+									.Replace("{senderUserid}", sender.UserId));
 							}
 						}
 						else
@@ -53,7 +53,12 @@ namespace ServerStatistics
 								dcWeb.ProfilePicture = Plugin.singleton.Config.BanLogAvatarURL;
 								dcWeb.UserName = Plugin.singleton.Config.BanLogName;
 								dcWeb.WebHook = Plugin.singleton.Config.BanLogWebhook;
-								dcWeb.SendMessage($"Player {player.Nickname} ({player.UserId}) was banned ({time + suffix[depth]}) by {sender.Nickname} ({sender.UserId}).");
+								dcWeb.SendMessage(Plugin.singleton.Translation.BanMessage
+									.Replace("{targetNickname}", player.Nickname)
+									.Replace("{targetUserid}", player.UserId)
+									.Replace("{senderNickname}", sender.Nickname)
+									.Replace("{senderUserid}", sender.UserId)
+									.Replace("{time}", time + suffix[depth]));
 							}
 						}
 					}
@@ -70,7 +75,12 @@ namespace ServerStatistics
 						dcWeb.ProfilePicture = Plugin.singleton.Config.BanLogAvatarURL;
 						dcWeb.UserName = Plugin.singleton.Config.BanLogName;
 						dcWeb.WebHook = Plugin.singleton.Config.BanLogWebhook;
-						dcWeb.SendMessage($"Player {player.Nickname} ({player.UserId}) was muted by {sender.Nickname} ({sender.UserId}).");
+						dcWeb.SendMessage(Plugin.singleton.Translation.MuteMessage
+							.Replace("{targetNickname}", player.Nickname)
+							.Replace("{targetUserid}", player.UserId)
+							.Replace("{senderNickname}", sender.Nickname)
+							.Replace("{senderUserid}", sender.UserId));
+
 					}
 				}
 			}

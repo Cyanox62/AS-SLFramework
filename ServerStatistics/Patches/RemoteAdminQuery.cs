@@ -15,9 +15,12 @@ namespace ServerStatistics.Patches
 				using (dWebHook dcWeb = new dWebHook())
 				{
 					dcWeb.ProfilePicture = Plugin.singleton.Config.CommandLogAvatarURL;
-					dcWeb.UserName = Plugin.singleton.Config.BanLogName;
-					dcWeb.WebHook = Plugin.singleton.Config.BanLogWebhook;
-					dcWeb.SendMessage($":keyboard: [RA] {player.Nickname} ({player.UserId}) >: {q}");
+					dcWeb.UserName = Plugin.singleton.Config.CommandLogName;
+					dcWeb.WebHook = Plugin.singleton.Config.CommandLogWebhook;
+					dcWeb.SendMessage(Plugin.singleton.Translation.CommandMessage
+						.Replace("{commandSender}", player.Nickname)
+						.Replace("{commandUserid}", player.UserId)
+						.Replace("{command}", q));
 				}
 			}
 		}
