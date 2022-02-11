@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeanutExplodes", "PeanutExp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImprovedSpectator", "ImprovedSpectator\ImprovedSpectator.csproj", "{4AB95E61-5230-432E-8EC3-CF95ED29A5F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerStatistics", "ServerStatistics\ServerStatistics.csproj", "{260B917B-423F-4355-AB69-EC6EB354CA4E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{4AB95E61-5230-432E-8EC3-CF95ED29A5F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AB95E61-5230-432E-8EC3-CF95ED29A5F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AB95E61-5230-432E-8EC3-CF95ED29A5F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{260B917B-423F-4355-AB69-EC6EB354CA4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{260B917B-423F-4355-AB69-EC6EB354CA4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{260B917B-423F-4355-AB69-EC6EB354CA4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{260B917B-423F-4355-AB69-EC6EB354CA4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
