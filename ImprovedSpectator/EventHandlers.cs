@@ -2,11 +2,8 @@
 using Exiled.Events.EventArgs;
 using MEC;
 using Respawning;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ImprovedSpectator
 {
@@ -101,7 +98,7 @@ namespace ImprovedSpectator
 				}
 				else if (Respawn.NextKnownTeam != SpawnableTeamType.None) s += $"\n{Plugin.singleton.Translation.RespawnTeam} {Plugin.singleton.Translation.RespawnTeam.Replace("{team}", nextTeam)}";
 
-				foreach (Player player in Player.List.Where(x => x.Team == Team.RIP))
+				foreach (Player player in Player.List.Where(x => x.Team == Team.RIP || additionalRespawnPlayers.Contains(x)))
 				{
 					player.ShowHint(s, 2f);
 				}

@@ -40,5 +40,6 @@ namespace FacilityGenerators
         }
 
         public override string Author => "Cyanox";
+        public override string Name => "FacilityGenerators";
     }
 }

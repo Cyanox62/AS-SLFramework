@@ -37,5 +37,6 @@ namespace ImprovedSpectator
         }
 
         public override string Author => "Cyanox";
+        public override string Name => "ImprovedSpectator";
     }
 }

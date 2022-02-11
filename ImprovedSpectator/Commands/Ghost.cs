@@ -1,11 +1,9 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
+using MEC;
 using RemoteAdmin;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine;
 
 namespace ImprovedSpectator.Commands
 {
@@ -14,9 +12,9 @@ namespace ImprovedSpectator.Commands
 	{
 		public string[] Aliases { get; set; } = Array.Empty<string>();
 
-		public string Description { get; set; } = "Report something";
+		public string Description { get; set; } = "Spawns you as a ghost";
 
-		string ICommand.Command { get; } = "report";
+		string ICommand.Command { get; } = "ghost";
 
 		public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
 		{
@@ -25,12 +23,14 @@ namespace ImprovedSpectator.Commands
 				Player player = Player.Get(p);
 				if (player != null)
 				{
-					if (player.Team == Team.RIP)
+					if (player.Team == Team.RIP || EventHandlers.additionalRespawnPlayers.Contains(player))
 					{
 						if (!EventHandlers.ghostPlayers.Contains(player)) EventHandlers.AddGhostPlayer(player);
 						if (!EventHandlers.additionalRespawnPlayers.Contains(player)) EventHandlers.additionalRespawnPlayers.Add(player);
 						player.SetRole(RoleType.Tutorial);
-						player.Position = Map.Rooms[UnityEngine.Random.Range(0, Map.Rooms.Count)].Position;
+						Vector3 pos = Map.Rooms[UnityEngine.Random.Range(0, Map.Rooms.Count)].Position;
+						pos.y += 2;
+						Timing.CallDelayed(0.5f, () => player.Position = pos);
 						response = "Respawned as a ghost.";
 					}
 					else

@@ -6,12 +6,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace ImprovedSpectator.Commands
 {
 	[CommandHandler(typeof(ClientCommandHandler))]
 	class Tower : ICommand
 	{
+		private Vector3 towerPos = new Vector3(54.7f, 1019.4f, -43.7f);
+
 		public string[] Aliases { get; set; } = Array.Empty<string>();
 
 		public string Description { get; set; } = "Respawns you in the tower";
@@ -25,9 +28,16 @@ namespace ImprovedSpectator.Commands
 				Player player = Player.Get(p);
 				if (player != null)
 				{
-					if (player.Team == Team.RIP)
+					if (player.Team == Team.RIP || EventHandlers.additionalRespawnPlayers.Contains(player))
 					{
-						player.SetRole(RoleType.Tutorial);
+						if (!EventHandlers.ghostPlayers.Contains(player))
+						{
+							player.SetRole(RoleType.Tutorial);
+						}
+						else
+						{
+							player.Position = towerPos;
+						}
 						if (EventHandlers.ghostPlayers.Contains(player)) EventHandlers.RemoveGhostPlayer(player);
 						if (!EventHandlers.additionalRespawnPlayers.Contains(player)) EventHandlers.additionalRespawnPlayers.Add(player);
 						response = "Respawned as tutorial.";

@@ -27,5 +27,8 @@ namespace PeanutExplodes
 
 			ev = null;
 		}
+
+		public override string Author => "Cyanox";
+		public override string Name => "PeanutExplodes";
 	}
 }

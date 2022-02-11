@@ -31,5 +31,6 @@ namespace WelcomeScreen
         }
 
         public override string Author => "Cyanox";
+        public override string Name => "WelcomeScreen";
     }
 }
