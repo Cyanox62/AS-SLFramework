@@ -17,11 +17,12 @@ namespace WelcomeScreen
 		{
 			while (!Round.IsStarted)
 			{
+				yield return Timing.WaitForSeconds(1f);
+
 				foreach (Player player in Player.List)
 				{
-					player.ShowHint(Plugin.singleton.Config.Hint.Insert(0, new string('\n', Plugin.singleton.Config.TextLower)).Replace("{serverNum}", Plugin.singleton.Config.ServerNumber.ToString()), 2f);
+					player.ShowHint($"{Plugin.singleton.Translation.ServerNumber.Insert(0, new string('\n', Plugin.singleton.Config.TextLower)).Replace("{serverNum}", Plugin.singleton.Config.ServerNumber.ToString())}\n{Plugin.singleton.Translation.DiscordLink}", 2f);
 				}
-				yield return Timing.WaitForSeconds(1f);
 			}
 		}
 	}

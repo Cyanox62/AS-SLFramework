@@ -2,7 +2,7 @@
 
 namespace WelcomeScreen
 {
-    public class Plugin : Plugin<Config>
+    public class Plugin : Plugin<Config, Translation>
     {
         internal static Plugin singleton;
 

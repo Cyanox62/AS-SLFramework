@@ -22,8 +22,6 @@ namespace ImprovedSpectator
 			{
 				yield return Timing.WaitForSeconds(1f);
 
-				//if (Respawn.IsSpawning) continue;
-
 				string min = (Respawn.TimeUntilRespawn / 60).ToString();
 				int sec = Respawn.TimeUntilRespawn % 60;
 				string ssec = string.Empty;
@@ -34,8 +32,12 @@ namespace ImprovedSpectator
 				if (Respawn.NextKnownTeam == SpawnableTeamType.NineTailedFox) nextTeam = Plugin.singleton.Translation.MTF;
 				else if (Respawn.NextKnownTeam == SpawnableTeamType.ChaosInsurgency) nextTeam = Plugin.singleton.Translation.CI;
 
-				string s = $"{Plugin.singleton.Translation.RespawnTime} {Plugin.singleton.Translation.Minutes.Replace("{minutes}", min)}{Plugin.singleton.Translation.Seconds.Replace("{seconds}", ssec)}";
-				if (Respawn.NextKnownTeam != SpawnableTeamType.None) s += $"{Plugin.singleton.Translation.RespawnTeam} {nextTeam}";
+				string s = $"{new string('\n', Plugin.singleton.Config.TextLower)}{Plugin.singleton.Translation.RespawnTime.Replace("{minutes}", min).Replace("{seconds}", ssec)}";
+				if (Respawn.IsSpawning)
+				{
+					s += $"\n{Plugin.singleton.Translation.RespawnInProgress.Replace("{team}", nextTeam)}";
+				}
+				else if (Respawn.NextKnownTeam != SpawnableTeamType.None) s += $"\n{Plugin.singleton.Translation.RespawnTeam} {Plugin.singleton.Translation.RespawnTeam.Replace("{team}", nextTeam)}";
 
 				foreach (Player player in Player.List.Where(x => x.Team == Team.RIP))
 				{
