@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Features;
+using Exiled.Events.EventArgs;
 using MEC;
 using Respawning;
 using System;
@@ -11,9 +12,70 @@ namespace ImprovedSpectator
 {
 	class EventHandlers
 	{
+		internal static List<Player> ghostPlayers = new List<Player>();
+		internal static List<Player> additionalRespawnPlayers = new List<Player>();
+
 		internal void OnRoundStart()
 		{
 			Timing.RunCoroutine(RespawnTimerCoroutine());
+		}
+
+		internal void OnRespawnTeam(RespawningTeamEventArgs ev)
+		{
+			foreach (Player player in ev.Players)
+			{
+				if (additionalRespawnPlayers.Contains(player))
+				{
+					additionalRespawnPlayers.Remove(player);
+				}
+				if (ghostPlayers.Contains(player))
+				{
+					RemoveGhostPlayer(player);
+				}
+			}
+		}
+
+		internal void OnSpawn(SpawningEventArgs ev)
+		{
+			foreach (Player player in ghostPlayers)
+			{
+				if (!ev.Player.TargetGhostsHashSet.Contains(player.Id))
+				{
+					ev.Player.TargetGhostsHashSet.Add(player.Id);
+				}
+			}
+		}
+
+		internal void OnDeath(DyingEventArgs ev)
+		{
+			foreach (Player player in ghostPlayers)
+			{
+				if (ev.Target.TargetGhostsHashSet.Contains(player.Id))
+				{
+					ev.Target.TargetGhostsHashSet.Remove(player.Id);
+				}
+			}
+		}
+
+		internal static void AddGhostPlayer(Player player)
+		{
+			ghostPlayers.Add(player);
+			foreach (Player p in Player.List.Where(x => x.IsAlive))
+			{
+				p.TargetGhostsHashSet.Add(player.Id);
+			}
+		}
+
+		internal static void RemoveGhostPlayer(Player player)
+		{
+			ghostPlayers.Remove(player);
+			foreach (Player p in Player.List)
+			{
+				if (p.TargetGhostsHashSet.Contains(player.Id))
+				{
+					p.TargetGhostsHashSet.Remove(player.Id);
+				}
+			}
 		}
 
 		private IEnumerator<float> RespawnTimerCoroutine()

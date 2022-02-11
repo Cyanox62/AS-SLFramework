@@ -12,8 +12,5 @@ namespace WelcomeScreen
 
 		[Description("Formatting for where the hint is placed on screen. The higher the number, the lower the text goes.")]
 		public int TextLower { get; set; } = 4;
-
-		[Description("The hint to display, use {serverNum} to represent the server number.")]
-		public string Hint { get; set; } = "Server {serverNum}\ndiscord.gg/yourlink";
 	}
 }

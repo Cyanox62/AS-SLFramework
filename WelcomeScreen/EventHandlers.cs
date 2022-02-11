@@ -1,5 +1,4 @@
 ﻿using Exiled.API.Features;
-using Exiled.Events.EventArgs;
 using MEC;
 using System.Collections.Generic;
 
@@ -21,7 +20,7 @@ namespace WelcomeScreen
 
 				foreach (Player player in Player.List)
 				{
-					player.ShowHint($"{Plugin.singleton.Translation.ServerNumber.Insert(0, new string('\n', Plugin.singleton.Config.TextLower)).Replace("{serverNum}", Plugin.singleton.Config.ServerNumber.ToString())}\n{Plugin.singleton.Translation.DiscordLink}", 2f);
+					player.ShowHint($"{Plugin.singleton.Translation.ServerNumberText.Insert(0, new string('\n', Plugin.singleton.Config.TextLower)).Replace("{serverNum}", Plugin.singleton.Config.ServerNumber.ToString())}\n{Plugin.singleton.Translation.DiscordLink}", 2f);
 				}
 			}
 		}

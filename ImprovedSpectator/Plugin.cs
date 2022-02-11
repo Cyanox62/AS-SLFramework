@@ -17,6 +17,10 @@ namespace ImprovedSpectator
             ev = new EventHandlers();
 
             Exiled.Events.Handlers.Server.RoundStarted += ev.OnRoundStart;
+            Exiled.Events.Handlers.Server.RespawningTeam += ev.OnRespawnTeam;
+
+            Exiled.Events.Handlers.Player.Spawning += ev.OnSpawn;
+            Exiled.Events.Handlers.Player.Dying += ev.OnDeath;
         }
 
         public override void OnDisabled()
@@ -24,6 +28,10 @@ namespace ImprovedSpectator
             base.OnDisabled();
 
             Exiled.Events.Handlers.Server.RoundStarted -= ev.OnRoundStart;
+            Exiled.Events.Handlers.Server.RespawningTeam -= ev.OnRespawnTeam;
+
+            Exiled.Events.Handlers.Player.Spawning -= ev.OnSpawn;
+            Exiled.Events.Handlers.Player.Dying -= ev.OnDeath;
 
             ev = null;
         }
