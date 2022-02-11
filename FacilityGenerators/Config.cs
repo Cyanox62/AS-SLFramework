@@ -15,5 +15,29 @@ namespace FacilityGenerators
 
 		[Description("Determines the maximum amount of blackouts that can happen in a round.")]
 		public int MaxBlackoutsPerRound { get; set; } = 2;
+
+		[Description("Determines the minimum amount of time between each blackout.")]
+		public int MinTimeBetweenBlackouts { get; set; } = 0;
+
+		[Description("Determines the maximum amount of time between each blackout.")]
+		public int MaxTimeBetweenBlackouts { get; set; } = 2;
+
+		[Description("Determines the minimum amount of time in seconds a blackout can last for.")]
+		public int MinBlackoutDuration { get; set; } = 25;
+
+		[Description("Determines the maximum amount of time in seconds a blackout can last for.")]
+		public int MaxBlackoutDuration { get; set; } = 52;
+
+		[Description("The message for CASSIE to say when a blackout starts.")]
+		public string CassieBlackoutStart { get; set; } = "error . facility power system failure detected";
+
+		[Description("The offset betweeen when CASSIE begins his announcement and when the lights go off.")]
+		public float CassieBlackoutStartOffset { get; set; } = 5f;
+
+		[Description("The message for CASSIE to say when a blackout ends.")]
+		public string CassieBlackoutEnd { get; set; } = "facility power system now operational";
+
+		[Description("The offset betweeen when CASSIE begins his announcement and when the lights turn on.")]
+		public float CassieBlackoutEndOffset { get; set; } = 5f;
 	}
 }
