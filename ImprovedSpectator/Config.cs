@@ -9,5 +9,8 @@ namespace ImprovedSpectator
 
 		[Description("Formatting for where the hint is placed on screen. The higher the number, the lower the text goes.")]
 		public int TextLower { get; set; } = 4;
+
+		[Description("Determines if ghost players are able to phase through doors by interacting with them.")]
+		public bool DoorPhase { get; set; } = true;
 	}
 }

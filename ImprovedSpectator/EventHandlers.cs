@@ -4,6 +4,7 @@ using MEC;
 using Respawning;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace ImprovedSpectator
 {
@@ -48,7 +49,30 @@ namespace ImprovedSpectator
 
 		internal void OnDoorAccess(InteractingDoorEventArgs ev)
 		{
-			if (ghostPlayers.Contains(ev.Player)) ev.IsAllowed = false;
+			if (ghostPlayers.Contains(ev.Player))
+			{
+				ev.IsAllowed = false;
+
+				if (Plugin.singleton.Config.DoorPhase)
+				{
+					Vector3 forward = ev.Door.Base.transform.forward;
+					Vector3 dist = forward * 5f;
+					Vector3 doorPos = ev.Door.Base.transform.position;
+					float magnitude = 1f;
+
+					if (ev.Door.Base.name.Contains("Checkpoint")) return;
+
+					ev.IsAllowed = false;
+
+					float y = ev.Player.Position.y;
+					Vector3 newPos = doorPos +
+						(Vector3.Distance(ev.Player.Position, doorPos + dist)
+						> Vector3.Distance(ev.Player.Position, doorPos - dist)
+						? forward : -forward) * magnitude;
+					newPos.y = y;
+					ev.Player.ReferenceHub.playerMovementSync.OverridePosition(newPos, 0f, false);
+				}
+			}
 		}
 
 		internal void OnElevatorAccess(InteractingElevatorEventArgs ev)
