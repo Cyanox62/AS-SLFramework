@@ -24,7 +24,7 @@ namespace ServerStatistics
 		public string CommandLogAvatarURL { get; set; } = "https://i.natgeofe.com/k/7ce14b7f-df35-4881-95ae-650bce0adf4d/mallard-male-standing_3x2.jpg";
 
 		[Description("The name for the command log webhook.")]
-		public string CommandLogName { get; set; } = "Ban Logger";
+		public string CommandLogName { get; set; } = "Command Logger";
 
 		[Description("The webhook URL for the command log webhook.")]
 		public string CommandLogWebhook { get; set; } = "https://discord.com/api/webhooks/941751558197088287/qUEslgb4fSOOlgTgqKCmjAjpIDjeN08nSemUh1Ec254eEQeOU6J_Pk6srBDjCcbBgK-e";
@@ -35,7 +35,7 @@ namespace ServerStatistics
 		public string ServerEventAvatarURL { get; set; } = "https://i.natgeofe.com/k/7ce14b7f-df35-4881-95ae-650bce0adf4d/mallard-male-standing_3x2.jpg";
 
 		[Description("The name for the server event webhook.")]
-		public string ServerEventName { get; set; } = "Ban Logger";
+		public string ServerEventName { get; set; } = "Server Events";
 
 		[Description("The webhook URL for the server event webhook.")]
 		public string ServerEventWebhook { get; set; } = "https://discord.com/api/webhooks/941751558197088287/qUEslgb4fSOOlgTgqKCmjAjpIDjeN08nSemUh1Ec254eEQeOU6J_Pk6srBDjCcbBgK-e";

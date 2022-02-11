@@ -7,7 +7,7 @@ namespace ServerStatistics
     public class dWebHook : IDisposable
     {
         private readonly WebClient dWebClient;
-        private static NameValueCollection discord = new NameValueCollection();
+        private NameValueCollection discord = new NameValueCollection();
         public string WebHook { get; set; }
         public string UserName { get; set; }
         public string ProfilePicture { get; set; }
@@ -31,4 +31,11 @@ namespace ServerStatistics
             dWebClient.Dispose();
         }
     }
+
+    public class Message
+	{
+        public WebClient dWebClient;
+        public string webHook;
+        public NameValueCollection discord;
+	}
 }

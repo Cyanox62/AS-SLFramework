@@ -12,15 +12,18 @@ namespace ServerStatistics.Patches
             if (player != null)
 			{
 				Utils.HandleRACommand(player, q);
-				using (dWebHook dcWeb = new dWebHook())
+				if (!q.Contains("PLAYER_LIST SILENT"))
 				{
-					dcWeb.ProfilePicture = Plugin.singleton.Config.CommandLogAvatarURL;
-					dcWeb.UserName = Plugin.singleton.Config.CommandLogName;
-					dcWeb.WebHook = Plugin.singleton.Config.CommandLogWebhook;
-					dcWeb.SendMessage(Plugin.singleton.Translation.CommandMessage
-						.Replace("{commandSender}", player.Nickname)
-						.Replace("{commandUserid}", player.UserId)
-						.Replace("{command}", q));
+					using (dWebHook dcWeb = new dWebHook())
+					{
+						dcWeb.ProfilePicture = Plugin.singleton.Config.CommandLogAvatarURL;
+						dcWeb.UserName = Plugin.singleton.Config.CommandLogName;
+						dcWeb.WebHook = Plugin.singleton.Config.CommandLogWebhook;
+						dcWeb.SendMessage(Plugin.singleton.Translation.CommandMessage
+							.Replace("{commandSender}", player.Nickname)
+							.Replace("{commandUserid}", player.UserId)
+							.Replace("{command}", q));
+					}
 				}
 			}
 		}
