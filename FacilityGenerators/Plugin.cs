@@ -22,9 +22,6 @@ namespace FacilityGenerators
 
             ev = new EventHandlers();
 
-            Exiled.Events.Handlers.Server.RoundStarted += ev.OnRoundStart;
-            Exiled.Events.Handlers.Server.WaitingForPlayers += ev.OnWaitingForPlayers;
-
             Exiled.Events.Handlers.Player.Spawning += ev.OnSpawn;
             Exiled.Events.Handlers.Player.TriggeringTesla += ev.OnTesla;
         }
@@ -32,9 +29,6 @@ namespace FacilityGenerators
         public override void OnDisabled()
         {
             base.OnDisabled();
-
-            Exiled.Events.Handlers.Server.RoundStarted -= ev.OnRoundStart;
-            Exiled.Events.Handlers.Server.WaitingForPlayers -= ev.OnWaitingForPlayers;
 
             Exiled.Events.Handlers.Player.Spawning -= ev.OnSpawn;
             Exiled.Events.Handlers.Player.TriggeringTesla -= ev.OnTesla;

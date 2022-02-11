@@ -7,27 +7,19 @@ namespace WelcomeScreen
 {
 	class EventHandlers
 	{
-		private List<Player> hintPlayers = new List<Player>();
-
 		private CoroutineHandle coroutine;
 
 		internal void OnWaitingForPlayers() => coroutine = Timing.RunCoroutine(HintCoroutine());
 
-		internal void OnRoundStart()
-		{
-			Timing.KillCoroutines(coroutine);
-			hintPlayers.Clear();
-		}
-
-		internal void OnPlayerVerified(VerifiedEventArgs ev) => hintPlayers.Add(ev.Player);
+		internal void OnRoundStart() => Timing.KillCoroutines(coroutine);
 
 		private IEnumerator<float> HintCoroutine()
 		{
 			while (!Round.IsStarted)
 			{
-				foreach (Player player in hintPlayers)
+				foreach (Player player in Player.List)
 				{
-					player.ShowHint(Plugin.singleton.Config.Hint.Replace("{serverNum}", Plugin.singleton.Config.ServerNumber.ToString()), 2f);
+					player.ShowHint(Plugin.singleton.Config.Hint.Insert(0, new string('\n', Plugin.singleton.Config.TextLower)).Replace("{serverNum}", Plugin.singleton.Config.ServerNumber.ToString()), 2f);
 				}
 				yield return Timing.WaitForSeconds(1f);
 			}
