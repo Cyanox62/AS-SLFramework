@@ -33,6 +33,7 @@ namespace ImprovedSpectator
             Exiled.Events.Handlers.Player.InteractingLocker += ev.OnLockerAccess;
             Exiled.Events.Handlers.Player.InteractingScp330 += ev.OnScp330Access;
             Exiled.Events.Handlers.Player.IntercomSpeaking += ev.OnIntercomAccess;
+            Exiled.Events.Handlers.Player.ChangingRole += ev.OnSetRole;
         }
 
         public override void OnDisabled()
@@ -50,6 +51,7 @@ namespace ImprovedSpectator
             Exiled.Events.Handlers.Player.InteractingLocker -= ev.OnLockerAccess;
             Exiled.Events.Handlers.Player.InteractingScp330 -= ev.OnScp330Access;
             Exiled.Events.Handlers.Player.IntercomSpeaking -= ev.OnIntercomAccess;
+            Exiled.Events.Handlers.Player.ChangingRole -= ev.OnSetRole;
 
             ev = null;
 
