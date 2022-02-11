@@ -6,6 +6,7 @@ using NorthwoodLib.Pools;
 using Respawning;
 using UnityEngine;
 using Exiled.API.Features;
+using ImprovedSpectator;
 
 namespace ImprovedSpectator.Patches
 {
@@ -71,6 +72,12 @@ namespace ImprovedSpectator.Patches
 						classid.ToString(),
 						"."
 					}), global::ServerLogs.ServerLogType.GameEvent, false);
+					Player p = Player.Get(referenceHub);
+					if (p != null)
+					{
+						if (EventHandlers.additionalRespawnPlayers.Contains(p)) EventHandlers.additionalRespawnPlayers.Remove(p);
+						if (EventHandlers.ghostPlayers.Contains(p)) EventHandlers.ghostPlayers.Remove(p);
+					}
 				}
 				catch (Exception ex)
 				{
@@ -112,16 +119,6 @@ namespace ImprovedSpectator.Patches
 			ListPool<global::ReferenceHub>.Shared.Return(list2);
 			__instance.NextKnownTeam = SpawnableTeamType.None;
 			return false;
-		}
-	}
-
-	[HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.DeathTime), MethodType.Setter)]
-	class DeathTimePatch
-	{
-		public static bool Prefix(CharacterClassManager __instance)
-		{
-			if (EventHandlers.additionalRespawnPlayers.Select(x => x.ReferenceHub).Contains(__instance._hub)) return false;
-			else return true;
 		}
 	}
 }

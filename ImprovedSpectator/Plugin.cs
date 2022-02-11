@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Features;
+using HarmonyLib;
 
 namespace ImprovedSpectator
 {
@@ -8,11 +9,16 @@ namespace ImprovedSpectator
 
         private EventHandlers ev;
 
+        private Harmony hInstance;
+
         public override void OnEnabled()
         {
             base.OnEnabled();
 
             singleton = this;
+
+            hInstance = new Harmony("cyan.improvedspectator");
+            hInstance.PatchAll();
 
             ev = new EventHandlers();
 
@@ -21,6 +27,12 @@ namespace ImprovedSpectator
 
             Exiled.Events.Handlers.Player.Spawning += ev.OnSpawn;
             Exiled.Events.Handlers.Player.Dying += ev.OnDeath;
+            Exiled.Events.Handlers.Player.PickingUpItem += ev.OnPickupItem;
+            Exiled.Events.Handlers.Player.InteractingDoor += ev.OnDoorAccess;
+            Exiled.Events.Handlers.Player.InteractingElevator += ev.OnElevatorAccess;
+            Exiled.Events.Handlers.Player.InteractingLocker += ev.OnLockerAccess;
+            Exiled.Events.Handlers.Player.InteractingScp330 += ev.OnScp330Access;
+            Exiled.Events.Handlers.Player.IntercomSpeaking += ev.OnIntercomAccess;
         }
 
         public override void OnDisabled()
@@ -32,8 +44,17 @@ namespace ImprovedSpectator
 
             Exiled.Events.Handlers.Player.Spawning -= ev.OnSpawn;
             Exiled.Events.Handlers.Player.Dying -= ev.OnDeath;
+            Exiled.Events.Handlers.Player.PickingUpItem -= ev.OnPickupItem;
+            Exiled.Events.Handlers.Player.InteractingDoor -= ev.OnDoorAccess;
+            Exiled.Events.Handlers.Player.InteractingElevator -= ev.OnElevatorAccess;
+            Exiled.Events.Handlers.Player.InteractingLocker -= ev.OnLockerAccess;
+            Exiled.Events.Handlers.Player.InteractingScp330 -= ev.OnScp330Access;
+            Exiled.Events.Handlers.Player.IntercomSpeaking -= ev.OnIntercomAccess;
 
             ev = null;
+
+            hInstance.UnpatchAll(hInstance.Id);
+            hInstance = null;
         }
 
         public override string Author => "Cyanox";

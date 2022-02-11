@@ -15,6 +15,8 @@ namespace ImprovedSpectator
 		internal void OnRoundStart()
 		{
 			Timing.RunCoroutine(RespawnTimerCoroutine());
+			ghostPlayers.Clear();
+			additionalRespawnPlayers.Clear();
 		}
 
 		internal void OnRespawnTeam(RespawningTeamEventArgs ev)
@@ -34,6 +36,7 @@ namespace ImprovedSpectator
 
 		internal void OnSpawn(SpawningEventArgs ev)
 		{
+			if (!additionalRespawnPlayers.Contains(ev.Player)) ev.Player.ShowHint(string.Empty, float.MaxValue);
 			foreach (Player player in ghostPlayers)
 			{
 				if (!ev.Player.TargetGhostsHashSet.Contains(player.Id))
@@ -42,6 +45,51 @@ namespace ImprovedSpectator
 				}
 			}
 		}
+
+		internal void OnDoorAccess(InteractingDoorEventArgs ev)
+		{
+			if (ghostPlayers.Contains(ev.Player)) ev.IsAllowed = false;
+		}
+
+		internal void OnElevatorAccess(InteractingElevatorEventArgs ev)
+		{
+			if (ghostPlayers.Contains(ev.Player)) ev.IsAllowed = false;
+		}
+
+		internal void OnLockerAccess(InteractingLockerEventArgs ev)
+		{
+			if (ghostPlayers.Contains(ev.Player)) ev.IsAllowed = false;
+		}
+
+		internal void OnIntercomAccess(IntercomSpeakingEventArgs ev)
+		{
+			if (ghostPlayers.Contains(ev.Player)) ev.IsAllowed = false;
+		}
+
+		internal void OnScp330Access(InteractingScp330EventArgs ev)
+		{
+			if (ghostPlayers.Contains(ev.Player)) ev.IsAllowed = false;
+		}
+
+		internal void OnSetRole(ChangingRoleEventArgs ev)
+		{
+			if (additionalRespawnPlayers.Contains(ev.Player))
+			{
+				additionalRespawnPlayers.Remove(ev.Player);
+			}
+			if (ghostPlayers.Contains(ev.Player))
+			{
+				RemoveGhostPlayer(ev.Player);
+			}
+		}
+
+		internal void OnPickupItem(PickingUpItemEventArgs ev)
+		{
+			if (ghostPlayers.Contains(ev.Player))
+			{
+				ev.IsAllowed = false;
+			}
+		}	
 
 		internal void OnDeath(DyingEventArgs ev)
 		{

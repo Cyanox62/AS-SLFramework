@@ -3,6 +3,8 @@ using Exiled.API.Features;
 using MEC;
 using RemoteAdmin;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ImprovedSpectator.Commands
@@ -28,7 +30,8 @@ namespace ImprovedSpectator.Commands
 						if (!EventHandlers.ghostPlayers.Contains(player)) EventHandlers.AddGhostPlayer(player);
 						if (!EventHandlers.additionalRespawnPlayers.Contains(player)) EventHandlers.additionalRespawnPlayers.Add(player);
 						player.SetRole(RoleType.Tutorial);
-						Vector3 pos = Map.Rooms[UnityEngine.Random.Range(0, Map.Rooms.Count)].Position;
+						List<Room> rooms = Map.Rooms.Where(x => x.Type != Exiled.API.Enums.RoomType.Hcz939).ToList();
+						Vector3 pos = rooms[UnityEngine.Random.Range(0, rooms.Count)].Position;
 						pos.y += 2;
 						Timing.CallDelayed(0.5f, () => player.Position = pos);
 						response = "Respawned as a ghost.";
