@@ -8,10 +8,10 @@ using System.Linq;
 
 namespace ExtraUtilities
 {
-	// Thanks Beryl <3
-	// https://github.com/SebasCapo/RemoteKeycard
 	class EventHandlers
 	{
+		// Thanks Beryl <3
+		// https://github.com/SebasCapo/RemoteKeycard
 		internal void OnDoorAccess(InteractingDoorEventArgs ev)
 		{
 			if (Plugin.singleton.Config.RequireHeldKeycard) return;
@@ -41,7 +41,6 @@ namespace ExtraUtilities
 				ev.IsAllowed = true;
 			}
 		}
-
 		// ----- //
 
 		internal void OnRoundRestart()

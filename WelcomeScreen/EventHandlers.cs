@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Features;
+using Exiled.Events.EventArgs;
 using MEC;
 using System.Collections.Generic;
 
@@ -8,9 +9,17 @@ namespace WelcomeScreen
 	{
 		private CoroutineHandle coroutine;
 
-		internal void OnWaitingForPlayers() => coroutine = Timing.RunCoroutine(HintCoroutine());
+		internal void OnWaitingForPlayers()
+		{
+			if (Plugin.singleton.Config.ShowHint) coroutine = Timing.RunCoroutine(HintCoroutine());
+		}
 
 		internal void OnRoundStart() => Timing.KillCoroutines(coroutine);
+
+		internal void OnPlayerVerified(VerifiedEventArgs ev)
+		{
+			ev.Player.Broadcast((ushort)Plugin.singleton.Config.BroadcastTime, Plugin.singleton.Translation.WelcomeMessage);
+		}
 
 		private IEnumerator<float> HintCoroutine()
 		{

@@ -2,7 +2,6 @@
 using Exiled.API.Features;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -24,11 +23,19 @@ namespace ExtraUtilities.Commands
 				Player target = Player.Get(arguments.ElementAt(0));
 				if (target != null)
 				{
-					Plugin.groups.Remove(target.UserId);
-					target.Group = null;
-					File.WriteAllText(Plugin.GroupOverridesFile, JsonConvert.SerializeObject(Plugin.groups, Formatting.Indented));
-					response = $"Removed role overrides for user {target.Nickname}.";
-					return true;
+					if (Plugin.groups.ContainsKey(target.UserId))
+					{
+						Plugin.groups.Remove(target.UserId);
+						target.Group = null;
+						File.WriteAllText(Plugin.GroupOverridesFile, JsonConvert.SerializeObject(Plugin.groups, Formatting.Indented));
+						response = $"Removed role overrides for user {target.Nickname}.";
+						return true;
+					}
+					else
+					{
+						response = "User doesn't have a role override.";
+						return false;
+					}
 				}
 				else
 				{
@@ -38,7 +45,7 @@ namespace ExtraUtilities.Commands
 			}
 			else
 			{
-				response = "Usage: PROMOTE [USER] [TIER]";
+				response = "Usage: DEMOTE [USER]";
 				return false;
 			}
 		}

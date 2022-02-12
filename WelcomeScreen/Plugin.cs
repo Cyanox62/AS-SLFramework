@@ -16,6 +16,8 @@ namespace WelcomeScreen
 
             ev = new EventHandlers();
 
+            Exiled.Events.Handlers.Player.Verified += ev.OnPlayerVerified;
+
             Exiled.Events.Handlers.Server.RoundStarted += ev.OnRoundStart;
             Exiled.Events.Handlers.Server.WaitingForPlayers += ev.OnWaitingForPlayers;
 		}
@@ -23,6 +25,8 @@ namespace WelcomeScreen
         public override void OnDisabled()
 		{
             base.OnDisabled();
+
+            Exiled.Events.Handlers.Player.Verified -= ev.OnPlayerVerified;
 
             Exiled.Events.Handlers.Server.RoundStarted -= ev.OnRoundStart;
             Exiled.Events.Handlers.Server.WaitingForPlayers -= ev.OnWaitingForPlayers;
