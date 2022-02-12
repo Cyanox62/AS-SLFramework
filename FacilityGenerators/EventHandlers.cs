@@ -1,4 +1,6 @@
-﻿using Exiled.API.Features;
+﻿using Exiled.API.Enums;
+using Exiled.API.Features;
+using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs;
 using MEC;
 using System;
@@ -25,6 +27,24 @@ namespace FacilityGenerators
 			isBlackout = false;
 
 			coroutine = Timing.RunCoroutine(BlackoutCoroutine());
+
+			List<Room> rooms = Map.Rooms.Where(x => x.Zone != ZoneType.Surface).ToList();
+			List<Room> discard = new List<Room>();
+			for (int i = 0; i < 100; i++)
+			{
+				if (i % (rooms.Count + discard.Count) == 0)
+				{
+					foreach (Room room in discard) rooms.Add(room);
+					discard.Clear();
+					rooms.ShuffleList();
+				}
+				Room chosenRoom = rooms.First();
+				Vector3 pos = chosenRoom.Position;
+				pos.y += 2;
+				new Item(ItemType.Flashlight).Spawn(pos);
+				discard.Add(chosenRoom);
+				rooms.RemoveAt(0);
+			}
 		}
 
 		internal void OnRoundRestart()
