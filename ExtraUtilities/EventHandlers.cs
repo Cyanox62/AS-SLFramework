@@ -1,6 +1,9 @@
-﻿using Exiled.API.Features.Items;
+﻿using Exiled.API.Features;
+using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs;
 using Interactables.Interobjects.DoorUtils;
+using Newtonsoft.Json;
+using System.IO;
 using System.Linq;
 
 namespace ExtraUtilities
@@ -36,6 +39,29 @@ namespace ExtraUtilities
 			if (!ev.IsAllowed && ev.Player.Items.Any(item => item is Keycard keycard && (keycard.Base.Permissions & ev.Generator._requiredPermission) != 0))
 			{
 				ev.IsAllowed = true;
+			}
+		}
+
+		// ----- //
+
+		internal void OnRoundRestart()
+		{
+			File.WriteAllText(Plugin.GroupOverridesFile, JsonConvert.SerializeObject(Plugin.groups, Formatting.Indented));
+		}
+
+		internal void OnPlayerVerified(VerifiedEventArgs ev)
+		{
+			if (Plugin.groups.ContainsKey(ev.Player.UserId))
+			{
+				UserGroup group = ServerStatic.PermissionsHandler.GetGroup(Plugin.groups[ev.Player.UserId]);
+				if (group != null)
+				{
+					ev.Player.Group = group;
+				}
+				else
+				{
+					Log.Warn($"Failed to assign group {Plugin.groups[ev.Player.UserId]}");
+				}
 			}
 		}
 	}
