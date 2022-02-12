@@ -13,6 +13,7 @@ namespace ImprovedSpectator.Patches
 	[HarmonyPatch(typeof(RespawnManager), nameof(RespawnManager.Spawn))]
 	class RespawnPatch
 	{
+		[HarmonyPriority(420)]
 		public static bool Prefix(RespawnManager __instance)
 		{
 			SpawnableTeamHandlerBase spawnableTeamHandlerBase;
@@ -26,7 +27,12 @@ namespace ImprovedSpectator.Patches
 											   select item).ToList<global::ReferenceHub>();
 
 			// Ensure spawned in players get added to the queue
-			foreach (Player player in EventHandlers.additionalRespawnPlayers) list.Add(player.ReferenceHub);
+
+			foreach (Player player in EventHandlers.additionalRespawnPlayers)
+			{
+				Log.Warn("adding: " + player.Nickname + " to respawn list");
+				list.Add(player.ReferenceHub);
+			}
 
 			if (__instance._prioritySpawn)
 			{
@@ -76,7 +82,7 @@ namespace ImprovedSpectator.Patches
 					if (p != null)
 					{
 						if (EventHandlers.additionalRespawnPlayers.Contains(p)) EventHandlers.additionalRespawnPlayers.Remove(p);
-						if (EventHandlers.ghostPlayers.Contains(p)) EventHandlers.ghostPlayers.Remove(p);
+						if (EventHandlers.ghostPlayers.Contains(p)) EventHandlers.RemoveGhostPlayer(p);
 					}
 				}
 				catch (Exception ex)
@@ -118,6 +124,72 @@ namespace ImprovedSpectator.Patches
 			}
 			ListPool<global::ReferenceHub>.Shared.Return(list2);
 			__instance.NextKnownTeam = SpawnableTeamType.None;
+			return false;
+		}
+	}
+
+	[HarmonyPatch(typeof(RespawnTickets), nameof(RespawnTickets.DrawRandomTeam))]
+	class RespawnPatch2
+	{
+		public static bool Prefix(RespawnTickets __instance, ref SpawnableTeamType __result)
+		{
+			bool flag = false;
+			foreach (KeyValuePair<GameObject, global::ReferenceHub> keyValuePair in global::ReferenceHub.GetAllHubs())
+			{
+				if ((keyValuePair.Value.characterClassManager.CurClass == global::RoleType.Spectator && !keyValuePair.Value.serverRoles.OverwatchEnabled) ||
+					(EventHandlers.additionalRespawnPlayers.Count > 0))
+				{
+					flag = true;
+					break;
+				}
+			}
+			if (!flag)
+			{
+				__result = SpawnableTeamType.None;
+				return false;
+			}
+			SpawnableTeamType result;
+			if (__instance.IsFirstWave)
+			{
+				result = __instance.GetHighestTicketTeam();
+			}
+			else
+			{
+				List<SpawnableTeamType> list = ListPool<SpawnableTeamType>.Shared.Rent();
+				List<SpawnableTeamType> list2 = ListPool<SpawnableTeamType>.Shared.Rent();
+				using (Dictionary<SpawnableTeamType, int>.Enumerator enumerator2 = __instance._tickets.GetEnumerator())
+				{
+					while (enumerator2.MoveNext())
+					{
+						KeyValuePair<SpawnableTeamType, int> keyValuePair2 = enumerator2.Current;
+						SpawnableTeamHandlerBase spawnableTeamHandlerBase;
+						if (keyValuePair2.Value > 0)
+						{
+							for (int i = 0; i < keyValuePair2.Value; i++)
+							{
+								list.Add(keyValuePair2.Key);
+							}
+						}
+						else if (keyValuePair2.Value == 0 && RespawnWaveGenerator.SpawnableTeams.TryGetValue(keyValuePair2.Key, out spawnableTeamHandlerBase) && spawnableTeamHandlerBase.LockUponZero)
+						{
+							list2.Add(keyValuePair2.Key);
+						}
+					}
+					goto IL_140;
+				}
+			IL_124:
+				__instance._tickets[list2[0]] = -1;
+				list2.RemoveAt(0);
+			IL_140:
+				if (list2.Count > 0)
+				{
+					goto IL_124;
+				}
+				result = ((list.Count == 0) ? SpawnableTeamType.ChaosInsurgency : list[UnityEngine.Random.Range(0, list.Count)]);
+				ListPool<SpawnableTeamType>.Shared.Return(list);
+				ListPool<SpawnableTeamType>.Shared.Return(list2);
+			}
+			__result = result;
 			return false;
 		}
 	}

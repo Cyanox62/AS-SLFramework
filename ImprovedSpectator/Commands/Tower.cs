@@ -28,7 +28,7 @@ namespace ImprovedSpectator.Commands
 				Player player = Player.Get(p);
 				if (player != null)
 				{
-					if (player.Team == Team.RIP || EventHandlers.additionalRespawnPlayers.Contains(player))
+					if (player.Team == Team.RIP || EventHandlers.additionalRespawnPlayers.Contains(player) || EventHandlers.ghostPlayers.Contains(player))
 					{
 						if (!EventHandlers.ghostPlayers.Contains(player))
 						{

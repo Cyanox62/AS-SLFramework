@@ -20,24 +20,10 @@ namespace ImprovedSpectator
 			additionalRespawnPlayers.Clear();
 		}
 
-		internal void OnRespawnTeam(RespawningTeamEventArgs ev)
-		{
-			foreach (Player player in ev.Players)
-			{
-				if (additionalRespawnPlayers.Contains(player))
-				{
-					additionalRespawnPlayers.Remove(player);
-				}
-				if (ghostPlayers.Contains(player))
-				{
-					RemoveGhostPlayer(player);
-				}
-			}
-		}
-
 		internal void OnSpawn(SpawningEventArgs ev)
 		{
 			if (!additionalRespawnPlayers.Contains(ev.Player)) ev.Player.ShowHint(string.Empty, float.MaxValue);
+
 			foreach (Player player in ghostPlayers)
 			{
 				if (!ev.Player.TargetGhostsHashSet.Contains(player.Id))
@@ -97,14 +83,7 @@ namespace ImprovedSpectator
 
 		internal void OnSetRole(ChangingRoleEventArgs ev)
 		{
-			if (additionalRespawnPlayers.Contains(ev.Player))
-			{
-				additionalRespawnPlayers.Remove(ev.Player);
-			}
-			if (ghostPlayers.Contains(ev.Player))
-			{
-				RemoveGhostPlayer(ev.Player);
-			}
+
 		}
 
 		internal void OnPickupItem(PickingUpItemEventArgs ev)
@@ -129,7 +108,7 @@ namespace ImprovedSpectator
 		internal static void AddGhostPlayer(Player player)
 		{
 			ghostPlayers.Add(player);
-			foreach (Player p in Player.List.Where(x => x.IsAlive))
+			foreach (Player p in Player.List.Where(x => x.IsAlive && !ghostPlayers.Contains(x)))
 			{
 				p.TargetGhostsHashSet.Add(player.Id);
 			}
