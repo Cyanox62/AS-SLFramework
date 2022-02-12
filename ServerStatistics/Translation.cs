@@ -8,9 +8,9 @@ namespace ServerStatistics
 		public string CommandMessage { get; private set; } = ":keyboard: [RA] {commandSender} ({commandUserid}) >: {command}";
 
 		// Ban Log
-		public string KickMessage { get; private set; } = ":hammer: Player {targetNickname} ({targetUserid}) was kicked by {senderNickname} ({senderUserid}).";
-		public string BanMessage { get; private set; } = ":hammer: Player {targetNickname} ({targetUserid}) was banned ({time}) by {senderNickname} ({senderUserid}).";
-		public string MuteMessage { get; private set; } = ":hammer: Player {targetNickname} ({targetUserid}) was muted by {senderNickname} ({senderUserid}).";
+		public string KickMessage { get; private set; } = ":hammer: Player `{targetNickname} ({targetUserid})` was kicked by `{senderNickname} ({senderUserid})`.";
+		public string BanMessage { get; private set; } = ":hammer: Player `{targetNickname} ({targetUserid})` was banned ({time}) by `{senderNickname} ({senderUserid})`.";
+		public string MuteMessage { get; private set; } = ":hammer: Player `{targetNickname} ({targetUserid})` was muted by `{senderNickname} ({senderUserid})`.";
 
 		// Event Log
 		public string RoundStart { get; private set; } = ":arrow_forward: A new round has started with {playerCount} players!";
