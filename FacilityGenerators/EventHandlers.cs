@@ -54,7 +54,7 @@ namespace FacilityGenerators
 
 		internal void OnSpawn(SpawningEventArgs ev)
 		{
-			if (ev.Player.Team == Team.MTF)
+			if (ev.Player.Team == Team.MTF || ev.Player.Team == Team.RSC)
 			{
 				ev.Player.AddItem(ItemType.Flashlight);
 			}
