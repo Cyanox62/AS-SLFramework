@@ -30,7 +30,7 @@ namespace FacilityGenerators
 
 			List<Room> rooms = Map.Rooms.Where(x => x.Zone != ZoneType.Surface).ToList();
 			List<Room> discard = new List<Room>();
-			for (int i = 0; i < 100; i++)
+			for (int i = 0; i < Plugin.singleton.Config.FlashlightsToSpawn; i++)
 			{
 				if (i % (rooms.Count + discard.Count) == 0)
 				{
@@ -41,7 +41,7 @@ namespace FacilityGenerators
 				Room chosenRoom = rooms.First();
 				Vector3 pos = chosenRoom.Position;
 				pos.y += 2;
-				new Item(ItemType.Flashlight).Spawn(pos);
+				new Item(ItemType.Flashlight).Spawn(pos, Quaternion.Euler(UnityEngine.Random.Range(10f, 80f), UnityEngine.Random.Range(10f, 80f), UnityEngine.Random.Range(10f, 80f)));
 				discard.Add(chosenRoom);
 				rooms.RemoveAt(0);
 			}

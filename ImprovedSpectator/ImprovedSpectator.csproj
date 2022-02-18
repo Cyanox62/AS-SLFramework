@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Ghost.cs" />
+    <Compile Include="Commands\Spec.cs" />
     <Compile Include="Commands\Tower.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventHandlers.cs" />
