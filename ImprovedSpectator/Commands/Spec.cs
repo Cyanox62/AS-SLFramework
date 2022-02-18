@@ -10,6 +10,7 @@ using UnityEngine;
 
 namespace ImprovedSpectator.Commands
 {
+	[CommandHandler(typeof(ClientCommandHandler))]
 	class Spec : ICommand
 	{
 		public string[] Aliases { get; set; } = Array.Empty<string>();
