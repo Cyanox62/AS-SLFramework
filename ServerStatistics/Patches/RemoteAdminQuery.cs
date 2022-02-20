@@ -12,7 +12,7 @@ namespace ServerStatistics.Patches
             if (player != null)
 			{
 				Utils.HandleRACommand(player, q);
-				if (!q.Contains("PLAYER_LIST SILENT"))
+				if (q != "$0 1")
 				{
 					using (dWebHook dcWeb = new dWebHook())
 					{

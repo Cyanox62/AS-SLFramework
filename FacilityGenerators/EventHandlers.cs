@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs;
@@ -95,21 +96,34 @@ namespace FacilityGenerators
 
 		private IEnumerator<float> BlackoutCoroutine()
 		{
-			for (int i = 0; i < UnityEngine.Random.Range(Plugin.singleton.Config.MinBlackoutsPerRound, Plugin.singleton.Config.MaxBlackoutsPerRound); i++)
+			int totalBlackouts = UnityEngine.Random.Range(Plugin.singleton.Config.MinBlackoutsPerRound, Plugin.singleton.Config.MaxBlackoutsPerRound);
+			Log("Total blackouts planned for this round: " + totalBlackouts);
+			for (int i = 0; i < totalBlackouts; i++)
 			{
-				yield return Timing.WaitForSeconds(UnityEngine.Random.Range(Plugin.singleton.Config.MinTimeBetweenBlackouts, Plugin.singleton.Config.MaxTimeBetweenBlackouts));
+				float randomDelay = UnityEngine.Random.Range(Plugin.singleton.Config.MinTimeBetweenBlackouts, Plugin.singleton.Config.MaxTimeBetweenBlackouts);
+				Log("Next blackout will happen in: " + randomDelay + " seconds");
+				yield return Timing.WaitForSeconds(randomDelay);
 				if (EventHandlers.isWarheadDetonated) yield break;
 				else
 				{
 					Cassie.Message(Plugin.singleton.Config.CassieBlackoutStart, false);
+
+					Log("Beginning CASSIE start announcement");
+
 					yield return Timing.WaitForSeconds(Plugin.singleton.Config.CassieBlackoutStartOffset);
 
 					isBlackout = true;
+
+					Log("Blackout starting");
 
 					float dur = UnityEngine.Random.Range(Plugin.singleton.Config.MinBlackoutDuration, Plugin.singleton.Config.MaxBlackoutDuration);
 					foreach (FlickerableLightController controller in FlickerableLightController.Instances)
 					{
 						controller.ServerFlickerLights(0.1f);
+						//foreach (Player player in Player.List.Where(x => x.Team == Team.SCP))
+						//{
+						//	MirrorExtensions.SendFakeTargetRpc(player, controller.netIdentity, typeof(FlickerableLightController), "RpcSetProbeIntensity", new object[] { false });
+						//}
 					}
 					yield return Timing.WaitForSeconds(1f);
 					foreach (Room room in Map.Rooms)
@@ -125,11 +139,16 @@ namespace FacilityGenerators
 						}
 					}
 					isBlackout = true;
+					Log("Blackout will remain for: " + dur + " seconds");
 					yield return Timing.WaitForSeconds(dur);
 
 					Cassie.Message(Plugin.singleton.Config.CassieBlackoutEnd, false);
 
+					Log("Beginning CASSIE end announcement");
+
 					yield return Timing.WaitForSeconds(Plugin.singleton.Config.CassieBlackoutEndOffset);
+
+					Log("Ending blackout");
 
 					foreach (FlickerableLightController controller in FlickerableLightController.Instances)
 					{
@@ -149,6 +168,11 @@ namespace FacilityGenerators
 					isBlackout = false;
 				}
 			}
+		}
+
+		private void Log(string msg)
+		{
+			if (Plugin.singleton.Config.DebugMode) Exiled.API.Features.Log.Info(msg);
 		}
 	}
 }
