@@ -36,7 +36,7 @@ namespace ExtraUtilities
 		{
 			if (Plugin.singleton.Config.RequireHeldKeycard) return;
 
-			if (!ev.IsAllowed && ev.Player.Items.Any(item => item is Keycard keycard && (keycard.Base.Permissions & ev.Generator._requiredPermission) != 0))
+			if (!ev.IsAllowed && ev.Player.Items.Any(item => item is Keycard keycard && (keycard.Base.Permissions & ev.Generator.Base._requiredPermission) != 0))
 			{
 				ev.IsAllowed = true;
 			}

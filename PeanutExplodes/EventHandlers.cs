@@ -11,7 +11,9 @@ namespace PeanutExplodes
 			{
 				for (int i = 0; i < Plugin.singleton.Config.Magnitude; i++)
 				{
-					new ExplosiveGrenade(ItemType.GrenadeHE, ev.Target) { FuseTime = 0.15f }.SpawnActive(ev.Target.Position, ev.Target);
+					ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
+					grenade.FuseTime = 0.15f;
+					grenade.SpawnActive(ev.Target.Position, ev.Target);
 				}
 			}
 		}

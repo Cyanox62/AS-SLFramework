@@ -29,7 +29,7 @@ namespace FacilityGenerators
 
 			coroutine = Timing.RunCoroutine(BlackoutCoroutine());
 
-			List<Room> rooms = Map.Rooms.Where(x => x.Zone != ZoneType.Surface).ToList();
+			List<Room> rooms = Room.Get(x => x.Zone != ZoneType.Surface).ToList();
 			List<Room> discard = new List<Room>();
 			for (int i = 0; i < Plugin.singleton.Config.FlashlightsToSpawn; i++)
 			{
@@ -42,7 +42,7 @@ namespace FacilityGenerators
 				Room chosenRoom = rooms.First();
 				Vector3 pos = chosenRoom.Position;
 				pos.y += 2;
-				new Item(ItemType.Flashlight).Spawn(pos, Quaternion.Euler(UnityEngine.Random.Range(10f, 80f), UnityEngine.Random.Range(10f, 80f), UnityEngine.Random.Range(10f, 80f)));
+				Item.Create(ItemType.Flashlight).Spawn(pos, Quaternion.Euler(UnityEngine.Random.Range(10f, 80f), UnityEngine.Random.Range(10f, 80f), UnityEngine.Random.Range(10f, 80f)));
 				discard.Add(chosenRoom);
 				rooms.RemoveAt(0);
 			}
@@ -55,7 +55,7 @@ namespace FacilityGenerators
 
 		internal void OnSpawn(SpawningEventArgs ev)
 		{
-			if (ev.Player.Team == Team.MTF || ev.Player.Team == Team.RSC)
+			if (ev.Player.Role.Team == Team.MTF || ev.Player.Role.Team == Team.RSC)
 			{
 				ev.Player.AddItem(ItemType.Flashlight);
 			}
@@ -71,7 +71,7 @@ namespace FacilityGenerators
 			isWarheadStarted = true;
 			if (isBlackout)
 			{
-				foreach (Room room in Map.Rooms)
+				foreach (Room room in Room.List)
 				{
 					room.Color = Color.red;
 					room.LightIntensity = 0.3f;
@@ -84,7 +84,7 @@ namespace FacilityGenerators
 			isWarheadStarted = false;
 			if (isBlackout)
 			{
-				foreach (Room room in Map.Rooms)
+				foreach (Room room in Room.List)
 				{
 					room.Color = Color.black;
 					room.LightIntensity = 0.3f;
@@ -126,7 +126,7 @@ namespace FacilityGenerators
 						//}
 					}
 					yield return Timing.WaitForSeconds(1f);
-					foreach (Room room in Map.Rooms)
+					foreach (Room room in Room.List)
 					{
 						if (EventHandlers.isWarheadStarted)
 						{
@@ -155,15 +155,15 @@ namespace FacilityGenerators
 						controller.ServerFlickerLights(0.1f);
 					}
 					yield return Timing.WaitForSeconds(0.05f);
-					foreach (Room room in Map.Rooms)
+					foreach (Room room in Room.List)
 					{
 						room.Color = defaultColor;
 						room.LightIntensity = 1f;
 						room.FlickerableLightController.WarheadLightOverride = false;
 					}
-					foreach (TeslaGate tesla in Map.TeslaGates)
+					foreach (Exiled.API.Features.TeslaGate tesla in Exiled.API.Features.TeslaGate.List)
 					{
-						tesla.ServerSideCode();
+						tesla.Trigger();
 					}
 					isBlackout = false;
 				}

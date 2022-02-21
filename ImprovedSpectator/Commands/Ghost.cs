@@ -25,12 +25,12 @@ namespace ImprovedSpectator.Commands
 				Player player = Player.Get(p);
 				if (player != null)
 				{
-					if (player.Team == Team.RIP || EventHandlers.additionalRespawnPlayers.Contains(player) || EventHandlers.ghostPlayers.Contains(player))
+					if (player.Role.Team == Team.RIP || EventHandlers.additionalRespawnPlayers.Contains(player) || EventHandlers.ghostPlayers.Contains(player))
 					{
 						if (!EventHandlers.ghostPlayers.Contains(player)) EventHandlers.AddGhostPlayer(player);
 						if (!EventHandlers.additionalRespawnPlayers.Contains(player)) EventHandlers.additionalRespawnPlayers.Add(player);
 						player.SetRole(RoleType.Tutorial);
-						List<Room> rooms = Map.Rooms.Where(x => x.Type != Exiled.API.Enums.RoomType.Hcz939).ToList();
+						List<Room> rooms = Room.Get(x => x.Type != Exiled.API.Enums.RoomType.Hcz939).ToList();
 						Vector3 pos = rooms[UnityEngine.Random.Range(0, rooms.Count)].Position;
 						pos.y += 2;
 						Timing.CallDelayed(0.5f, () => player.Position = pos);

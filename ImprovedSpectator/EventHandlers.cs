@@ -149,7 +149,7 @@ namespace ImprovedSpectator
 				}
 				else if (Respawn.NextKnownTeam != SpawnableTeamType.None) s += $"\n{Plugin.singleton.Translation.RespawnTeam} {Plugin.singleton.Translation.RespawnTeam.Replace("{team}", nextTeam)}";
 
-				foreach (Player player in Player.List.Where(x => x.Team == Team.RIP || additionalRespawnPlayers.Contains(x)))
+				foreach (Player player in Player.List.Where(x => x.Role.Team == Team.RIP || additionalRespawnPlayers.Contains(x)))
 				{
 					player.ShowHint(s, 2f);
 				}
