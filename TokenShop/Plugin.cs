@@ -17,12 +17,6 @@ namespace TokenShop
 
         internal static string FolderFilePath = Path.Combine(Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED"), "Plugins"), "TokenShop");
 
-        private List<string> ValidPerks = new List<string>()
-        {
-            "RoundItem",
-            "CustomDeathMessage"
-        };
-
         private EventHandlers ev;
 
         public override void OnEnabled()
@@ -34,7 +28,6 @@ namespace TokenShop
             singleton = this;
 
             // Parse shop
-            //var perks = AppDomain.CurrentDomain.GetAssemblies().SelectMany(t => t.GetTypes()).Where(t => t.IsClass && t.Namespace == nameof(TokenShop.Perks)).ToList();
             var perks = Assembly.GetExecutingAssembly().GetTypes().Where(type => type.Namespace == "TokenShop.Perks");
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < Config.ShopItems.Count; i++)

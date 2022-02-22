@@ -11,21 +11,8 @@
 			this.permanent = permanent;
 		}
 
-		public bool IsPermanent
-		{
-			get
-			{
-				return permanent;
-			}
-		}
-
-		public object Param
-		{
-			get
-			{
-				return param;
-			}
-		}
+		public bool IsPermanent => permanent;
+		public object Param => param;
 
 		public override string PerkName => "Round Item";
 	}

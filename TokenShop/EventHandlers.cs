@@ -77,9 +77,8 @@ namespace TokenShop
 					{
 						foreach (ShopItem i in playerStats[player.UserId].perks)
 						{
-							if (i.perk is ParamaterizedItem)
+							if (i.perk is ParamaterizedItem perk)
 							{
-								ParamaterizedItem perk = (ParamaterizedItem)i.perk;
 								if (Enum.TryParse(item.Param, out ItemType item))
 								{
 									// Param is spawn item
@@ -94,9 +93,8 @@ namespace TokenShop
 								}
 								Log($"Granted user {player.UserId} param item {perk.Param}");
 							}
-							else if (i.perk is CustomDeathReason)
+							else if (i.perk is CustomDeathReason perk)
 							{
-								CustomDeathReason item = (CustomDeathReason)i.perk;
 								// custom death reason
 								Log($"Granted user {player.UserId} custom death reason");
 							}
