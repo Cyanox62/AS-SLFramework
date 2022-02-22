@@ -22,25 +22,64 @@ namespace TokenShop.Commands
 
 		public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
 		{
-			if (arguments.Count == 0)
+			if (sender is PlayerCommandSender p)
 			{
-				response = ShopString;
-				return true;
-			}
-			else if (arguments.Count == 2)
-			{
-				string arg = arguments.ElementAt(0).ToLower();
-				if (arg == "buy" || arg == "purchase")
+				Player player = player.Get(p);
+				if (arguments.Count == 0)
 				{
-					if (int.TryParse(arguments.ElementAt(1), out int id))
+					response = ShopString;
+					return true;
+				}
+				else if (arguments.Count == 2)
+				{
+					string arg = arguments.ElementAt(0).ToLower();
+					if (arg == "buy" || arg == "purchase")
 					{
-						// purchase id
-						response = "not yet lol";
-						return true;
+						if (int.TryParse(arguments.ElementAt(1), out int id))
+						{
+							// try purchase id
+							if (EventHandlers.playerStats.ContainsKey(player.UserId))
+							{
+								// check tokens
+								if (EventHandlers.playerStats[player.UserId].tokens >= ShopItems[id].price)
+								{
+									// purchase
+									if (!EventHandlers.playerStats[player.UserId].perks.Contains(ShopItems[id]))
+									{
+										EventHandlers.playerStats[player.UserId].perks.Add(ShopItems[id]);
+										EventHandlers.playerStats[player.UserId].tokens -= ShopItems[id].price;
+										response = $"Successfully purchased shop item {id}!";
+										return true;
+									}
+									else
+									{
+										response = "You already have that item!";
+										return false;
+									}
+								}
+								else
+								{
+									response = "You do not have enough coins for this item!";
+									return false;
+								}
+							}
+							else
+							{
+								response = "Error: Failed to find player stats";
+								return true;
+							}
+								response = "not yet lol";
+							return true;
+						}
+						else
+						{
+							response = "Invalid item id!";
+							return false;
+						}
 					}
 					else
 					{
-						response = "Invalid item id!";
+						response = "Usage: SHOP [BUY] [ITEM ID]";
 						return false;
 					}
 				}
@@ -49,11 +88,6 @@ namespace TokenShop.Commands
 					response = "Usage: SHOP [BUY] [ITEM ID]";
 					return false;
 				}
-			}
-			else
-			{
-				response = "Usage: SHOP [BUY] [ITEM ID]";
-				return false;
 			}
 		}
 	}

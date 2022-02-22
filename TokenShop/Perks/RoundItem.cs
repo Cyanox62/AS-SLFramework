@@ -11,6 +11,22 @@
 			this.permanent = permanent;
 		}
 
+		public bool IsPermanent
+		{
+			get
+			{
+				return permanent;
+			}
+		}
+
+		public ItemType Item
+		{
+			get
+			{
+				return item;
+			}
+		}
+
 		public override string PerkName => "Round Item";
 
 		public override void GrantPerk() => Player.AddItem(item);

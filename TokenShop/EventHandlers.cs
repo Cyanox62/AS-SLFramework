@@ -7,13 +7,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Exiled.API.Extensions;
+using TokenShop.Commands;
+using TokenShop.Perks;
 
 namespace TokenShop
 {
 	class EventHandlers
 	{
-		private Dictionary<string, CoroutineHandle> playerCoroutines = new Dictionary<string, CoroutineHandle>();
-		private Dictionary<string, TokenStats> playerStats = new Dictionary<string, TokenStats>();
+		internal static Dictionary<string, CoroutineHandle> playerCoroutines = new Dictionary<string, CoroutineHandle>();
+		internal static Dictionary<string, TokenStats> playerStats = new Dictionary<string, TokenStats>();
 
 		private Dictionary<Player, bool> survivingPlayers = new Dictionary<Player, bool>();
 
@@ -61,6 +63,41 @@ namespace TokenShop
 				survivingPlayers[ev.Player] = false;
 				Log($"Player {ev.Player.UserId} was removed as a surviving player.");
 			}
+		}
+
+		internal void OnRoundStart()
+		{
+			// grant perks
+			Timing.CallDelayed(3f, () => 
+			{
+				Log("Attempting to grant perks..");
+				foreach (Player player in Player.List)
+				{
+					if (playerStats.ContainsKey(player.UserId))
+					{
+						foreach (ShopItem i in playerStats[player.UserId].perks)
+						{
+							if (i.perk is RoundItem)
+							{
+								RoundItem item = (RoundItem)i.perk;
+								player.AddItem(item.Item);
+								if (!item.IsPermanent)
+								{
+									playerStats[player.UserId].perks.Remove(i);
+								}
+								Log($"Granted user {player.UserId} round item {item.Item}");
+							}
+							else if (i.perk is CustomDeathReason)
+							{
+								CustomDeathReason item = (CustomDeathReason)i.perk;
+								// custom death reason
+								Log($"Granted user {player.UserId} custom death reason");
+							}
+						}
+					}
+				}
+				Log("Finished granting perks!");
+			});
 		}
 
 		internal void OnRoundEnd(RoundEndedEventArgs ev)

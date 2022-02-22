@@ -102,6 +102,7 @@ namespace TokenShop
             Exiled.Events.Handlers.Player.PickingUpItem += ev.OnPickingUpItem;
             Exiled.Events.Handlers.Player.ChangingRole += ev.OnSetRole;
 
+            Exiled.Events.Handlers.Server.RoundStarted += ev.OnRoundStart;
             Exiled.Events.Handlers.Server.RoundEnded += ev.OnRoundEnd;
         }
 
@@ -113,6 +114,7 @@ namespace TokenShop
             Exiled.Events.Handlers.Player.PickingUpItem -= ev.OnPickingUpItem;
             Exiled.Events.Handlers.Player.ChangingRole -= ev.OnSetRole;
 
+            Exiled.Events.Handlers.Server.RoundStarted -= ev.OnRoundStart;
             Exiled.Events.Handlers.Server.RoundEnded -= ev.OnRoundEnd;
 
             ev = null;
