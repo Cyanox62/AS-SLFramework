@@ -27,6 +27,9 @@ namespace TokenShop
 
             singleton = this;
 
+            Shop.ShopString.Append("\nASTRIOS STUDIOS SCP:SL SERVER SHOP\n");
+            Shop.ShopString.Append("To purchase an item, type .shop buy (item #)");
+
             // Parse shop
             var perks = Assembly.GetExecutingAssembly().GetTypes().Where(type => type.Namespace == "TokenShop.Perks");
             for (int i = 0; i < Config.ShopItems.Count; i++)

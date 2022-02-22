@@ -38,7 +38,7 @@ namespace TokenShop.Commands
 						{
 							if (EventHandlers.playerStats[player.UserId].perks.ContainsKey(i))
 							{
-								rsp[i + 1] += " [PURCHASED]";
+								rsp[i + 3] += " [PURCHASED]";
 								isModified = true;
 							}
 						}
@@ -54,6 +54,7 @@ namespace TokenShop.Commands
 						}
 					}
 
+					//EventHandlers.Log($"<color=yellow>{r}</color>");
 					response = r;
 					return true;
 				}
