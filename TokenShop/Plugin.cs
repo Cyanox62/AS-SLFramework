@@ -50,7 +50,7 @@ namespace TokenShop
                             Type customPerk = perks.FirstOrDefault(x => x.Name == entry[0]);
                             if (Enum.TryParse(entry[0], out ItemType type))
                             {
-                                Perk perk = new RoundItem(type, isPermanent);
+                                Perk perk = new ParamaterizedItem(type, isPermanent);
                                 AddShopItem(i, $"{(isPermanent ? "Permanent" : string.Empty)} {entry[0]}", isPermanent, perk, tokens);
                             }
                             else if (customPerk != null)

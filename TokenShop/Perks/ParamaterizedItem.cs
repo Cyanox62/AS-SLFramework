@@ -1,13 +1,13 @@
 ﻿namespace TokenShop.Perks
 {
-	class RoundItem : Perk
+	class ParamaterizedItem : Perk
 	{
-		private ItemType item;
+		private object param;
 		private bool permanent;
 
-		public RoundItem(ItemType item, bool permanent)
+		public ParamaterizedItem(object param, bool permanent)
 		{
-			this.item = item;
+			this.param = param;
 			this.permanent = permanent;
 		}
 
@@ -19,16 +19,14 @@
 			}
 		}
 
-		public ItemType Item
+		public object Param
 		{
 			get
 			{
-				return item;
+				return param;
 			}
 		}
 
 		public override string PerkName => "Round Item";
-
-		public override void GrantPerk() => Player.AddItem(item);
 	}
 }

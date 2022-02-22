@@ -7,7 +7,5 @@ namespace TokenShop.Perks
 		public Player Player { get; }
 
 		public abstract string PerkName { get; }
-
-		public abstract void GrantPerk();
 	}
 }

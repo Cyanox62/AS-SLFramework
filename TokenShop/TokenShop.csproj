@@ -96,7 +96,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Perks\CustomDeathReason.cs" />
-    <Compile Include="Perks\RoundItem.cs" />
+    <Compile Include="Perks\ParamaterizedItem.cs" />
     <Compile Include="Perks\Perk.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
