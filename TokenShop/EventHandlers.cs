@@ -77,9 +77,9 @@ namespace TokenShop
 					{
 						foreach (ShopItem i in playerStats[player.UserId].perks)
 						{
-							if (i.perk is ParamaterizedItem perk)
+							if (i.perk is ParamaterizedItem pPerk)
 							{
-								if (Enum.TryParse(item.Param, out ItemType item))
+								if (Enum.TryParse(pPerk.Param.ToString(), out ItemType item))
 								{
 									// Param is spawn item
 									player.AddItem(item);
@@ -87,13 +87,13 @@ namespace TokenShop
 
 								// Add support for more types of params
 
-								if (!perk.IsPermanent)
+								if (!pPerk.IsPermanent)
 								{
 									playerStats[player.UserId].perks.Remove(i);
 								}
-								Log($"Granted user {player.UserId} param item {perk.Param}");
+								Log($"Granted user {player.UserId} param item {pPerk.Param}");
 							}
-							else if (i.perk is CustomDeathReason perk)
+							else if (i.perk is CustomDeathReason cPerk)
 							{
 								// custom death reason
 								Log($"Granted user {player.UserId} custom death reason");

@@ -1,4 +1,6 @@
 ﻿using CommandSystem;
+using Exiled.API.Features;
+using RemoteAdmin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +26,7 @@ namespace TokenShop.Commands
 		{
 			if (sender is PlayerCommandSender p)
 			{
-				Player player = player.Get(p);
+				Player player = Player.Get(p);
 				if (arguments.Count == 0)
 				{
 					response = ShopString;
@@ -68,8 +70,6 @@ namespace TokenShop.Commands
 								response = "Error: Failed to find player stats";
 								return true;
 							}
-								response = "not yet lol";
-							return true;
 						}
 						else
 						{
@@ -88,6 +88,11 @@ namespace TokenShop.Commands
 					response = "Usage: SHOP [BUY] [ITEM ID]";
 					return false;
 				}
+			}
+			else
+			{
+				response = "Only players may use this command!";
+				return false;
 			}
 		}
 	}
