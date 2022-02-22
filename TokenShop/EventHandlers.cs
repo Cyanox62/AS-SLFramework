@@ -28,6 +28,17 @@ namespace TokenShop
 				TokenStats data = JsonConvert.DeserializeObject<TokenStats>(File.ReadAllText(path));
 				data.path = path;
 				playerStats.Add(ev.Player.UserId, data);
+
+				// Validate perks
+				foreach (ShopItem perk in playerStats[ev.Player.UserId].perks)
+				{
+					if (!Shop.ShopItems.Values.Contains(perk))
+					{
+						playerStats[ev.Player.UserId].perks.Remove(perk);
+						Log($"Detected invalid perk \"{perk}\" for {ev.Player.UserId}, removing..");
+					}
+				}
+
 				playerCoroutines.Add(ev.Player.UserId, Timing.RunCoroutine(PlaytimeCoroutine(ev.Player)));
 				Log($"Loaded stats for {ev.Player.UserId}");
 			} 
