@@ -28,7 +28,7 @@ namespace TokenShop
             singleton = this;
 
             // Parse shop
-            var perks = Assembly.GetExecutingAssembly().GetTypes().Where(type => type.Namespace == "TokenShop.Perks");
+            var perks = Assembly.GetExecutingAssembly().GetTypes().Where(type => type.Namespace == nameof(Perks));
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < Config.ShopItems.Count; i++)
             {
@@ -53,7 +53,7 @@ namespace TokenShop
                             }
                             else
 							{
-                                Log.Error($"Failed to parse ItemType \"{entry[0]}\", shop item will not be loaded.");
+                                Log.Error($"Failed to parse perk \"{entry[0]}\", shop item will not be loaded.");
                             }
 						}
                         else
