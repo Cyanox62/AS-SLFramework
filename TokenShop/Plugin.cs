@@ -103,7 +103,7 @@ namespace TokenShop
                 perk = perk,
                 price = tokens
             });
-            string name = $"{(isPermanent ? "Permanent" : string.Empty)} {perkName}";
+            string name = $"{(isPermanent ? "Permanent " : string.Empty)}{perkName}";
             Shop.ShopString.Append($"#{id + 1} | {name} | {tokens} tokens");
             EventHandlers.Log($"Loaded shop item: {name}");
         }
