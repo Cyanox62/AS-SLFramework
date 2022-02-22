@@ -51,28 +51,12 @@ namespace TokenShop
                             if (Enum.TryParse(entry[0], out ItemType type))
                             {
                                 Perk perk = new RoundItem(type, isPermanent);
-
-                                // Rewrite into method
-                                Shop.ShopItems.Add(i, new ShopItem()
-                                {
-                                    perk = perk,
-                                    price = tokens
-                                });
-                                sb.Append($"#{i + 1} | {(isPermanent ? "Permanent" : string.Empty)} {entry[0]} | {tokens} tokens");
-                                if (i != Config.ShopItems.Count - 1) sb.Append(Environment.NewLine);
+                                AddShopItem(i, $"{(isPermanent ? "Permanent" : string.Empty)} {entry[0]}", isPermanent, perk, tokens);
                             }
                             else if (customPerk != null)
                             {
                                 Perk perk = (Perk)Activator.CreateInstance(customPerk);
-
-                                // Rewrite into method
-                                Shop.ShopItems.Add(i, new ShopItem()
-                                {
-                                    perk = perk,
-                                    price = tokens
-                                });
-                                sb.Append($"#{i + 1} | {(isPermanent ? "Permanent" : string.Empty)} {entry[0]} | {tokens} tokens");
-                                if (i != Config.ShopItems.Count - 1) sb.Append(Environment.NewLine);
+                                AddShopItem(i, entry[0], isPermanent, perk, tokens);
                             }
                             else
 							{
@@ -118,6 +102,17 @@ namespace TokenShop
             Exiled.Events.Handlers.Server.RoundEnded -= ev.OnRoundEnd;
 
             ev = null;
+        }
+
+        private void AddShopItem(int id, string perkName, bool isPermanent, Perk perk, int tokens)
+		{
+            if (Shop.ShopItems.Count != 0) Shop.ShopString += Environment.NewLine;
+            Shop.ShopItems.Add(id, new ShopItem()
+            {
+                perk = perk,
+                price = tokens
+            });
+            Shop.ShopString += $"#{id + 1} | {(isPermanent ? "Permanent" : string.Empty)} {perkName} | {tokens} tokens";
         }
 
         public override string Author => "Cyanox";
