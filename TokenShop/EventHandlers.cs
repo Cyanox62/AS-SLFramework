@@ -30,9 +30,9 @@ namespace TokenShop
 				playerStats.Add(ev.Player.UserId, data);
 
 				// Validate perks
-				foreach (ShopItem perk in playerStats[ev.Player.UserId].perks)
+				foreach (int perk in playerStats[ev.Player.UserId].perks)
 				{
-					if (!Shop.ShopItems.Values.Contains(perk))
+					if (Shop.ShopItems.FirstOrDefault(x => perk == x.id) == null)
 					{
 						playerStats[ev.Player.UserId].perks.Remove(perk);
 						Log($"Detected invalid perk \"{perk}\" for {ev.Player.UserId}, removing..");
@@ -86,9 +86,10 @@ namespace TokenShop
 				{
 					if (playerStats.ContainsKey(player.UserId))
 					{
-						foreach (ShopItem i in playerStats[player.UserId].perks)
+						foreach (int i in playerStats[player.UserId].perks)
 						{
-							if (i.perk is ParamaterizedItem pPerk)
+							ShopItem shopItem = Shop.ShopItems[i];
+							if (shopItem.perk is ParamaterizedItem pPerk)
 							{
 								if (Enum.TryParse(pPerk.Param.ToString(), out ItemType item))
 								{
@@ -104,7 +105,7 @@ namespace TokenShop
 								}
 								Log($"Granted user {player.UserId} param item {pPerk.Param}");
 							}
-							else if (i.perk is CustomDeathReason cPerk)
+							else if (shopItem.perk is CustomDeathReason cPerk)
 							{
 								// custom death reason
 								Log($"Granted user {player.UserId} custom death reason");

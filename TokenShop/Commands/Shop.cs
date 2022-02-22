@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using TokenShop.Perks;
 
 namespace TokenShop.Commands
@@ -14,7 +13,7 @@ namespace TokenShop.Commands
 	class Shop : ICommand
 	{
 		public static StringBuilder ShopString { get; set; } = new StringBuilder();
-		public static Dictionary<int, ShopItem> ShopItems { get; set; } = new Dictionary<int, ShopItem>();
+		public static List<ShopItem> ShopItems { get; set; } = new List<ShopItem>();
 
 		public string[] Aliases { get; set; } = Array.Empty<string>();
 
@@ -29,8 +28,33 @@ namespace TokenShop.Commands
 				Player player = Player.Get(p);
 				if (arguments.Count == 0)
 				{
-					// todo: add a notice if you already own an item
-					response = ShopString.ToString();
+					string r = ShopString.ToString();
+					string[] rsp = r.Split('\n');
+
+					if (EventHandlers.playerStats.ContainsKey(player.UserId))
+					{
+						bool isModified = false;
+						for (int i = 0; i < rsp.Length; i++)
+						{
+							if (EventHandlers.playerStats[player.UserId].perks.Contains(i))
+							{
+								rsp[i + 1] += " [PURCHASED]";
+								isModified = true;
+							}
+						}
+
+						if (isModified)
+						{
+							r = string.Empty;
+							for (int i = 0; i < rsp.Length; i++)
+							{
+								r += rsp[i];
+								if (i != rsp.Length - 1) r += "\n";
+							}
+						}
+					}
+
+					response = r;
 					return true;
 				}
 				else if (arguments.Count == 2)
@@ -45,25 +69,34 @@ namespace TokenShop.Commands
 							if (EventHandlers.playerStats.ContainsKey(player.UserId))
 							{
 								// check tokens
-								if (EventHandlers.playerStats[player.UserId].tokens >= ShopItems[id].price)
+								ShopItem shopItem = ShopItems.FirstOrDefault(x => x.id == id);
+								if (shopItem != null)
 								{
-									// purchase
-									if (!EventHandlers.playerStats[player.UserId].perks.Contains(ShopItems[id]))
+									if (EventHandlers.playerStats[player.UserId].tokens >= shopItem.price)
 									{
-										EventHandlers.playerStats[player.UserId].perks.Add(ShopItems[id]);
-										EventHandlers.playerStats[player.UserId].tokens -= ShopItems[id].price;
-										response = $"Successfully purchased shop item {id + 1} for {ShopItems[id].price} tokens!";
-										return true;
+										// purchase
+										if (!EventHandlers.playerStats[player.UserId].perks.Contains(shopItem.id))
+										{
+											EventHandlers.playerStats[player.UserId].perks.Add(shopItem.id);
+											EventHandlers.playerStats[player.UserId].tokens -= shopItem.price;
+											response = $"Successfully purchased shop item {id + 1} for {shopItem.price} tokens!";
+											return true;
+										}
+										else
+										{
+											response = "You already have that item!";
+											return false;
+										}
 									}
 									else
 									{
-										response = "You already have that item!";
+										response = "You do not have enough coins for this item!";
 										return false;
 									}
 								}
 								else
 								{
-									response = "You do not have enough coins for this item!";
+									response = "Invalid shop item!";
 									return false;
 								}
 							}
@@ -101,6 +134,7 @@ namespace TokenShop.Commands
 	
 	public class ShopItem
 	{
+		public int id;
 		public Perk perk;
 		public int price;
 	}

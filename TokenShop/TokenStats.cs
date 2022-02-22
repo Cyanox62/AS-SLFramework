@@ -7,7 +7,7 @@ namespace TokenShop
 	{
 		public int playtime = 0;
 		public int tokens = 0;
-		public List<ShopItem> perks = new List<ShopItem>();
+		public List<int> perks = new List<int>();
 
 		internal string path;
 	}

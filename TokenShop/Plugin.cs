@@ -32,37 +32,44 @@ namespace TokenShop
             for (int i = 0; i < Config.ShopItems.Count; i++)
             {
                 var entry = Config.ShopItems.ElementAt(i);
-                if (entry.Count == 3)
+                if (entry.Count == 4)
 				{
-                    if (entry[1] == "P" || entry[1] == "N")
+                    if (entry[2] == "P" || entry[2] == "N")
                     {
-                        bool isPermanent = entry[1] == "P";
-                        if (int.TryParse(entry[2], out int tokens)) 
+                        bool isPermanent = entry[2] == "P";
+                        if (int.TryParse(entry[3], out int tokens)) 
                         {
-                            Type customPerk = perks.FirstOrDefault(x => x.Name == entry[0]);
-                            if (Enum.TryParse(entry[0], out ItemType type))
-                            {
-                                Perk perk = new ParamaterizedItem(type, isPermanent);
-                                AddShopItem(i, $"{(isPermanent ? "Permanent" : string.Empty)} {entry[0]}", isPermanent, perk, tokens);
-                            }
-                            else if (customPerk != null)
-                            {
-                                Perk perk = (Perk)Activator.CreateInstance(customPerk);
-                                AddShopItem(i, entry[0], isPermanent, perk, tokens);
+                            if (int.TryParse(entry[0], out int id))
+							{
+                                Type customPerk = perks.FirstOrDefault(x => x.Name == entry[1]);
+                                if (Enum.TryParse(entry[1], out ItemType type))
+                                {
+                                    Perk perk = new ParamaterizedItem(type, isPermanent);
+                                    AddShopItem(id - 1, $"{(isPermanent ? "Permanent " : string.Empty)}{entry[1]}", isPermanent, perk, tokens);
+                                }
+                                else if (customPerk != null)
+                                {
+                                    Perk perk = (Perk)Activator.CreateInstance(customPerk);
+                                    AddShopItem(id - 1, entry[1], isPermanent, perk, tokens);
+                                }
+                                else
+                                {
+                                    Log.Error($"Failed to parse perk \"{entry[1]}\", shop item will not be loaded.");
+                                }
                             }
                             else
 							{
-                                Log.Error($"Failed to parse perk \"{entry[0]}\", shop item will not be loaded.");
+                                Log.Error($"Failed to parse id \"{entry[0]}\", shop item will not be loaded.");
                             }
 						}
                         else
                         {
-                            Log.Error($"Failed to parse token value \"{entry[2]}\", shop item will not be loaded.");
+                            Log.Error($"Failed to parse token value \"{entry[3]}\", shop item will not be loaded.");
                         }
                     }
                     else
                     {
-                        Log.Error($"Failed to parse persistence \"{entry[1]}\", shop item will not be loaded.");
+                        Log.Error($"Failed to parse persistence \"{entry[2]}\", shop item will not be loaded.");
                     }
                 }
                 else
@@ -98,14 +105,14 @@ namespace TokenShop
         private void AddShopItem(int id, string perkName, bool isPermanent, Perk perk, int tokens)
 		{
             Shop.ShopString.Append(Environment.NewLine);
-            Shop.ShopItems.Add(id, new ShopItem()
+            Shop.ShopItems.Add(new ShopItem()
             {
+                id = id,
                 perk = perk,
                 price = tokens
             });
-            string name = $"{(isPermanent ? "Permanent " : string.Empty)}{perkName}";
-            Shop.ShopString.Append($"#{id + 1} | {name} | {tokens} tokens");
-            EventHandlers.Log($"Loaded shop item: {name}");
+            Shop.ShopString.Append($"#{id + 1} | {perkName} | {tokens} tokens");
+            EventHandlers.Log($"Loaded shop item: {perkName}");
         }
 
         public override string Author => "Cyanox";
