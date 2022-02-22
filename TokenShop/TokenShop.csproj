@@ -92,6 +92,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Data.cs" />
     <Compile Include="Commands\Shop.cs" />
     <Compile Include="Commands\Token.cs" />
     <Compile Include="Config.cs" />
