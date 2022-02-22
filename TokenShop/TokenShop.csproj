@@ -104,6 +104,21 @@
     <Compile Include="Translation.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Assembly-CSharp" HintPath="$(ASFRAMEWORK_REFERENCES)\Assembly-CSharp_publicized.dll" Private="false" />
+    <Reference Include="Assembly-CSharp-firstpass" HintPath="$(ASFRAMEWORK_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="false" />
+    <Reference Include="CommandSystem.Core" HintPath="$(ASFRAMEWORK_REFERENCES)\CommandSystem.Core.dll" Private="false" />
+    <Reference Include="Mirror" HintPath="$(ASFRAMEWORK_REFERENCES)\Mirror.dll" Private="false" />
+    <Reference Include="NorthwoodLib" HintPath="$(ASFRAMEWORK_REFERENCES)\NorthwoodLib.dll" Private="false" />
+    <Reference Include="UnityEngine" HintPath="$(ASFRAMEWORK_REFERENCES)\UnityEngine.dll" Private="false" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="$(ASFRAMEWORK_REFERENCES)\UnityEngine.CoreModule.dll" Private="false" />
+    <Reference Include="UnityEngine.PhysicsModule" HintPath="$(ASFRAMEWORK_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EXILED">
+      <Version>5.0.0-beta.2</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
