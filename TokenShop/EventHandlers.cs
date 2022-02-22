@@ -154,7 +154,7 @@ namespace TokenShop
 
 		// Methods
 
-		private void GiveTokens(Player player, int tokens, string reason)
+		internal static void GiveTokens(Player player, int tokens, string reason, bool alert = true)
 		{
 			if (playerStats.ContainsKey(player.UserId))
 			{
@@ -163,14 +163,14 @@ namespace TokenShop
 					tokens = (int)(tokens * Plugin.singleton.Config.RoleTokenMultipliers[player.GroupName]);
 				}
 				playerStats[player.UserId].tokens += tokens;
-				player.ShowHint(Plugin.singleton.Translation.TokensEarned
+				if (alert) player.ShowHint(Plugin.singleton.Translation.TokensEarned
 					.Replace("{tokens}", tokens.ToString())
 					.Replace("{reason}", reason), Plugin.singleton.Config.TokenHintTime);
 				Log($"Granted {player.UserId} {tokens} tokens for reason: {reason}");
 			}
 		}
 
-		private void Log(string msg)
+		internal static void Log(string msg)
 		{
 			if (Plugin.singleton.Config.IsDebug) Exiled.API.Features.Log.Info(msg);
 		}

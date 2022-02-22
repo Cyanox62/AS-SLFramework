@@ -29,7 +29,6 @@ namespace TokenShop
 
             // Parse shop
             var perks = Assembly.GetExecutingAssembly().GetTypes().Where(type => type.Namespace == "TokenShop.Perks");
-            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < Config.ShopItems.Count; i++)
             {
                 var entry = Config.ShopItems.ElementAt(i);
@@ -71,7 +70,6 @@ namespace TokenShop
                     Log.Error($"Shop item \"{entry}\" is missing arguments, shop item will not be loaded.");
                 }
             }
-            Shop.ShopString = sb.ToString();
 
             ev = new EventHandlers();
 
@@ -99,13 +97,15 @@ namespace TokenShop
 
         private void AddShopItem(int id, string perkName, bool isPermanent, Perk perk, int tokens)
 		{
-            if (Shop.ShopItems.Count != 0) Shop.ShopString += Environment.NewLine;
+            if (Shop.ShopItems.Count != 0) Shop.ShopString.Append(Environment.NewLine);
             Shop.ShopItems.Add(id, new ShopItem()
             {
                 perk = perk,
                 price = tokens
             });
-            Shop.ShopString += $"#{id + 1} | {(isPermanent ? "Permanent" : string.Empty)} {perkName} | {tokens} tokens";
+            string name = $"{(isPermanent ? "Permanent" : string.Empty)} {perkName}";
+            Shop.ShopString.Append($"#{id + 1} | {name} | {tokens} tokens");
+            EventHandlers.Log($"Loaded shop item: {name}");
         }
 
         public override string Author => "Cyanox";

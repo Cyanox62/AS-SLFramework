@@ -13,7 +13,7 @@ namespace TokenShop.Commands
 	[CommandHandler(typeof(ClientCommandHandler))]
 	class Shop : ICommand
 	{
-		public static string ShopString { get; set; }
+		public static StringBuilder ShopString { get; set; } = new StringBuilder();
 		public static Dictionary<int, ShopItem> ShopItems { get; set; } = new Dictionary<int, ShopItem>();
 
 		public string[] Aliases { get; set; } = Array.Empty<string>();
@@ -29,7 +29,7 @@ namespace TokenShop.Commands
 				Player player = Player.Get(p);
 				if (arguments.Count == 0)
 				{
-					response = ShopString;
+					response = ShopString.ToString();
 					return true;
 				}
 				else if (arguments.Count == 2)
@@ -39,6 +39,7 @@ namespace TokenShop.Commands
 					{
 						if (int.TryParse(arguments.ElementAt(1), out int id))
 						{
+							id -= 1;
 							// try purchase id
 							if (EventHandlers.playerStats.ContainsKey(player.UserId))
 							{
@@ -50,7 +51,7 @@ namespace TokenShop.Commands
 									{
 										EventHandlers.playerStats[player.UserId].perks.Add(ShopItems[id]);
 										EventHandlers.playerStats[player.UserId].tokens -= ShopItems[id].price;
-										response = $"Successfully purchased shop item {id}!";
+										response = $"Successfully purchased shop item {id + 1} for {ShopItems[id].price} tokens!";
 										return true;
 									}
 									else
