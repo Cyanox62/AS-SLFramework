@@ -36,7 +36,7 @@ namespace TokenShop.Commands
 						bool isModified = false;
 						for (int i = 0; i < rsp.Length; i++)
 						{
-							if (EventHandlers.playerStats[player.UserId].perks.Contains(i))
+							if (EventHandlers.playerStats[player.UserId].perks.ContainsKey(i))
 							{
 								rsp[i + 1] += " [PURCHASED]";
 								isModified = true;
@@ -75,9 +75,9 @@ namespace TokenShop.Commands
 									if (EventHandlers.playerStats[player.UserId].tokens >= shopItem.price)
 									{
 										// purchase
-										if (!EventHandlers.playerStats[player.UserId].perks.Contains(shopItem.id))
+										if (!EventHandlers.playerStats[player.UserId].perks.ContainsKey(shopItem.id))
 										{
-											EventHandlers.playerStats[player.UserId].perks.Add(shopItem.id);
+											EventHandlers.playerStats[player.UserId].perks.Add(shopItem.id, shopItem.perk);
 											EventHandlers.playerStats[player.UserId].tokens -= shopItem.price;
 											response = $"Successfully purchased shop item {id + 1} for {shopItem.price} tokens!";
 											return true;

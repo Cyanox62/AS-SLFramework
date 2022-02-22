@@ -14,7 +14,7 @@ namespace TokenShop
 		[Description("Determines the shop items.")]
 		public List<List<string>> ShopItems { get; set; } = new List<List<string>>()
 		{
-			new List<string>() { "SCP-018", "P", "50" }
+			new List<string>() { "1", "SCP-018", "P", "50" }
 		};
 
 		[Description("Determines the token multipliers for specified roles.")]

@@ -30,12 +30,14 @@ namespace TokenShop
 				playerStats.Add(ev.Player.UserId, data);
 
 				// Validate perks
-				foreach (int perk in playerStats[ev.Player.UserId].perks)
+				for (int i = playerStats[ev.Player.UserId].perks.Count - 1; i >= 0; i--)
 				{
-					if (Shop.ShopItems.FirstOrDefault(x => perk == x.id) == null)
+					var entry = playerStats[ev.Player.UserId].perks[i];
+					ShopItem item = Shop.ShopItems.FirstOrDefault(x => i == x.id);
+					if (item == null || item.perk != entry)
 					{
-						playerStats[ev.Player.UserId].perks.Remove(perk);
-						Log($"Detected invalid perk \"{perk}\" for {ev.Player.UserId}, removing..");
+						playerStats[ev.Player.UserId].perks.Remove(i);
+						Log($"Detected invalid perk at id \"{i}\" for {ev.Player.UserId}, removing..");
 					}
 				}
 
@@ -86,7 +88,7 @@ namespace TokenShop
 				{
 					if (playerStats.ContainsKey(player.UserId))
 					{
-						foreach (int i in playerStats[player.UserId].perks)
+						foreach (int i in playerStats[player.UserId].perks.Keys)
 						{
 							ShopItem shopItem = Shop.ShopItems[i];
 							if (shopItem.perk is ParamaterizedItem pPerk)

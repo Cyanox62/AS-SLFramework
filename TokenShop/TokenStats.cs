@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TokenShop.Commands;
+using TokenShop.Perks;
 
 namespace TokenShop
 {
@@ -7,7 +8,7 @@ namespace TokenShop
 	{
 		public int playtime = 0;
 		public int tokens = 0;
-		public List<int> perks = new List<int>();
+		public Dictionary<int, object> perks = new Dictionary<int, object>();
 
 		internal string path;
 	}
