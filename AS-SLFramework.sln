@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerStatistics", "ServerS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtraUtilities", "ExtraUtilities\ExtraUtilities.csproj", "{8A16D9D5-5B12-4C1C-9EFE-AFFC77E3F3C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenShop", "TokenShop\TokenShop.csproj", "{DD217871-50B3-446A-8E46-0B4C7B1FDD0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{8A16D9D5-5B12-4C1C-9EFE-AFFC77E3F3C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A16D9D5-5B12-4C1C-9EFE-AFFC77E3F3C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A16D9D5-5B12-4C1C-9EFE-AFFC77E3F3C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD217871-50B3-446A-8E46-0B4C7B1FDD0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD217871-50B3-446A-8E46-0B4C7B1FDD0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD217871-50B3-446A-8E46-0B4C7B1FDD0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD217871-50B3-446A-8E46-0B4C7B1FDD0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
