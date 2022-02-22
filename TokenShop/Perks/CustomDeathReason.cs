@@ -1,7 +1,8 @@
-﻿namespace TokenShop.Perks
+﻿/*namespace TokenShop.Perks
 {
 	class CustomDeathReason : Perk
 	{
 		public override string PerkName => "Custom Death Reason";
 	}
 }
+*/

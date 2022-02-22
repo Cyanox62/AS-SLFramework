@@ -50,6 +50,18 @@ namespace TokenShop
 			}
 		}
 
+		/*internal void OnPlayerDeath(DyingEventArgs ev)
+		{
+			if (playerStats.ContainsKey(ev.Target.UserId))
+			{
+				CustomDeathReason perk = (CustomDeathReason)playerStats[ev.Target.UserId].perks.Values.FirstOrDefault(x => x is CustomDeathReason);
+				if (perk != null)
+				{
+					perk.
+				}
+			}
+		}*/
+
 		internal void OnPickingUpItem(PickingUpItemEventArgs ev)
 		{
 			if (ev.Pickup.Type == ItemType.Coin)
@@ -107,11 +119,11 @@ namespace TokenShop
 								}
 								Log($"Granted user {player.UserId} param item {pPerk.Param}");
 							}
-							else if (shopItem.perk is CustomDeathReason cPerk)
+							/*else if (shopItem.perk is CustomDeathReason cPerk)
 							{
 								// custom death reason
 								Log($"Granted user {player.UserId} custom death reason");
-							}
+							}*/
 						}
 					}
 				}
