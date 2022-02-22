@@ -28,7 +28,7 @@ namespace TokenShop
             singleton = this;
 
             // Parse shop
-            var perks = Assembly.GetExecutingAssembly().GetTypes().Where(type => type.Namespace == nameof(Perks));
+            var perks = Assembly.GetExecutingAssembly().GetTypes().Where(type => type.Namespace == "TokenShop.Perks");
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < Config.ShopItems.Count; i++)
             {
