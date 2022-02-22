@@ -97,7 +97,7 @@ namespace TokenShop
 
         private void AddShopItem(int id, string perkName, bool isPermanent, Perk perk, int tokens)
 		{
-            if (Shop.ShopItems.Count != 0) Shop.ShopString.Append(Environment.NewLine);
+            Shop.ShopString.Append(Environment.NewLine);
             Shop.ShopItems.Add(id, new ShopItem()
             {
                 perk = perk,

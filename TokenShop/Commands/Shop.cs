@@ -29,6 +29,7 @@ namespace TokenShop.Commands
 				Player player = Player.Get(p);
 				if (arguments.Count == 0)
 				{
+					// todo: add a notice if you already own an item
 					response = ShopString.ToString();
 					return true;
 				}
