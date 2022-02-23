@@ -189,7 +189,7 @@ namespace TokenShop
 					tokens = (int)(tokens * Plugin.singleton.Config.RoleTokenMultipliers[player.GroupName]);
 				}
 				playerStats[player.UserId].tokens += tokens;
-				if (alert) player.ShowHint(Plugin.singleton.Translation.TokensEarned
+				if (alert) player.ShowHint(new string('\n', Plugin.singleton.Config.TextLower) + Plugin.singleton.Translation.TokensEarned
 					.Replace("{tokens}", tokens.ToString())
 					.Replace("{reason}", reason), Plugin.singleton.Config.TokenHintTime);
 				Log($"Granted {player.UserId} {tokens} tokens for reason: {reason}");
