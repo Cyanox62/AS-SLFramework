@@ -1,9 +1,11 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
+using Exiled.Loader;
 using RemoteAdmin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -26,6 +28,17 @@ namespace ImprovedSpectator.Commands
 			if (sender is PlayerCommandSender p)
 			{
 				Player player = Player.Get(p);
+
+				var plugin = Loader.Plugins.First(pl => pl.Name == "TipSystem");
+				var asm = plugin?.Assembly;
+				var type = asm?.GetType("TipSystem.API.System");
+				var m = type?.GetMethod("ShowHint", BindingFlags.Public | BindingFlags.Static);
+				if (plugin != null && asm != null && type != null && m != null)
+				{
+					m.Invoke(null, new object[] { player, "\n\n\nthis is a test hint", 10f });
+					m.Invoke(null, new object[] { player, "\n\n\n\n\n\n\nthis is a lower test hint", 20f });
+				}
+
 				if (player != null)
 				{
 					if (player.Role.Team == Team.RIP || EventHandlers.additionalRespawnPlayers.Contains(player) || EventHandlers.ghostPlayers.Contains(player))
