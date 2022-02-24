@@ -19,7 +19,7 @@ namespace TipSystem.API
                 time = time
             };
 
-            Log.Warn(hint.Replace("<", "[").Replace(">", "]").Replace("\n", "/n"));
+            //Log.Warn(hint.Replace("<", "[").Replace(">", "]").Replace("\n", "/n"));
 
             if (!Plugin.hintQueue.ContainsKey(player.UserId))
             {
@@ -36,6 +36,15 @@ namespace TipSystem.API
                     }
                 }
                 Plugin.hintQueue[player.UserId].Add(data);
+            }
+        }
+
+        public static void ClearHints(Player player)
+		{
+            if (Plugin.hintQueue.ContainsKey(player.UserId))
+            {
+                Plugin.hintQueue.Remove(player.UserId);
+                player.ShowHint(string.Empty, 0.1f);
             }
         }
     }

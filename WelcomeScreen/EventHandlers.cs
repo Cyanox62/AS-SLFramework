@@ -17,7 +17,11 @@ namespace WelcomeScreen
 			if (Plugin.singleton.Config.ShowHint) coroutine = Timing.RunCoroutine(HintCoroutine());
 		}
 
-		internal void OnRoundStart() => Timing.KillCoroutines(coroutine);
+		internal void OnRoundStart()
+		{
+			Timing.KillCoroutines(coroutine);
+			foreach (Player player in Player.List) Plugin.ClearHints(player);
+		}
 
 		internal void OnPlayerVerified(VerifiedEventArgs ev)
 		{

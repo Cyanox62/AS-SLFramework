@@ -1,9 +1,10 @@
 ﻿using Exiled.API.Features;
 using Exiled.Loader;
+using HarmonyLib;
 using System.Linq;
 using System.Reflection;
 
-namespace WelcomeScreen
+namespace SCPImprovements
 {
     public class Plugin : Plugin<Config, Translation>
     {
@@ -11,28 +12,46 @@ namespace WelcomeScreen
 
         private EventHandlers ev;
 
+        private Harmony hInstance;
+
         public override void OnEnabled()
-		{
+        {
             base.OnEnabled();
 
             singleton = this;
 
+            hInstance = new Harmony("cyan.scpimprovements");
+            hInstance.PatchAll();
+
             ev = new EventHandlers();
 
-            Exiled.Events.Handlers.Player.Verified += ev.OnPlayerVerified;
+            Exiled.Events.Handlers.Player.Dying += ev.OnPlayerDeath;
+
+            Exiled.Events.Handlers.Scp106.Containing += ev.OnScp106Contain;
+
+            Exiled.Events.Handlers.Cassie.SendingCassieMessage += ev.OnCassie;
+
+            Exiled.Events.Handlers.Warhead.Detonated += ev.OnDetonated;
 
             Exiled.Events.Handlers.Server.RoundStarted += ev.OnRoundStart;
-            Exiled.Events.Handlers.Server.WaitingForPlayers += ev.OnWaitingForPlayers;
-		}
+        }
 
         public override void OnDisabled()
-		{
+        {
             base.OnDisabled();
 
-            Exiled.Events.Handlers.Player.Verified -= ev.OnPlayerVerified;
+            hInstance.UnpatchAll(hInstance.Id);
+            hInstance = null;
+
+            Exiled.Events.Handlers.Player.Dying -= ev.OnPlayerDeath;
+
+            Exiled.Events.Handlers.Scp106.Containing -= ev.OnScp106Contain;
+
+            Exiled.Events.Handlers.Cassie.SendingCassieMessage -= ev.OnCassie;
+
+            Exiled.Events.Handlers.Warhead.Detonated -= ev.OnDetonated;
 
             Exiled.Events.Handlers.Server.RoundStarted -= ev.OnRoundStart;
-            Exiled.Events.Handlers.Server.WaitingForPlayers -= ev.OnWaitingForPlayers;
 
             ev = null;
         }
@@ -42,12 +61,7 @@ namespace WelcomeScreen
             Loader.Plugins.FirstOrDefault(pl => pl.Name == "TipSystem")?.Assembly?.GetType("TipSystem.API.System")?.GetMethod("ShowHint", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { p, hint, time });
         }
 
-        internal static void ClearHints(Player p)
-        {
-            Loader.Plugins.FirstOrDefault(pl => pl.Name == "TipSystem")?.Assembly?.GetType("TipSystem.API.System")?.GetMethod("ClearHints", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { p });
-        }
-
         public override string Author => "Cyanox";
-        public override string Name => "WelcomeScreen";
+        public override string Name => "SCPImprovements";
     }
 }
