@@ -9,6 +9,9 @@ namespace SCPImprovements
 {
 	class EventHandlers
 	{
+		internal static List<Player> isLookingAt096 = new List<Player>();
+		internal static Dictionary<Player, CoroutineHandle> lookingAt096Cooldown = new Dictionary<Player, CoroutineHandle>();
+
 		private bool is106Contained, canChange;
 		internal static bool isLastAlive;
 
@@ -30,6 +33,16 @@ namespace SCPImprovements
 		}
 
 		public void OnDetonated() => canChange = false;
+
+		internal static IEnumerator<float> StartSafeDelay(Player p)
+		{
+			yield return Timing.WaitForSeconds(Plugin.singleton.Config.Scp096ReliefOffset);
+			if (lookingAt096Cooldown.ContainsKey(p))
+			{
+				Plugin.AccessHintSystem(p, Plugin.singleton.Translation.NoLongerSeeing096, Plugin.singleton.Config.Scp096ReliefTime);
+				lookingAt096Cooldown.Remove(p);
+			}
+		}
 
 		private IEnumerator<float> Check079()
 		{

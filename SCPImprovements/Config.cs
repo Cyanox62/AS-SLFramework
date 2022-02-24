@@ -10,6 +10,15 @@ namespace SCPImprovements
 		[Description("How long in seconds to display the SCP-079 swap hint to the player.")]
 		public float ComputerSwapHintTime { get; set; } = 10;
 
+		[Description("How long in seconds to display the SCP-096 target hint player.")]
+		public float Scp096TargetHintTime { get; set; } = 4;
+
+		[Description("How long in seconds after looking away from SCP-096 should the relief hint be shown.")]
+		public float Scp096ReliefOffset { get; set; } = 5;
+
+		[Description("How long in seconds the SCP-096 relief hint should be shown.")]
+		public float Scp096ReliefTime { get; set; } = 8;
+
 		[Description("Formatting for where the hint is placed on screen. The higher the number, the lower the text goes.")]
 		public int TextLower { get; set; } = 5;
 	}

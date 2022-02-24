@@ -41,27 +41,5 @@ namespace ExtraUtilities
 				ev.IsAllowed = true;
 			}
 		}
-		// ----- //
-
-		internal void OnRoundRestart()
-		{
-			File.WriteAllText(Plugin.GroupOverridesFile, JsonConvert.SerializeObject(Plugin.groups, Formatting.Indented));
-		}
-
-		internal void OnPlayerVerified(VerifiedEventArgs ev)
-		{
-			if (Plugin.groups.ContainsKey(ev.Player.UserId))
-			{
-				UserGroup group = ServerStatic.PermissionsHandler.GetGroup(Plugin.groups[ev.Player.UserId]);
-				if (group != null)
-				{
-					ev.Player.Group = group;
-				}
-				else
-				{
-					Log.Warn($"Failed to assign group {Plugin.groups[ev.Player.UserId]}");
-				}
-			}
-		}
 	}
 }

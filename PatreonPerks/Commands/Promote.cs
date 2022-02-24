@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ExtraUtilities.Commands
+namespace PatreonPerks.Commands
 {
 	[CommandHandler(typeof(RemoteAdminCommandHandler))]
 	class Promote : ICommand

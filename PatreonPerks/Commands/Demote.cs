@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace ExtraUtilities.Commands
+namespace PatreonPerks.Commands
 {
 	[CommandHandler(typeof(RemoteAdminCommandHandler))]
 	class Demopte : ICommand
