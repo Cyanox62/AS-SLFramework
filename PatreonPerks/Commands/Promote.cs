@@ -15,25 +15,6 @@ namespace PatreonPerks.Commands
 
 		string ICommand.Command { get; } = "promote";
 
-		private GroupInfo IsValidGroup(string name)
-		{
-			Dictionary<string, UserGroup> groups = ServerStatic.PermissionsHandler.GetAllGroups();
-			for (int i = 0; i < groups.Count; i++)
-			{
-				var entry = groups.ElementAt(i);
-				string n = entry.Key.Trim().ToLower();
-				if (n.StartsWith(name.Trim().ToLower()))
-				{
-					return new GroupInfo
-					{
-						group = entry.Value,
-						groupName = n
-					};
-				}
-			}
-			return null;
-		}
-
 		public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
 		{
 			if (arguments.Count == 2)
@@ -42,7 +23,7 @@ namespace PatreonPerks.Commands
 				if (target != null)
 				{
 					string tier = arguments.ElementAt(1);
-					GroupInfo userGroup = IsValidGroup(tier);
+					GroupInfo userGroup = Plugin.IsValidGroup(tier);
 					if (userGroup != null)
 					{
 						target.Group = userGroup.group;

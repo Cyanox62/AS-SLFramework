@@ -29,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
@@ -55,9 +56,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Demote.cs" />
+    <Compile Include="Commands\LinkPerk.cs" />
     <Compile Include="Commands\Promote.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventHandlers.cs" />
+    <Compile Include="Perks\AnnounceJoin.cs" />
+    <Compile Include="Perks\Perk.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
