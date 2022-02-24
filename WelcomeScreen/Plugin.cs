@@ -1,4 +1,7 @@
 ﻿using Exiled.API.Features;
+using Exiled.Loader;
+using System.Linq;
+using System.Reflection;
 
 namespace WelcomeScreen
 {
@@ -32,6 +35,11 @@ namespace WelcomeScreen
             Exiled.Events.Handlers.Server.WaitingForPlayers -= ev.OnWaitingForPlayers;
 
             ev = null;
+        }
+
+        internal static void AccessHintSystem(Player p, string hint, float time)
+        {
+            Loader.Plugins.FirstOrDefault(pl => pl.Name == "TipSystem")?.Assembly?.GetType("TipSystem.API.System")?.GetMethod("ShowHint", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { p, hint, time });
         }
 
         public override string Author => "Cyanox";

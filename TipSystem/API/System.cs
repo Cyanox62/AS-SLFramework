@@ -25,7 +25,18 @@ namespace TipSystem.API
             {
                 Plugin.hintQueue.Add(player.UserId, new List<HintData>() { data });
             }
-            else Plugin.hintQueue[player.UserId].Add(data);
+            else 
+            {
+                foreach (HintData h in Plugin.hintQueue[player.UserId])
+                {
+                    if (h.text == data.text)
+                    {
+                        h.time = data.time;
+                        return;
+                    }
+                }
+                Plugin.hintQueue[player.UserId].Add(data);
+            }
         }
     }
 }

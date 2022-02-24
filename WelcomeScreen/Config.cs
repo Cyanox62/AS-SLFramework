@@ -17,6 +17,6 @@ namespace WelcomeScreen
 		public int ServerNumber { get; set; } = 1;
 
 		[Description("Formatting for where the hint is placed on screen. The higher the number, the lower the text goes.")]
-		public int TextLower { get; set; } = 4;
+		public int TextLower { get; set; } = 7;
 	}
 }
