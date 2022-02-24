@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Features;
+using Exiled.Loader;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,14 +37,14 @@ namespace TokenShop
             {
                 var entry = Config.ShopItems.ElementAt(i);
                 if (entry.Count == 4)
-				{
+                {
                     if (entry[2] == "P" || entry[2] == "N")
                     {
                         bool isPermanent = entry[2] == "P";
-                        if (int.TryParse(entry[3], out int tokens)) 
+                        if (int.TryParse(entry[3], out int tokens))
                         {
                             if (int.TryParse(entry[0], out int id))
-							{
+                            {
                                 Type customPerk = perks.FirstOrDefault(x => x.Name == entry[1]);
                                 if (Enum.TryParse(entry[1], out ItemType type))
                                 {
@@ -61,10 +62,10 @@ namespace TokenShop
                                 }
                             }
                             else
-							{
+                            {
                                 Log.Error($"Failed to parse id \"{entry[0]}\", shop item will not be loaded.");
                             }
-						}
+                        }
                         else
                         {
                             Log.Error($"Failed to parse token value \"{entry[3]}\", shop item will not be loaded.");
@@ -76,7 +77,7 @@ namespace TokenShop
                     }
                 }
                 else
-				{
+                {
                     Log.Error($"Shop item \"{entry}\" is missing arguments, shop item will not be loaded.");
                 }
             }
@@ -106,7 +107,7 @@ namespace TokenShop
         }
 
         private void AddShopItem(int id, string perkName, bool isPermanent, Perk perk, int tokens)
-		{
+        {
             Shop.ShopString.Append(Environment.NewLine);
             Shop.ShopItems.Add(new ShopItem()
             {
@@ -118,25 +119,12 @@ namespace TokenShop
             EventHandlers.Log($"Loaded shop item: {perkName}");
         }
 
+        internal static void AccessHintSystem(Player p, string hint, float time)
+        {
+            Loader.Plugins.FirstOrDefault(pl => pl.Name == "TipSystem")?.Assembly?.GetType("TipSystem.API.System")?.GetMethod("ShowHint", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { p, hint, time });
+        }
+
         public override string Author => "Cyanox";
         public override string Name => "TokenShop";
-    }
-
-    public static class ReflectiveEnumerator
-    {
-        static ReflectiveEnumerator() { }
-
-        public static IEnumerable<T> GetEnumerableOfType<T>(params object[] constructorArgs) where T : class, IComparable<T>
-        {
-            List<T> objects = new List<T>();
-            foreach (Type type in
-                Assembly.GetAssembly(typeof(T)).GetTypes()
-                .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(T))))
-            {
-                objects.Add((T)Activator.CreateInstance(type, constructorArgs));
-            }
-            objects.Sort();
-            return objects;
-        }
     }
 }
