@@ -34,21 +34,21 @@ namespace PatreonPerks
 				}
 			}
 
-			if (Plugin.userPerkSettings.ContainsKey(ev.Player.UserId))
+			/*if (Plugin.userPerkSettings.ContainsKey(ev.Player.UserId))
 			{
 				bool valid = true;
 				for (int i = Plugin.userPerkSettings[ev.Player.UserId].Count - 1; i >= 0; i--)
 				{
 					var perk = Plugin.userPerkSettings[ev.Player.UserId][i];
-					if (!Plugin.perkLinks.ContainsKey(ev.Player.GroupName) || (Plugin.perkLinks.ContainsKey(ev.Player.GroupName) && !Plugin.perkLinks[ev.Player.GroupName].Select(x => x.Name).Contains((string)((JObject)perk)["PerkName"])))
+					if (!Plugin.perkLinks.ContainsKey(ev.Player.GroupName) || (Plugin.perkLinks.ContainsKey(ev.Player.GroupName) && !Plugin.perkLinks[ev.Player.GroupName].Select(x => x.Name).Contains())
 					{
 						Log.Warn("removing");
 						Plugin.userPerkSettings[ev.Player.UserId].RemoveAt(i);
 						valid = false;
 					}
 				}
-				if (!valid) File.WriteAllText(Plugin.UserSettings, JsonConvert.SerializeObject(Plugin.userPerkSettings, Formatting.Indented));
-			}
+				if (!valid) File.WriteAllText(Plugin.UserSettings, JsonConvert.SerializeObject(Plugin.userPerkSettings, Formatting.Indented, Plugin.userSerializeSettings));
+			}*/
 		}
 
 		internal void OnAssignGroup(ChangingGroupEventArgs ev)
@@ -58,11 +58,11 @@ namespace PatreonPerks
 			{
 				if (!Plugin.userPerkSettings.ContainsKey(ev.Player.UserId))
 				{
-					Plugin.userPerkSettings.Add(ev.Player.UserId, new List<object>());
+					Plugin.userPerkSettings.Add(ev.Player.UserId, new List<IPerk>());
 				}
 				foreach (Type perk in Plugin.perkLinks[groupName])
 				{
-					Plugin.userPerkSettings[ev.Player.UserId].Add((Perk)Activator.CreateInstance(perk));
+					Plugin.userPerkSettings[ev.Player.UserId].Add((IPerk)Activator.CreateInstance(perk));
 				}
 			}
 		}

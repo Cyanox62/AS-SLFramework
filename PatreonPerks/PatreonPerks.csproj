@@ -64,7 +64,7 @@
     <Compile Include="Perks\AnnounceJoin.cs" />
     <Compile Include="Perks\CustomDeathReason.cs" />
     <Compile Include="Perks\ExtendIntercom.cs" />
-    <Compile Include="Perks\Perk.cs" />
+    <Compile Include="Perks\IPerk.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

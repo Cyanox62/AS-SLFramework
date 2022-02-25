@@ -150,7 +150,7 @@ namespace PatreonPerks.Commands
 							response = "Usage: PERKLINK [ADD / REMOVE] [GROUP] [PERKNAME]";
 							return false;
 						}
-						File.WriteAllText(Plugin.PatreonPerkLinks, JsonConvert.SerializeObject(Plugin.perkLinks, Formatting.Indented));
+						File.WriteAllText(Plugin.PatreonPerkLinks, JsonConvert.SerializeObject(Plugin.perkLinks, Formatting.Indented, Plugin.userSerializeSettings));
 						return true;
 					}
 					else

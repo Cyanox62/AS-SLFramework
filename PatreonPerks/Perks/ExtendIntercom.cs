@@ -1,9 +1,9 @@
 ﻿namespace PatreonPerks.Perks
 {
-	class ExtendIntercom : Perk
+	class ExtendIntercom : IPerk
 	{
-		public override string PerkName => "ExtendIntercom";
+		public string PerkName { get; } = "ExtendIntercom";
 
-		public bool isEnabled = false;
+		public string Param { get; set; } = "on";
 	}
 }

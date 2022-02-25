@@ -1,9 +1,9 @@
 ﻿namespace PatreonPerks.Perks
 {
-	class AnnounceJoin : Perk
+	class AnnounceJoin : IPerk
 	{
-		public override string PerkName => "AnnounceJoin";
+		public string PerkName { get; } = "AnnounceJoin";
 
-		public bool isEnabled = false;
+		public string Param { get; set; } = "on";
 	}
 }

@@ -30,7 +30,16 @@ namespace PatreonPerks
 		internal static Dictionary<string, List<Type>> perkLinks = new Dictionary<string, List<Type>>();
 
 		// Tracks player instances of perks
-		internal static Dictionary<string, List<object>> userPerkSettings = new Dictionary<string, List<object>>();
+		internal static Dictionary<string, List<IPerk>> userPerkSettings = new Dictionary<string, List<IPerk>>();
+		internal static JsonSerializerSettings userSerializeSettings = new JsonSerializerSettings()
+		{
+			TypeNameHandling = TypeNameHandling.Objects,
+			TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
+		};
+		internal static JsonSerializerSettings userDeserializeSettings = new JsonSerializerSettings()
+		{
+			TypeNameHandling = TypeNameHandling.Objects
+		};
 
 		// Saving player promotions
 		internal static Dictionary<string, string> groups = new Dictionary<string, string>();
@@ -48,7 +57,7 @@ namespace PatreonPerks
 
 			Exiled.Events.Handlers.Server.RestartingRound += ev.OnRoundRestart;
 
-			foreach (var a in Assembly.GetExecutingAssembly().GetTypes().Where(type => type.Namespace == "PatreonPerks.Perks" && type.Name != "Perk"))
+			foreach (var a in Assembly.GetExecutingAssembly().GetTypes().Where(type => type.Namespace == "PatreonPerks.Perks" && type.Name != "IPerk"))
 			{
 				perkTypes.Add(a.Name, a);
 			}
@@ -58,7 +67,7 @@ namespace PatreonPerks
 			if (!File.Exists(GroupOverridesFile)) File.WriteAllText(GroupOverridesFile, "{}");
 			if (!File.Exists(UserSettings)) File.WriteAllText(UserSettings, "{}");
 			perkLinks = JsonConvert.DeserializeObject<Dictionary<string, List<Type>>>(File.ReadAllText(PatreonPerkLinks));
-			userPerkSettings = JsonConvert.DeserializeObject<Dictionary<string, List<object>>>(File.ReadAllText(UserSettings));
+			userPerkSettings = JsonConvert.DeserializeObject<Dictionary<string, List<IPerk>>>(File.ReadAllText(UserSettings), userDeserializeSettings);
 			groups = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(GroupOverridesFile));
 		}
 
@@ -117,8 +126,21 @@ namespace PatreonPerks
 		public override string Name => "PatreonPerks";
 	}
 
-	class UserSettings
+	class CogConverter : JsonConverter
 	{
-		public List<Perk> Perks;
+		public override bool CanConvert(Type objectType)
+		{
+			return objectType == typeof(IPerk);
+		}
+
+		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+		{
+			return serializer.Deserialize(reader, typeof(IPerk));
+		}
+
+		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+		{
+			serializer.Serialize(writer, value);
+		}
 	}
 }

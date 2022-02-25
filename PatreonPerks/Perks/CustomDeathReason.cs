@@ -1,9 +1,9 @@
 ﻿namespace PatreonPerks.Perks
 {
-	class CustomDeathReason : Perk
+	class CustomDeathReason : IPerk
 	{
-		public override string PerkName => "CustomDeathReason";
+		public string PerkName { get; } = "CustomDeathReason";
 
-		public string DeathReason = string.Empty;
+		public string Param { get; set; } = string.Empty;
 	}
 }

@@ -28,6 +28,11 @@ namespace PatreonPerks.Commands
 				Player player = Player.Get(p);
 				if (player != null)
 				{
+					if (arguments.Count == 0)
+					{
+						response = "Usage: PERK [PERK NAME] [PARAMETER]";
+						return false;
+					}
 					string perk = arguments.ElementAt(0);
 					if (perk.ToLower() == "list")
 					{
@@ -57,16 +62,16 @@ namespace PatreonPerks.Commands
 									{
 										if (arg == "on" || arg == "off")
 										{
-											settings.isEnabled = arg == "on" ? true : false;
+											settings.Param = arg;
 										}
-										response = $"{type.Name} has been toggled {(settings.isEnabled ? "on" : "off")}.";
+										response = $"{type.Name} has been toggled {settings.Param}.";
 									}
 									else
 									{
 										response = "Failed to find user settings.";
 										return false;
 									}
-									File.WriteAllText(Plugin.UserSettings, JsonConvert.SerializeObject(Plugin.userPerkSettings, Formatting.Indented));
+									File.WriteAllText(Plugin.UserSettings, JsonConvert.SerializeObject(Plugin.userPerkSettings, Formatting.Indented, Plugin.userSerializeSettings));
 									return true;
 								}
 								else if (type == typeof(CustomDeathReason))
@@ -77,8 +82,8 @@ namespace PatreonPerks.Commands
 									{
 										if (arg != string.Empty)
 										{
-											settings.DeathReason = arg;
-											response = $"{type.Name} has been set to '{settings.DeathReason}'.";
+											settings.Param = arg;
+											response = $"{type.Name} has been set to '{settings.Param}'.";
 										}
 										else
 										{
@@ -90,7 +95,7 @@ namespace PatreonPerks.Commands
 										response = "Failed to find user settings.";
 										return false;
 									}
-									File.WriteAllText(Plugin.UserSettings, JsonConvert.SerializeObject(Plugin.userPerkSettings, Formatting.Indented));
+									File.WriteAllText(Plugin.UserSettings, JsonConvert.SerializeObject(Plugin.userPerkSettings, Formatting.Indented, Plugin.userSerializeSettings));
 									return true;
 								}
 								else if (type == typeof(ExtendIntercom))
@@ -101,16 +106,16 @@ namespace PatreonPerks.Commands
 									{
 										if (arg == "on" || arg == "off")
 										{
-											settings.isEnabled = arg == "on" ? true : false;
+											settings.Param = arg;
 										}
-										response = $"{type.Name} has been toggled {(settings.isEnabled ? "on" : "off")}.";
+										response = $"{type.Name} has been toggled {settings.Param}.";
 									}
 									else
 									{
 										response = "Failed to find user settings.";
 										return false;
 									}
-									File.WriteAllText(Plugin.UserSettings, JsonConvert.SerializeObject(Plugin.userPerkSettings, Formatting.Indented));
+									File.WriteAllText(Plugin.UserSettings, JsonConvert.SerializeObject(Plugin.userPerkSettings, Formatting.Indented, Plugin.userSerializeSettings));
 									return true;
 								}
 								else
@@ -131,8 +136,11 @@ namespace PatreonPerks.Commands
 							return false;
 						}
 					}
-					response = "Usage: PERK [PERK NAME] [PARAMETER]";
-					return false;
+					else
+					{
+						response = "Usage: PERK [PERK NAME] [PARAMETER]";
+						return false;
+					}
 				}
 				else
 				{
@@ -142,7 +150,7 @@ namespace PatreonPerks.Commands
 			}
 			else
 			{
-				response = "Usage: PROMOTE [USER] [TIER]";
+				response = "Usage: PERK [PERK NAME] [PARAMETER]";
 				return false;
 			}
 		}
