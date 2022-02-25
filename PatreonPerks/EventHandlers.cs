@@ -32,6 +32,23 @@ namespace PatreonPerks
 					Log.Warn($"Failed to assign group {Plugin.groups[ev.Player.UserId]}");
 				}
 			}
+
+			/*if (Plugin.userPerkSettings.ContainsKey(ev.Player.UserId))
+			{
+				bool valid = true;
+				for (int i = Plugin.userPerkSettings[ev.Player.UserId].Count - 1; i >= 0; i--)
+				{
+					var perk = (Perk)Plugin.userPerkSettings[ev.Player.UserId][i];
+					Log.Warn(perk.GetType());
+					if (Plugin.perkLinks.ContainsKey(ev.Player.GroupName) && !Plugin.perkLinks[ev.Player.GroupName].Contains(perk.GetType()))
+					{
+						Log.Warn("removing");
+						Plugin.userPerkSettings[ev.Player.UserId].RemoveAt(i);
+						valid = false;
+					}
+				}
+				if (!valid) File.WriteAllText(Plugin.UserSettings, JsonConvert.SerializeObject(Plugin.userPerkSettings, Formatting.Indented));
+			}*/
 		}
 
 		internal void OnAssignGroup(ChangingGroupEventArgs ev)
@@ -39,13 +56,13 @@ namespace PatreonPerks
 			string groupName = Plugin.GetGroupName(ev.NewGroup);
 			if (Plugin.perkLinks.ContainsKey(groupName))
 			{
-				if (!Plugin.userPerkSettings.ContainsKey(ev.Player))
+				if (!Plugin.userPerkSettings.ContainsKey(ev.Player.UserId))
 				{
-					Plugin.userPerkSettings.Add(ev.Player, new List<Perk>());
+					Plugin.userPerkSettings.Add(ev.Player.UserId, new List<object>());
 				}
 				foreach (Type perk in Plugin.perkLinks[groupName])
 				{
-					Plugin.userPerkSettings[ev.Player].Add((Perk)Activator.CreateInstance(perk));
+					Plugin.userPerkSettings[ev.Player.UserId].Add((Perk)Activator.CreateInstance(perk));
 				}
 			}
 		}

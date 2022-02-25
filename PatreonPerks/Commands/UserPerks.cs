@@ -1,9 +1,11 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
+using Newtonsoft.Json;
 using PatreonPerks.Perks;
 using RemoteAdmin;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,6 +66,7 @@ namespace PatreonPerks.Commands
 										response = "Failed to find user settings.";
 										return false;
 									}
+									File.WriteAllText(Plugin.UserSettings, JsonConvert.SerializeObject(Plugin.userPerkSettings, Formatting.Indented));
 									return true;
 								}
 								else if (type == typeof(CustomDeathReason))
@@ -87,6 +90,7 @@ namespace PatreonPerks.Commands
 										response = "Failed to find user settings.";
 										return false;
 									}
+									File.WriteAllText(Plugin.UserSettings, JsonConvert.SerializeObject(Plugin.userPerkSettings, Formatting.Indented));
 									return true;
 								}
 								else if (type == typeof(ExtendIntercom))
@@ -106,6 +110,7 @@ namespace PatreonPerks.Commands
 										response = "Failed to find user settings.";
 										return false;
 									}
+									File.WriteAllText(Plugin.UserSettings, JsonConvert.SerializeObject(Plugin.userPerkSettings, Formatting.Indented));
 									return true;
 								}
 								else

@@ -15,6 +15,7 @@ namespace PatreonPerks
         internal static string FolderFilePath = Path.Combine(Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED"), "Plugins"), "PatreonPerks");
         internal static string PatreonPerkLinks = Path.Combine(Path.Combine(Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED"), "Plugins"), "PatreonPerks"), "perkLinks.json");
         internal static string GroupOverridesFile = Path.Combine(Path.Combine(Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED"), "Plugins"), "PatreonPerks"), "playerRankOverrides.json");
+        internal static string UserSettings = Path.Combine(Path.Combine(Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED"), "Plugins"), "PatreonPerks"), "userPerkSettings.json");
 
 		internal static Plugin singleton;
 
@@ -29,7 +30,7 @@ namespace PatreonPerks
 		internal static Dictionary<string, List<Type>> perkLinks = new Dictionary<string, List<Type>>();
 
 		// Tracks player instances of perks
-		internal static Dictionary<Player, List<Perk>> userPerkSettings = new Dictionary<Player, List<Perk>>();
+		internal static Dictionary<string, List<object>> userPerkSettings = new Dictionary<string, List<object>>();
 
 		// Saving player promotions
 		internal static Dictionary<string, string> groups = new Dictionary<string, string>();
@@ -55,7 +56,9 @@ namespace PatreonPerks
 			if (!Directory.Exists(FolderFilePath)) Directory.CreateDirectory(FolderFilePath);
 			if (!File.Exists(PatreonPerkLinks)) File.WriteAllText(PatreonPerkLinks, "{}");
 			if (!File.Exists(GroupOverridesFile)) File.WriteAllText(GroupOverridesFile, "{}");
+			if (!File.Exists(UserSettings)) File.WriteAllText(UserSettings, "{}");
 			perkLinks = JsonConvert.DeserializeObject<Dictionary<string, List<Type>>>(File.ReadAllText(PatreonPerkLinks));
+			userPerkSettings = JsonConvert.DeserializeObject<Dictionary<string, List<object>>>(File.ReadAllText(UserSettings));
 			groups = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(GroupOverridesFile));
 		}
 
@@ -103,7 +106,7 @@ namespace PatreonPerks
 
 		internal static object GetPerkSettings(Player p, Type t)
 		{
-			foreach (Perk perk in Plugin.userPerkSettings[p])
+			foreach (Perk perk in Plugin.userPerkSettings[p.UserId])
 			{
 				if (t.IsAssignableFrom(perk.GetType())) return perk;
 			}
