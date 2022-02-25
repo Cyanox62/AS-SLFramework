@@ -211,8 +211,11 @@ namespace TokenShop
 			while (player != null)
 			{
 				yield return Timing.WaitForSeconds(Plugin.singleton.Config.PlaytimeTokenInterval);
-				if (!Plugin.singleton.Config.GiveOverwatchTokens && player.IsOverwatchEnabled) continue;
-				GiveTokens(player, Plugin.singleton.Config.PlaytimeTokenAmount, Plugin.singleton.Translation.PlaytimeReason);
+				if (Round.IsStarted)
+				{
+					if (!Plugin.singleton.Config.GiveOverwatchTokens && player.IsOverwatchEnabled) continue;
+					GiveTokens(player, Plugin.singleton.Config.PlaytimeTokenAmount, Plugin.singleton.Translation.PlaytimeReason);
+				}
 			}
 		}
 	}

@@ -34,21 +34,20 @@ namespace PatreonPerks
 				}
 			}
 
-			/*if (Plugin.userPerkSettings.ContainsKey(ev.Player.UserId))
+			if (Plugin.userPerkSettings.ContainsKey(ev.Player.UserId))
 			{
-				bool valid = true;
 				for (int i = Plugin.userPerkSettings[ev.Player.UserId].Count - 1; i >= 0; i--)
 				{
 					var perk = Plugin.userPerkSettings[ev.Player.UserId][i];
-					if (!Plugin.perkLinks.ContainsKey(ev.Player.GroupName) || (Plugin.perkLinks.ContainsKey(ev.Player.GroupName) && !Plugin.perkLinks[ev.Player.GroupName].Select(x => x.Name).Contains())
+					if (!Plugin.perkLinks.ContainsKey(ev.Player.GroupName) ||
+						(Plugin.perkLinks.ContainsKey(ev.Player.GroupName) &&
+						!Plugin.perkLinks[ev.Player.GroupName].Select(x => x.Name).Contains(perk.PerkName)))
 					{
-						Log.Warn("removing");
+						Log.Warn("old perk detected, removing");
 						Plugin.userPerkSettings[ev.Player.UserId].RemoveAt(i);
-						valid = false;
 					}
 				}
-				if (!valid) File.WriteAllText(Plugin.UserSettings, JsonConvert.SerializeObject(Plugin.userPerkSettings, Formatting.Indented, Plugin.userSerializeSettings));
-			}*/
+			}
 		}
 
 		internal void OnAssignGroup(ChangingGroupEventArgs ev)
