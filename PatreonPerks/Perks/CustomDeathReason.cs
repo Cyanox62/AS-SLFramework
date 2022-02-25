@@ -3,5 +3,7 @@
 	class CustomDeathReason : Perk
 	{
 		public override string PerkName => "CustomDeathReason";
+
+		public string DeathReason = string.Empty;
 	}
 }

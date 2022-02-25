@@ -55,9 +55,6 @@ namespace PatreonPerks
 			Type t = typeof(ExtendIntercom);
 			if (Plugin.perkLinks.ContainsKey(ev.Player.GroupName) && Plugin.perkLinks[ev.Player.GroupName].Contains(t))
 			{
-				Log.Warn("yeah!");
-				ExtendIntercom settings = (ExtendIntercom)Plugin.GetPerkSettings(ev.Player, t);
-				Log.Warn(settings.a);
 				Intercom.host.NetworkIntercomTime += 10;
 			}
 		}

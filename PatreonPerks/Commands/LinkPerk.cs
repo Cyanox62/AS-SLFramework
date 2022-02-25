@@ -1,6 +1,7 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
 using Newtonsoft.Json;
+using PatreonPerks.Perks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -65,9 +66,9 @@ namespace PatreonPerks.Commands
 							var entry = Plugin.perkLinks.ElementAt(i);
 							sb.Append($"- {entry.Key} -> ");
 							var t = Plugin.perkLinks.ElementAt(i).Value;
-							for (int a = 0; a < Plugin.perkLinks.Count; a++)
+							for (int a = 0; a < t.Count; a++)
 							{
-								sb.Append(t[a]);
+								sb.Append(t[a].Name);
 								if (a != t.Count - 1) sb.Append(", ");
 							}
 							if (i != Plugin.perkLinks.Count - 1) sb.Append("\n");
@@ -115,6 +116,14 @@ namespace PatreonPerks.Commands
 								response = $"Group {userGroup.groupName} already has {name} linked!";
 								return false;
 							}
+
+							/*foreach (var entry in Plugin.userPerkSettings)
+							{
+								if (entry.Key.GroupName == userGroup.groupName)
+								{
+									entry.Value.Add((Perk)Activator.CreateInstance(t));
+								}
+							}*/
 						}
 						else if (arg == "remove")
 						{
@@ -127,6 +136,14 @@ namespace PatreonPerks.Commands
 								}
 							}
 							response = $"Removed perk link '{name}' from group {userGroup.groupName}.";
+
+							/*foreach (var entry in Plugin.userPerkSettings)
+							{
+								if (entry.Key.GroupName == userGroup.groupName && entry.Value.Select().Contains(t))
+								{
+									entry.Value.Add((Perk)Activator.CreateInstance(t));
+								}
+							}*/
 						}
 						else
 						{
