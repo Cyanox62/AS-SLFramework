@@ -36,12 +36,13 @@ namespace PatreonPerks.Commands
 					string perk = arguments.ElementAt(0);
 					if (perk.ToLower() == "list")
 					{
-						// list perks
 						StringBuilder sb = new StringBuilder();
 						sb.Append("Current perks:\n");
 						for (int i = 0; i < Plugin.perkLinks[player.GroupName].Count; i++)
 						{
-							sb.Append($"- {Plugin.perkLinks[player.GroupName][i].Name}");
+							Type t = Plugin.perkLinks[player.GroupName][i];
+							object settings = Plugin.GetPerkSettings(player, t);
+							sb.Append($"- {t.Name} | {((IPerk)settings).Param}");
 							if (i != Plugin.perkLinks[player.GroupName].Count - 1) sb.Append("\n");
 						}
 						response = sb.ToString();
@@ -54,17 +55,18 @@ namespace PatreonPerks.Commands
 							Type type = Plugin.perkLinks[player.GroupName].FirstOrDefault(x => x.Name.ToLower() == perk.ToLower());
 							if (type != null)
 							{
+								object settings = Plugin.GetPerkSettings(player, type);
 								if (type == typeof(AnnounceJoin))
 								{
 									string arg = arguments.ElementAt(1).ToLower();
-									AnnounceJoin settings = (AnnounceJoin)Plugin.GetPerkSettings(player, type);
+									AnnounceJoin setSettings = (AnnounceJoin)settings;
 									if (settings != null)
 									{
 										if (arg == "on" || arg == "off")
 										{
-											settings.Param = arg;
+											setSettings.Param = arg;
 										}
-										response = $"{type.Name} has been toggled {settings.Param}.";
+										response = $"{type.Name} has been toggled {setSettings.Param}.";
 									}
 									else
 									{
@@ -77,13 +79,13 @@ namespace PatreonPerks.Commands
 								else if (type == typeof(CustomDeathReason))
 								{
 									string arg = arguments.ElementAt(1).ToLower();
-									CustomDeathReason settings = (CustomDeathReason)Plugin.GetPerkSettings(player, type);
+									CustomDeathReason setSettings = (CustomDeathReason)settings;
 									if (settings != null)
 									{
 										if (arg != string.Empty)
 										{
-											settings.Param = arg;
-											response = $"{type.Name} has been set to '{settings.Param}'.";
+											setSettings.Param = arg;
+											response = $"{type.Name} has been set to '{setSettings.Param}'.";
 										}
 										else
 										{
@@ -101,14 +103,14 @@ namespace PatreonPerks.Commands
 								else if (type == typeof(ExtendIntercom))
 								{
 									string arg = arguments.ElementAt(1).ToLower();
-									ExtendIntercom settings = (ExtendIntercom)Plugin.GetPerkSettings(player, type);
+									ExtendIntercom setSettings = (ExtendIntercom)settings;
 									if (settings != null)
 									{
 										if (arg == "on" || arg == "off")
 										{
-											settings.Param = arg;
+											setSettings.Param = arg;
 										}
-										response = $"{type.Name} has been toggled {settings.Param}.";
+										response = $"{type.Name} has been toggled {setSettings.Param}.";
 									}
 									else
 									{
@@ -138,7 +140,7 @@ namespace PatreonPerks.Commands
 					}
 					else
 					{
-						response = "Usage: PERK [PERK NAME] [PARAMETER]";
+						response = "Usage: PERK [LIST / PERK NAME] (PARAMETER)";
 						return false;
 					}
 				}
