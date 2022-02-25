@@ -106,7 +106,7 @@ namespace PatreonPerks
 
 		internal static object GetPerkSettings(Player p, Type t)
 		{
-			foreach (Perk perk in Plugin.userPerkSettings[p.UserId])
+			foreach (var perk in Plugin.userPerkSettings[p.UserId])
 			{
 				if (t.IsAssignableFrom(perk.GetType())) return perk;
 			}
@@ -115,5 +115,10 @@ namespace PatreonPerks
 
 		public override string Author => "Cyanox";
 		public override string Name => "PatreonPerks";
+	}
+
+	class UserSettings
+	{
+		public List<Perk> Perks;
 	}
 }

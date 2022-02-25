@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PatreonPerks.Perks;
 using System;
 using System.Collections.Generic;
@@ -33,14 +34,13 @@ namespace PatreonPerks
 				}
 			}
 
-			/*if (Plugin.userPerkSettings.ContainsKey(ev.Player.UserId))
+			if (Plugin.userPerkSettings.ContainsKey(ev.Player.UserId))
 			{
 				bool valid = true;
 				for (int i = Plugin.userPerkSettings[ev.Player.UserId].Count - 1; i >= 0; i--)
 				{
-					var perk = (Perk)Plugin.userPerkSettings[ev.Player.UserId][i];
-					Log.Warn(perk.GetType());
-					if (Plugin.perkLinks.ContainsKey(ev.Player.GroupName) && !Plugin.perkLinks[ev.Player.GroupName].Contains(perk.GetType()))
+					var perk = Plugin.userPerkSettings[ev.Player.UserId][i];
+					if (!Plugin.perkLinks.ContainsKey(ev.Player.GroupName) || (Plugin.perkLinks.ContainsKey(ev.Player.GroupName) && !Plugin.perkLinks[ev.Player.GroupName].Select(x => x.Name).Contains((string)((JObject)perk)["PerkName"])))
 					{
 						Log.Warn("removing");
 						Plugin.userPerkSettings[ev.Player.UserId].RemoveAt(i);
@@ -48,7 +48,7 @@ namespace PatreonPerks
 					}
 				}
 				if (!valid) File.WriteAllText(Plugin.UserSettings, JsonConvert.SerializeObject(Plugin.userPerkSettings, Formatting.Indented));
-			}*/
+			}
 		}
 
 		internal void OnAssignGroup(ChangingGroupEventArgs ev)
