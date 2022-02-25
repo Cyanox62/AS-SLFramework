@@ -23,26 +23,29 @@ namespace TokenShop
 		{
 			try
 			{
-				string path = $"{Path.Combine(Plugin.FolderFilePath, ev.Player.UserId)}.json";
-				if (!File.Exists(path)) File.WriteAllText(path, JsonConvert.SerializeObject(new TokenStats(), Formatting.Indented));
-				TokenStats data = JsonConvert.DeserializeObject<TokenStats>(File.ReadAllText(path));
-				data.path = path;
-				playerStats.Add(ev.Player.UserId, data);
-
-				// Validate perks
-				for (int i = playerStats[ev.Player.UserId].perks.Count - 1; i >= 0; i--)
+				if (!playerStats.ContainsKey(ev.Player.UserId))
 				{
-					var entry = playerStats[ev.Player.UserId].perks[i];
-					ShopItem item = Shop.ShopItems.FirstOrDefault(x => i == x.id);
-					if (item == null || item.perk != entry)
-					{
-						playerStats[ev.Player.UserId].perks.Remove(i);
-						Log($"Detected invalid perk at id \"{i}\" for {ev.Player.UserId}, removing..");
-					}
-				}
+					string path = $"{Path.Combine(Plugin.FolderFilePath, ev.Player.UserId)}.json";
+					if (!File.Exists(path)) File.WriteAllText(path, JsonConvert.SerializeObject(new TokenStats(), Formatting.Indented));
+					TokenStats data = JsonConvert.DeserializeObject<TokenStats>(File.ReadAllText(path));
+					data.path = path;
+					playerStats.Add(ev.Player.UserId, data);
 
-				playerCoroutines.Add(ev.Player.UserId, Timing.RunCoroutine(PlaytimeCoroutine(ev.Player)));
-				Log($"Loaded stats for {ev.Player.UserId}");
+					// Validate perks
+					for (int i = playerStats[ev.Player.UserId].perks.Count - 1; i >= 0; i--)
+					{
+						var entry = playerStats[ev.Player.UserId].perks[i];
+						ShopItem item = Shop.ShopItems.FirstOrDefault(x => i == x.id);
+						if (item == null || item.perk != entry)
+						{
+							playerStats[ev.Player.UserId].perks.Remove(i);
+							Log($"Detected invalid perk at id \"{i}\" for {ev.Player.UserId}, removing..");
+						}
+					}
+
+					playerCoroutines.Add(ev.Player.UserId, Timing.RunCoroutine(PlaytimeCoroutine(ev.Player)));
+					Log($"Loaded stats for {ev.Player.UserId}");
+				}
 			} 
 			catch (Exception x)
 			{

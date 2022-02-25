@@ -61,6 +61,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Perks\AnnounceJoin.cs" />
+    <Compile Include="Perks\CustomDeathReason.cs" />
     <Compile Include="Perks\ExtendIntercom.cs" />
     <Compile Include="Perks\Perk.cs" />
     <Compile Include="Plugin.cs" />

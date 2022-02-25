@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using Newtonsoft.Json;
+using PatreonPerks.Perks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,6 +31,34 @@ namespace PatreonPerks
 				{
 					Log.Warn($"Failed to assign group {Plugin.groups[ev.Player.UserId]}");
 				}
+			}
+		}
+
+		internal void OnAssignGroup(ChangingGroupEventArgs ev)
+		{
+			string groupName = Plugin.GetGroupName(ev.NewGroup);
+			if (Plugin.perkLinks.ContainsKey(groupName))
+			{
+				if (!Plugin.userPerkSettings.ContainsKey(ev.Player))
+				{
+					Plugin.userPerkSettings.Add(ev.Player, new List<Perk>());
+				}
+				foreach (Type perk in Plugin.perkLinks[groupName])
+				{
+					Plugin.userPerkSettings[ev.Player].Add((Perk)Activator.CreateInstance(perk));
+				}
+			}
+		}
+
+		internal void OnIntercomUse(IntercomSpeakingEventArgs ev)
+		{
+			Type t = typeof(ExtendIntercom);
+			if (Plugin.perkLinks.ContainsKey(ev.Player.GroupName) && Plugin.perkLinks[ev.Player.GroupName].Contains(t))
+			{
+				Log.Warn("yeah!");
+				ExtendIntercom settings = (ExtendIntercom)Plugin.GetPerkSettings(ev.Player, t);
+				Log.Warn(settings.a);
+				Intercom.host.NetworkIntercomTime += 10;
 			}
 		}
 	}

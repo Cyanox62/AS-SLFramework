@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Features;
 using Newtonsoft.Json;
 using PatreonPerks.Commands;
+using PatreonPerks.Perks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,8 +20,18 @@ namespace PatreonPerks
 
 		private EventHandlers ev;
 
-		internal static List<string> perkList = new List<string>();
-		internal static Dictionary<string, List<string>> perkLinks = new Dictionary<string, List<string>>();
+		// Lists all perks
+		// perkName, perkType
+		internal static Dictionary<string, Type> perkTypes = new Dictionary<string, Type>();
+
+		// Tracks group to perk lists
+		// groupName, perkTypes
+		internal static Dictionary<string, List<Type>> perkLinks = new Dictionary<string, List<Type>>();
+
+		// Tracks player instances of perks
+		internal static Dictionary<Player, List<Perk>> userPerkSettings = new Dictionary<Player, List<Perk>>();
+
+		// Saving player promotions
 		internal static Dictionary<string, string> groups = new Dictionary<string, string>();
 
 		public override void OnEnabled()
@@ -31,15 +42,20 @@ namespace PatreonPerks
 
 			ev = new EventHandlers();
 			Exiled.Events.Handlers.Player.Verified += ev.OnPlayerVerified;
+			Exiled.Events.Handlers.Player.IntercomSpeaking += ev.OnIntercomUse;
+			Exiled.Events.Handlers.Player.ChangingGroup += ev.OnAssignGroup;
 
 			Exiled.Events.Handlers.Server.RestartingRound += ev.OnRoundRestart;
 
-			perkList = Assembly.GetExecutingAssembly().GetTypes().Where(type => type.Namespace == "PatreonPerks.Perks" && type.Name != "Perk").Select(x => x.Name).ToList();
+			foreach (var a in Assembly.GetExecutingAssembly().GetTypes().Where(type => type.Namespace == "PatreonPerks.Perks" && type.Name != "Perk"))
+			{
+				perkTypes.Add(a.Name, a);
+			}
 
 			if (!Directory.Exists(FolderFilePath)) Directory.CreateDirectory(FolderFilePath);
 			if (!File.Exists(PatreonPerkLinks)) File.WriteAllText(PatreonPerkLinks, "{}");
 			if (!File.Exists(GroupOverridesFile)) File.WriteAllText(GroupOverridesFile, "{}");
-			perkLinks = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(PatreonPerkLinks));
+			perkLinks = JsonConvert.DeserializeObject<Dictionary<string, List<Type>>>(File.ReadAllText(PatreonPerkLinks));
 			groups = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(GroupOverridesFile));
 		}
 
@@ -48,6 +64,8 @@ namespace PatreonPerks
 			base.OnDisabled();
 
 			Exiled.Events.Handlers.Player.Verified -= ev.OnPlayerVerified;
+			Exiled.Events.Handlers.Player.IntercomSpeaking -= ev.OnIntercomUse;
+			Exiled.Events.Handlers.Player.ChangingGroup -= ev.OnAssignGroup;
 
 			Exiled.Events.Handlers.Server.RestartingRound -= ev.OnRoundRestart;
 
@@ -69,6 +87,25 @@ namespace PatreonPerks
 						groupName = n
 					};
 				}
+			}
+			return null;
+		}
+
+		internal static string GetGroupName(UserGroup group)
+		{
+			Dictionary<string, UserGroup> groups = ServerStatic.PermissionsHandler.GetAllGroups();
+			foreach (var g in groups)
+			{
+				if (g.Value == group) return g.Key;
+			}
+			return null;
+		}
+
+		internal static object GetPerkSettings(Player p, Type t)
+		{
+			foreach (Perk perk in Plugin.userPerkSettings[p])
+			{
+				if (t.IsAssignableFrom(perk.GetType())) return perk;
 			}
 			return null;
 		}

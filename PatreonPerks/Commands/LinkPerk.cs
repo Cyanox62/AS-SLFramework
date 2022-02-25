@@ -31,7 +31,7 @@ namespace PatreonPerks.Commands
 				string arg = arguments.ElementAt(0).ToLower();
 				if (arg == "perks")
 				{
-					if (Plugin.perkList.Count == 0)
+					if (Plugin.perkTypes.Count == 0)
 					{
 						response = "There are no perks loaded.";
 						return true;
@@ -40,10 +40,10 @@ namespace PatreonPerks.Commands
 					{
 						StringBuilder sb = new StringBuilder();
 						sb.Append("Perk List:\n");
-						for (int i = 0; i < Plugin.perkList.Count; i++)
+						for (int i = 0; i < Plugin.perkTypes.Count; i++)
 						{
-							sb.Append($"- {Plugin.perkList[i]}");
-							if (i != Plugin.perkList.Count - 1) sb.Append("\n");
+							sb.Append($"- {Plugin.perkTypes[i.ToString()]}");
+							if (i != Plugin.perkTypes.Count - 1) sb.Append("\n");
 						}
 						response = sb.ToString();
 						return true;
@@ -70,7 +70,7 @@ namespace PatreonPerks.Commands
 								sb.Append(t[a]);
 								if (a != t.Count - 1) sb.Append(", ");
 							}
-							if (i != Plugin.perkList.Count - 1) sb.Append("\n");
+							if (i != Plugin.perkLinks.Count - 1) sb.Append("\n");
 						}
 						response = sb.ToString();
 						return true;
@@ -94,21 +94,21 @@ namespace PatreonPerks.Commands
 				if (userGroup != null)
 				{
 					string name = arguments.ElementAt(2);
-					if (Plugin.perkList.Contains(name))
+					if (Plugin.perkTypes.ContainsKey(name))
 					{
+						Type t = Plugin.perkTypes[name];
 						string arg = arguments.ElementAt(0).ToLower();
 						if (arg == "add")
 						{
 							if (!Plugin.perkLinks.ContainsKey(userGroup.groupName))
 							{
-								Plugin.perkLinks.Add(userGroup.groupName, new List<string>());
+								Plugin.perkLinks.Add(userGroup.groupName, new List<Type>());
 							}
 
-							if (!Plugin.perkLinks[userGroup.groupName].Contains(name))
+							if (!Plugin.perkLinks[userGroup.groupName].Contains(t))
 							{
-								Plugin.perkLinks[userGroup.groupName].Add(name);
+								Plugin.perkLinks[userGroup.groupName].Add(t);
 								response = $"Linked perk '{name}' to group {userGroup.groupName}.";
-								return true;
 							}
 							else
 							{
@@ -120,7 +120,7 @@ namespace PatreonPerks.Commands
 						{
 							if (Plugin.perkLinks.ContainsKey(userGroup.groupName))
 							{
-								Plugin.perkLinks[userGroup.groupName].Remove(name);
+								Plugin.perkLinks[userGroup.groupName].Remove(t);
 								if (Plugin.perkLinks[userGroup.groupName].Count == 0)
 								{
 									Plugin.perkLinks.Remove(userGroup.groupName);
