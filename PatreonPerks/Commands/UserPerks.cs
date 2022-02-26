@@ -64,7 +64,7 @@ namespace PatreonPerks.Commands
 									{
 										if (arg == "on" || arg == "off")
 										{
-											setSettings.Param = arg;
+											setSettings.Param = arg.ToLower();
 										}
 										response = $"{type.Name} has been toggled {setSettings.Param}.";
 									}
@@ -108,17 +108,22 @@ namespace PatreonPerks.Commands
 									{
 										if (arg == "on" || arg == "off")
 										{
-											setSettings.Param = arg;
+											setSettings.Param = arg.ToLower();
+											response = $"{type.Name} has been toggled {setSettings.Param}.";
+											File.WriteAllText(Plugin.UserSettings, JsonConvert.SerializeObject(Plugin.userPerkSettings, Formatting.Indented, Plugin.userSerializeSettings));
+											return true;
 										}
-										response = $"{type.Name} has been toggled {setSettings.Param}.";
+										else
+										{
+											response = "Unknown parameter.";
+											return false;
+										}
 									}
 									else
 									{
 										response = "Failed to find user settings.";
 										return false;
 									}
-									File.WriteAllText(Plugin.UserSettings, JsonConvert.SerializeObject(Plugin.userPerkSettings, Formatting.Indented, Plugin.userSerializeSettings));
-									return true;
 								}
 								else
 								{

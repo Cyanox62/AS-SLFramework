@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8A16D9D5-5B12-4C1C-9EFE-AFFC77E3F3C6}</ProjectGuid>
+    <ProjectGuid>{724C391D-04FC-465B-BF6E-96C48C4D7AD4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ExtraUtilities</RootNamespace>
-    <AssemblyName>ExtraUtilities</AssemblyName>
+    <RootNamespace>ExtraAdditions</RootNamespace>
+    <AssemblyName>ExtraAdditions</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -29,10 +29,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup>
-    <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -45,13 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config.cs" />
-    <Compile Include="EventHandlers.cs" />
-    <Compile Include="Plugin.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="0Harmony" HintPath="$(ASFRAMEWORK_REFERENCES)\0Harmony.dll" Private="false" />
     <Reference Include="Assembly-CSharp" HintPath="$(ASFRAMEWORK_REFERENCES)\Assembly-CSharp_publicized.dll" Private="false" />
     <Reference Include="Assembly-CSharp-firstpass" HintPath="$(ASFRAMEWORK_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="false" />
     <Reference Include="CommandSystem.Core" HintPath="$(ASFRAMEWORK_REFERENCES)\CommandSystem.Core.dll" Private="false" />
@@ -62,15 +51,18 @@
     <Reference Include="UnityEngine.PhysicsModule" HintPath="$(ASFRAMEWORK_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
+    <Compile Include="EventHandlers.cs" />
+    <Compile Include="Plugin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="EXILED">
-      <Version>5.0.0-beta.3</Version>
+      <Version>5.0.0-beta.5</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>xcopy /y $(ProjectDir)$(OutDir)$(TargetFileName) $(SolutionDir)Builds\</PostBuildEvent>
-  </PropertyGroup>
 </Project>

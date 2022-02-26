@@ -70,9 +70,11 @@ namespace PatreonPerks
 		internal void OnIntercomUse(IntercomSpeakingEventArgs ev)
 		{
 			Type t = typeof(ExtendIntercom);
-			if (Plugin.perkLinks.ContainsKey(ev.Player.GroupName) && Plugin.perkLinks[ev.Player.GroupName].Contains(t))
+			ExtendIntercom settings = (ExtendIntercom)Plugin.GetPerkSettings(ev.Player, t);
+			if (Plugin.perkLinks.ContainsKey(ev.Player.GroupName) && Plugin.perkLinks[ev.Player.GroupName].Contains(t) && settings.Param == "on")
 			{
-				Intercom.host.NetworkIntercomTime += 10;
+				Log.Warn("has it");
+				Intercom.host.speechRemainingTime = 30;
 			}
 		}
 	}
