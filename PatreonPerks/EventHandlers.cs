@@ -1,14 +1,11 @@
 ﻿using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using PatreonPerks.Perks;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PatreonPerks
 {
