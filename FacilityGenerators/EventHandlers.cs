@@ -98,13 +98,13 @@ namespace FacilityGenerators
 		{
 			int totalBlackouts = UnityEngine.Random.Range(Plugin.singleton.Config.MinBlackoutsPerRound, Plugin.singleton.Config.MaxBlackoutsPerRound);
 			Log("Total blackouts planned for this round: " + totalBlackouts);
-			//for (int i = 0; i < totalBlackouts; i++)
-			for (int i = 0; i < 2; i++)
+			for (int i = 0; i < totalBlackouts; i++)
+			//for (int i = 0; i < 2; i++)
 			{
 				float randomDelay = UnityEngine.Random.Range(Plugin.singleton.Config.MinTimeBetweenBlackouts, Plugin.singleton.Config.MaxTimeBetweenBlackouts);
 				Log("Next blackout will happen in: " + randomDelay + " seconds");
-				//yield return Timing.WaitForSeconds(randomDelay);
-				yield return Timing.WaitForSeconds(10f);
+				yield return Timing.WaitForSeconds(randomDelay);
+				//yield return Timing.WaitForSeconds(10f);
 				if (EventHandlers.isWarheadDetonated) yield break;
 				else
 				{
