@@ -17,6 +17,7 @@ namespace PatreonPerks
 		internal void OnRoundRestart()
 		{
 			File.WriteAllText(Plugin.GroupOverridesFile, JsonConvert.SerializeObject(Plugin.groups, Formatting.Indented));
+			File.WriteAllText(Plugin.UserSettings, JsonConvert.SerializeObject(Plugin.userPerkSettings, Formatting.Indented, Plugin.userSerializeSettings));
 		}
 
 		internal void OnPlayerVerified(VerifiedEventArgs ev)
@@ -43,7 +44,6 @@ namespace PatreonPerks
 						(Plugin.perkLinks.ContainsKey(ev.Player.GroupName) &&
 						!Plugin.perkLinks[ev.Player.GroupName].Select(x => x.Name).Contains(perk.PerkName)))
 					{
-						Log.Warn("old perk detected, removing");
 						Plugin.userPerkSettings[ev.Player.UserId].RemoveAt(i);
 					}
 				}
@@ -59,9 +59,13 @@ namespace PatreonPerks
 				{
 					Plugin.userPerkSettings.Add(ev.Player.UserId, new List<IPerk>());
 				}
+				IEnumerable<string> perks = Plugin.userPerkSettings[ev.Player.UserId].Select(x => x.PerkName);
 				foreach (Type perk in Plugin.perkLinks[groupName])
 				{
-					Plugin.userPerkSettings[ev.Player.UserId].Add((IPerk)Activator.CreateInstance(perk));
+					if (!perks.Contains(perk.Name))
+					{
+						Plugin.userPerkSettings[ev.Player.UserId].Add((IPerk)Activator.CreateInstance(perk));
+					}
 				}
 			}
 		}
