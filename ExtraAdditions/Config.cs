@@ -13,6 +13,12 @@ namespace ExtraAdditions
 		[Description("Determines if doors can be opened without holding a keycard.")]
 		public bool RequireHeldKeycard { get; set; } = false;
 
+		[Description("Determines the time in seconds to display the access denied keycard hint.")]
+		public float AccessDeniedHintTime { get; set; } = 3f;
+
+		[Description("Formatting for where the hint is placed on screen. The higher the number, the lower the text goes.")]
+		public int KeycardHintTextLower { get; set; } = 6;
+
 		// Elevator Failure
 
 		[Description("Determines the minimum time in seconds an elevator can fail for.")]

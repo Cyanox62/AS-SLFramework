@@ -42,9 +42,9 @@ namespace WelcomeScreen
             Loader.Plugins.FirstOrDefault(pl => pl.Name == "TipSystem")?.Assembly?.GetType("TipSystem.API.System")?.GetMethod("ShowHint", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { p, hint, time });
         }
 
-        internal static void ClearHints(Player p)
+        internal static void ClearHints(Player p, string filter = "")
         {
-            Loader.Plugins.FirstOrDefault(pl => pl.Name == "TipSystem")?.Assembly?.GetType("TipSystem.API.System")?.GetMethod("ClearHints", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { p });
+            Loader.Plugins.FirstOrDefault(pl => pl.Name == "TipSystem")?.Assembly?.GetType("TipSystem.API.System")?.GetMethod("ClearHints", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { p, filter });
         }
 
         public override string Author => "Cyanox";

@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Features;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TipSystem.API
 {
@@ -39,12 +40,30 @@ namespace TipSystem.API
             }
         }
 
-        public static void ClearHints(Player player)
-		{
+        public static void ClearHints(Player player, string filter = "")
+        {
             if (Plugin.hintQueue.ContainsKey(player.UserId))
             {
-                Plugin.hintQueue.Remove(player.UserId);
-                player.ShowHint(string.Empty, 0.1f);
+                if (filter != string.Empty)
+				{
+                    for (int i = Plugin.hintQueue.Count - 1; i >= 0; i--)
+					{
+                        var entry = Plugin.hintQueue.ElementAt(i);
+                        for (int a = entry.Value.Count - 1; a >= 0; a--)
+						{
+                            HintData hint = entry.Value[a];
+                            if (hint.text.Contains(filter))
+                            {
+                                Plugin.hintQueue[entry.Key].Remove(hint);
+                            }
+                        }
+					}
+				}
+                else
+				{
+                    Plugin.hintQueue.Remove(player.UserId);
+                    player.ShowHint(string.Empty, 0.1f);
+                }
             }
         }
     }
