@@ -81,7 +81,7 @@ namespace ExtraAdditions.ItemSpawning
 
 				foreach (Vector3 location in GetPositionsUnder(room, MaxWallThreshold))
 				{
-					Vector3 bench = pos + location * 5;
+					Vector3 bench = pos + location * 5.2f;
 					Vector3 pos1 = Quaternion.Euler(0, 90, 0) * location;
 					Vector3 pos2 = Quaternion.Euler(0, -90, 0) * location;
 					spawnPositions.Add(bench + pos1 * 1f);
