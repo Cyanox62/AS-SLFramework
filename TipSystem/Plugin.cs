@@ -109,7 +109,6 @@ namespace TipSystem
 						{
 							a += finalHint[i];
 						}
-						Log.Warn(a.Replace("\n", "[n]"));
 						player.ShowHint(a, hintInterval * 2f);
 					}
                 }      

@@ -25,8 +25,9 @@ namespace ExtraAdditions
 
 		public string FlashlightBattery { get; private set; } = "Flashlight Battery: {percent}%";
 
-		// Autonuke
+		// Misc
 
 		public string WarheadDetonation { get; private set; } = "<color=red>Warhead Detonation in {seconds} seconds</color>";
+		public string Decontamination { get; private set; } = "<color=red>Decontamination in {seconds} seconds</color>";
 	}
 }

@@ -15,6 +15,7 @@ namespace ExtraAdditions
 		private FlashlightBattery.EventHandlers flashlightBatteryEvents;
 		private Autonuke.EventHandlers autoNukeEvents;
 		private ItemSpawning.EventHandlers itemSpawningEvents;
+		private Misc.EventHandlers miscEvents;
 
 		internal static Dictionary<string, string> groups = new Dictionary<string, string>();
 
@@ -60,9 +61,6 @@ namespace ExtraAdditions
 			Exiled.Events.Handlers.Server.RoundStarted += autoNukeEvents.OnRoundStart;
 			Exiled.Events.Handlers.Server.RoundEnded += autoNukeEvents.OnRoundEnd;
 
-			Exiled.Events.Handlers.Warhead.Starting += autoNukeEvents.OnWarheadStart;
-			Exiled.Events.Handlers.Warhead.Stopping += autoNukeEvents.OnWarheadStop;
-
 			// Item Spawning
 
 			itemSpawningEvents = new ItemSpawning.EventHandlers();
@@ -73,6 +71,13 @@ namespace ExtraAdditions
 			{
 				ItemSpawning.EventHandlers.itemDrops.addEntry(entry.Key, entry.Value);
 			}
+
+			// Misc
+
+			miscEvents = new Misc.EventHandlers();
+
+			Exiled.Events.Handlers.Warhead.Starting += miscEvents.OnWarheadStart;
+			Exiled.Events.Handlers.Warhead.Stopping += miscEvents.OnWarheadStop;
 		}
 
 		public override void OnDisabled()
@@ -113,9 +118,6 @@ namespace ExtraAdditions
 			Exiled.Events.Handlers.Server.RoundStarted -= autoNukeEvents.OnRoundStart;
 			Exiled.Events.Handlers.Server.RoundEnded -= autoNukeEvents.OnRoundEnd;
 
-			Exiled.Events.Handlers.Warhead.Starting -= autoNukeEvents.OnWarheadStart;
-			Exiled.Events.Handlers.Warhead.Stopping -= autoNukeEvents.OnWarheadStop;
-
 			autoNukeEvents = null;
 
 			// Item Spawning
@@ -125,6 +127,13 @@ namespace ExtraAdditions
 			itemSpawningEvents = null;
 
 			ItemSpawning.EventHandlers.itemDrops.Clear();
+
+			// Misc
+
+			Exiled.Events.Handlers.Warhead.Starting -= miscEvents.OnWarheadStart;
+			Exiled.Events.Handlers.Warhead.Stopping -= miscEvents.OnWarheadStop;
+
+			miscEvents = null;
 		}
 
 		internal static void AccessHintSystem(Player p, string hint, float time)

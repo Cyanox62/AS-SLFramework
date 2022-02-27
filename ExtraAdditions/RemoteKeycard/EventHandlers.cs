@@ -42,7 +42,6 @@ namespace ExtraAdditions.RemoteKeycard
 				int perms = (int)ev.Door.RequiredPermissions.RequiredPermissions;
 				if (perms > (int)KeycardPermissions.ScpOverride) perms -= (int)KeycardPermissions.ScpOverride;
 				else if (perms % 2 == 1) perms %= 2;
-				Log.Warn((KeycardPermissions)perms);
 				if (keycardPerms.ContainsKey((KeycardPermissions)perms))
 				{
 					Plugin.ClearHints(ev.Player, Plugin.singleton.Translation.AccessDenied.Substring(0, Plugin.singleton.Translation.AccessDenied.IndexOf("{") - 2));
