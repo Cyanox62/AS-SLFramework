@@ -49,6 +49,9 @@ namespace ExtraAdditions
 		[Description("The amount of time in seconds before the nuke starts.")]
 		public float TimeUntilAutonuke { get; set; } = 900;
 
+		[Description("At what time intervals after autonuke starts to announce certain CASSIE announcements.")]
+		public Dictionary<float, string> CassieNukeAnnouncements { get; set; } = new Dictionary<float, string>();
+
 		// Item Spawning
 
 		[Description("The percent chance of each random bench spawn.")]
