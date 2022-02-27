@@ -77,14 +77,16 @@ namespace TokenShop
 
 		internal void OnSetRole(ChangingRoleEventArgs ev)
 		{
-			if (!survivingPlayers.ContainsKey(ev.Player) && 
-				(ev.NewRole == RoleType.ClassD ||
+			if (!survivingPlayers.ContainsKey(ev.Player))
+			{
+				if (ev.NewRole == RoleType.ClassD ||
 				ev.NewRole == RoleType.Scientist ||
 				ev.NewRole == RoleType.FacilityGuard ||
-				ev.NewRole.GetTeam() == Team.SCP))
-			{
-				survivingPlayers.Add(ev.Player, true);
-				Log($"Player {ev.Player.UserId} was added as a surviving player.");
+				ev.NewRole.GetTeam() == Team.SCP)
+				{
+					survivingPlayers.Add(ev.Player, true);
+					Log($"Player {ev.Player.UserId} was added as a surviving player.");
+				}
 			}
 			else if (survivingPlayers[ev.Player])
 			{

@@ -104,9 +104,9 @@ namespace ExtraAdditions.FlashlightBattery
 			{
 				int battery = (int)(component.GetRemainingBattery() / component.GetMaxBattery() * 100f);
 				string bString = $"{new string('\n', Plugin.singleton.Config.FlashlightHintTextLower)}{Plugin.singleton.Translation.FlashlightBattery.Replace("{percent}", battery.ToString())}";
-				if (battery <= 95)
+				if (battery <= 25)
 				{
-					bString = bString.Insert(Plugin.singleton.Config.FlashlightHintTextLower, battery <= 90 ? "<color=red>" : "<color=yellow>");
+					bString = bString.Insert(Plugin.singleton.Config.FlashlightHintTextLower, battery <= 10 ? "<color=red>" : "<color=yellow>");
 					bString += "</color>";
 				}
 				Plugin.AccessHintSystem(player, bString, 1f);

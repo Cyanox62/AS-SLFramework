@@ -14,6 +14,7 @@ namespace ExtraAdditions
 		private RemoteKeycard.EventHandlers remoteKeycardEvents;
 		private FlashlightBattery.EventHandlers flashlightBatteryEvents;
 		private Autonuke.EventHandlers autoNukeEvents;
+		private ItemSpawning.EventHandlers itemSpawningEvents;
 
 		internal static Dictionary<string, string> groups = new Dictionary<string, string>();
 
@@ -58,6 +59,12 @@ namespace ExtraAdditions
 
 			Exiled.Events.Handlers.Server.RoundStarted += autoNukeEvents.OnRoundStart;
 			Exiled.Events.Handlers.Server.RoundEnded += autoNukeEvents.OnRoundEnd;
+
+			// Item Spawning
+
+			itemSpawningEvents = new ItemSpawning.EventHandlers();
+
+			Exiled.Events.Handlers.Server.RoundStarted += itemSpawningEvents.OnRoundStart;
 		}
 
 		public override void OnDisabled()
@@ -99,6 +106,12 @@ namespace ExtraAdditions
 			Exiled.Events.Handlers.Server.RoundEnded -= autoNukeEvents.OnRoundEnd;
 
 			autoNukeEvents = null;
+
+			// Item Spawning
+
+			Exiled.Events.Handlers.Server.RoundStarted -= itemSpawningEvents.OnRoundStart;
+
+			itemSpawningEvents = null;
 		}
 
 		internal static void AccessHintSystem(Player p, string hint, float time)

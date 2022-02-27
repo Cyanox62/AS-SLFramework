@@ -43,9 +43,9 @@ namespace ExtraAdditions
 		// Autonuke
 
 		[Description("Determines if the nuke can be stopped after automatically starting.")]
-		public bool CanStopDetonation { get; set; } = false;
+		public bool CanStopAutonuke { get; set; } = false;
 
 		[Description("The amount of time in seconds before the nuke starts.")]
-		public float TimeUntilStart { get; set; } = 900;
+		public float TimeUntilAutonuke { get; set; } = 900;
 	}
 }

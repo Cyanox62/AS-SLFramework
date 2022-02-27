@@ -21,9 +21,9 @@ namespace ExtraAdditions.Autonuke
 
 		private IEnumerator<float> Autonuke()
 		{
-			yield return Timing.WaitForSeconds(10f);
+			yield return Timing.WaitForSeconds(Plugin.singleton.Config.TimeUntilAutonuke);
 			Warhead.Start();
-			Warhead.IsLocked = !Plugin.singleton.Config.CanStopDetonation;
+			Warhead.IsLocked = !Plugin.singleton.Config.CanStopAutonuke;
 		}
 	}
 }
