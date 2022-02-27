@@ -18,16 +18,16 @@ namespace FacilityGenerators
 		internal static bool isWarheadStarted = false;
 		internal static bool isWarheadDetonated = false;
 		internal static bool isBlackout = false;
+		internal static bool isBlackoutEnabled = false;
+		internal static CoroutineHandle coroutine;
 
 		private Color defaultColor = new Color(1f, 0.2f, 0.2f, 1f);
-
-		private CoroutineHandle coroutine;
 
 		internal void OnRoundStart()
 		{
 			isBlackout = false;
 
-			coroutine = Timing.RunCoroutine(BlackoutCoroutine());
+			if (isBlackoutEnabled) coroutine = Timing.RunCoroutine(BlackoutCoroutine());
 
 			List<Room> rooms = Room.Get(x => x.Zone != ZoneType.Surface).ToList();
 			List<Room> discard = new List<Room>();
@@ -104,6 +104,7 @@ namespace FacilityGenerators
 				float randomDelay = UnityEngine.Random.Range(Plugin.singleton.Config.MinTimeBetweenBlackouts, Plugin.singleton.Config.MaxTimeBetweenBlackouts);
 				Log("Next blackout will happen in: " + randomDelay + " seconds");
 				yield return Timing.WaitForSeconds(randomDelay);
+
 				//yield return Timing.WaitForSeconds(10f);
 				if (EventHandlers.isWarheadDetonated) yield break;
 				else

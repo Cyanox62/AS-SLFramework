@@ -11,7 +11,6 @@ namespace ExtraAdditions.Autonuke
 
 		internal void OnRoundStart()
 		{
-			isAutoNuke = false;
 			coroutine = Timing.RunCoroutine(Autonuke());
 		}
 
