@@ -69,5 +69,12 @@ namespace ExtraAdditions
 			{ ItemType.Ammo762x39, 5f },
 			{ ItemType.Ammo9x19, 5f },
 		};
+
+		[Description("The items to spawn randomly on entrance zone desks.")]
+		public List<ItemType> DeskItems { get; set; } = new List<ItemType>()
+		{
+			ItemType.KeycardZoneManager,
+			ItemType.KeycardZoneManager
+		};
 	}
 }
