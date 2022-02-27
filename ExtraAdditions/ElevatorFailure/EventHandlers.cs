@@ -1,52 +1,13 @@
 ﻿using Exiled.API.Features;
-using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs;
-using Interactables.Interobjects.DoorUtils;
 using MEC;
-using Newtonsoft.Json;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
-namespace ExtraAdditions
+namespace ExtraAdditions.ElevatorFailure
 {
 	class EventHandlers
 	{
-		// Thanks Beryl <3
-		// https://github.com/SebasCapo/RemoteKeycard
-		internal void OnDoorAccess(InteractingDoorEventArgs ev)
-		{
-			if (Plugin.singleton.Config.RequireHeldKeycard) return;
-
-			if (!ev.IsAllowed && ev.Player.Items.Any(item => item is Keycard keycard && (keycard.Base.Permissions & ev.Door.RequiredPermissions.RequiredPermissions) != 0))
-			{
-				ev.IsAllowed = true;
-			}
-		}
-
-		internal void OnLockerAccess(InteractingLockerEventArgs ev)
-		{
-			if (Plugin.singleton.Config.RequireHeldKeycard) return;
-
-			if (!ev.IsAllowed && ev.Chamber != null && ev.Player.Items.Any(item => item is Keycard keycard && keycard.Base.Permissions.HasFlagFast(ev.Chamber.RequiredPermissions)))
-			{
-				ev.IsAllowed = true;
-			}
-		}
-
-		internal void OnGeneratorUnlock(UnlockingGeneratorEventArgs ev)
-		{
-			if (Plugin.singleton.Config.RequireHeldKeycard) return;
-
-			if (!ev.IsAllowed && ev.Player.Items.Any(item => item is Keycard keycard && (keycard.Base.Permissions & ev.Generator.Base._requiredPermission) != 0))
-			{
-				ev.IsAllowed = true;
-			}
-		}
-
-		// --- //
-
 		private Exiled.API.Features.Lift lastBrokenLift = null;
 		private Exiled.API.Features.Lift curBrokenLift = null;
 		private CoroutineHandle liftCoroutine;
@@ -64,7 +25,7 @@ namespace ExtraAdditions
 			if (ev.Lift == curBrokenLift)
 			{
 				ev.IsAllowed = false;
-				Plugin.AccessHintSystem(ev.Player, $"{new string('\n', Plugin.singleton.Config.TextLower)}{Plugin.singleton.Translation.BrokenElevator}", Plugin.singleton.Config.BrokenElevatorHintTime);
+				Plugin.AccessHintSystem(ev.Player, $"{new string('\n', Plugin.singleton.Config.ElevatorHintTextLower)}{Plugin.singleton.Translation.BrokenElevator}", Plugin.singleton.Config.BrokenElevatorHintTime);
 			}
 		}
 

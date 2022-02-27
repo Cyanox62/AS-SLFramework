@@ -1,9 +1,6 @@
 ﻿using Exiled.API.Features;
 using Exiled.Loader;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -13,7 +10,9 @@ namespace ExtraAdditions
 	{
 		internal static Plugin singleton;
 
-		private EventHandlers ev;
+		private ElevatorFailure.EventHandlers elevatorFailureEvents;
+		private RemoteKeycard.EventHandlers remoteKeycardEvents;
+		private FlashlightBattery.EventHandlers flashlightBatteryEvents;
 
 		internal static Dictionary<string, string> groups = new Dictionary<string, string>();
 
@@ -23,29 +22,64 @@ namespace ExtraAdditions
 
 			singleton = this;
 
-			ev = new EventHandlers();
-			Exiled.Events.Handlers.Player.InteractingDoor += ev.OnDoorAccess;
-			Exiled.Events.Handlers.Player.InteractingLocker += ev.OnLockerAccess;
-			Exiled.Events.Handlers.Player.UnlockingGenerator += ev.OnGeneratorUnlock;
-			Exiled.Events.Handlers.Player.InteractingElevator += ev.OnElevatorUse;
+			// Remote Keycard
 
-			Exiled.Events.Handlers.Server.RoundStarted += ev.OnRoundStart;
-			Exiled.Events.Handlers.Server.RestartingRound += ev.OnRoundRestart;
+			remoteKeycardEvents = new RemoteKeycard.EventHandlers();
+
+			Exiled.Events.Handlers.Player.InteractingDoor += remoteKeycardEvents.OnDoorAccess;
+			Exiled.Events.Handlers.Player.InteractingLocker += remoteKeycardEvents.OnLockerAccess;
+			Exiled.Events.Handlers.Player.UnlockingGenerator += remoteKeycardEvents.OnGeneratorUnlock;
+
+			// Elevator Failure
+
+			elevatorFailureEvents = new ElevatorFailure.EventHandlers();
+
+			Exiled.Events.Handlers.Server.RoundStarted += elevatorFailureEvents.OnRoundStart;
+			Exiled.Events.Handlers.Server.RestartingRound += elevatorFailureEvents.OnRoundRestart;
+
+			Exiled.Events.Handlers.Player.InteractingElevator += elevatorFailureEvents.OnElevatorUse;
+
+			// Flashlight Battery
+
+			flashlightBatteryEvents = new FlashlightBattery.EventHandlers();
+
+			Exiled.Events.Handlers.Server.RestartingRound += flashlightBatteryEvents.OnRoundRestart;
+
+			Exiled.Events.Handlers.Player.DroppingItem += flashlightBatteryEvents.OnDroppingItem;
+			Exiled.Events.Handlers.Player.PickingUpItem += flashlightBatteryEvents.OnPickingUpItem;
+			Exiled.Events.Handlers.Player.Spawning += flashlightBatteryEvents.OnSpawn;
 		}
 
 		public override void OnDisabled()
 		{
 			base.OnDisabled();
 
-			Exiled.Events.Handlers.Player.InteractingDoor -= ev.OnDoorAccess;
-			Exiled.Events.Handlers.Player.InteractingLocker -= ev.OnLockerAccess;
-			Exiled.Events.Handlers.Player.UnlockingGenerator -= ev.OnGeneratorUnlock;
-			Exiled.Events.Handlers.Player.InteractingElevator -= ev.OnElevatorUse;
+			// Remote Keycard
 
-			Exiled.Events.Handlers.Server.RoundStarted -= ev.OnRoundStart;
-			Exiled.Events.Handlers.Server.RestartingRound -= ev.OnRoundRestart;
+			Exiled.Events.Handlers.Player.InteractingDoor -= remoteKeycardEvents.OnDoorAccess;
+			Exiled.Events.Handlers.Player.InteractingLocker -= remoteKeycardEvents.OnLockerAccess;
+			Exiled.Events.Handlers.Player.UnlockingGenerator -= remoteKeycardEvents.OnGeneratorUnlock;
 
-			ev = null;
+			remoteKeycardEvents = null;
+
+			// Elevator Failure
+
+			Exiled.Events.Handlers.Server.RoundStarted -= elevatorFailureEvents.OnRoundStart;
+			Exiled.Events.Handlers.Server.RestartingRound -= elevatorFailureEvents.OnRoundRestart;
+
+			Exiled.Events.Handlers.Player.InteractingElevator -= elevatorFailureEvents.OnElevatorUse;
+
+			elevatorFailureEvents = null;
+
+			// Flashlight Battery
+
+			Exiled.Events.Handlers.Server.RestartingRound -= flashlightBatteryEvents.OnRoundRestart;
+
+			Exiled.Events.Handlers.Player.DroppingItem -= flashlightBatteryEvents.OnDroppingItem;
+			Exiled.Events.Handlers.Player.PickingUpItem -= flashlightBatteryEvents.OnPickingUpItem;
+			Exiled.Events.Handlers.Player.Spawning -= flashlightBatteryEvents.OnSpawn;
+
+			flashlightBatteryEvents = null;
 		}
 
 		internal static void AccessHintSystem(Player p, string hint, float time)
