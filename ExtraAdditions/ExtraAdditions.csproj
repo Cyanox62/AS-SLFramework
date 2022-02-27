@@ -54,6 +54,7 @@
     <Reference Include="UnityEngine.PhysicsModule" HintPath="$(ASFRAMEWORK_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Autonuke\EventHandlers.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="ElevatorFailure\EventHandlers.cs" />
     <Compile Include="FlashlightBattery\BatteryComponent.cs" />

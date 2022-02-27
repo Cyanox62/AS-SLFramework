@@ -12,12 +12,19 @@ namespace ServerStatistics
 	{
 		private void SendWebhook(string message)
 		{
-			using (dWebHook dcWeb = new dWebHook())
+			try
 			{
-				dcWeb.ProfilePicture = Plugin.singleton.Config.ServerEventAvatarURL;
-				dcWeb.UserName = Plugin.singleton.Config.ServerEventName;
-				dcWeb.WebHook = Plugin.singleton.Config.ServerEventWebhook;
-				dcWeb.SendMessage(message);
+				using (dWebHook dcWeb = new dWebHook())
+				{
+					dcWeb.ProfilePicture = Plugin.singleton.Config.ServerEventAvatarURL;
+					dcWeb.UserName = Plugin.singleton.Config.ServerEventName;
+					dcWeb.WebHook = Plugin.singleton.Config.ServerEventWebhook;
+					dcWeb.SendMessage(message);
+				}
+			}
+			catch (Exception x)
+			{
+				Log.Error("Error sending webhook: " + x.Message);
 			}
 		}
 
@@ -44,12 +51,18 @@ namespace ServerStatistics
 
 		internal void OnNukeStart(StartingEventArgs ev)
 		{
-			SendWebhook(Plugin.singleton.Translation.NukeStart);
+			if (!Warhead.IsInProgress)
+			{
+				SendWebhook(Plugin.singleton.Translation.NukeStart);
+			}
 		}
 
 		internal void OnNukeStop(StoppingEventArgs ev)
 		{
-			SendWebhook(Plugin.singleton.Translation.NukeStop);
+			if (Warhead.IsInProgress)
+			{
+				SendWebhook(Plugin.singleton.Translation.NukeStop);
+			}
 		}
 
 		internal void OnNukeDetonate()

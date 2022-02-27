@@ -13,6 +13,7 @@ namespace ExtraAdditions
 		private ElevatorFailure.EventHandlers elevatorFailureEvents;
 		private RemoteKeycard.EventHandlers remoteKeycardEvents;
 		private FlashlightBattery.EventHandlers flashlightBatteryEvents;
+		private Autonuke.EventHandlers autoNukeEvents;
 
 		internal static Dictionary<string, string> groups = new Dictionary<string, string>();
 
@@ -50,6 +51,13 @@ namespace ExtraAdditions
 			Exiled.Events.Handlers.Player.Spawning += flashlightBatteryEvents.OnSpawn;
 			Exiled.Events.Handlers.Player.TogglingFlashlight += flashlightBatteryEvents.OnToggleFlashlight;
 			Exiled.Events.Handlers.Player.ChangingItem += flashlightBatteryEvents.OnChangingItem;
+
+			// Autonuke
+
+			autoNukeEvents = new Autonuke.EventHandlers();
+
+			Exiled.Events.Handlers.Server.RoundStarted += autoNukeEvents.OnRoundStart;
+			Exiled.Events.Handlers.Server.RoundEnded += autoNukeEvents.OnRoundEnd;
 		}
 
 		public override void OnDisabled()
@@ -84,6 +92,13 @@ namespace ExtraAdditions
 			Exiled.Events.Handlers.Player.ChangingItem -= flashlightBatteryEvents.OnChangingItem;
 
 			flashlightBatteryEvents = null;
+
+			// Autonuke
+
+			Exiled.Events.Handlers.Server.RoundStarted -= autoNukeEvents.OnRoundStart;
+			Exiled.Events.Handlers.Server.RoundEnded -= autoNukeEvents.OnRoundEnd;
+
+			autoNukeEvents = null;
 		}
 
 		internal static void AccessHintSystem(Player p, string hint, float time)
