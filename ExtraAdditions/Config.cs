@@ -54,7 +54,7 @@ namespace ExtraAdditions
 		[Description("The percent chance of each random bench spawn.")]
 		public float BenchSpawnChance { get; set; } = 75;
 
-		[Description("The percent chance of each random bench spawn.")]
+		[Description("The items that can spawn on benches along with their weights. Weights should add up to 100.")]
 		public Dictionary<ItemType, float> BenchItemSpawnWeights { get; set; } = new Dictionary<ItemType, float>()
 		{
 			{ ItemType.Medkit, 25f },
