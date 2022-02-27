@@ -58,6 +58,9 @@ namespace ExtraAdditions
 		[Description("At what time intervals after autonuke starts to announce certain CASSIE announcements.")]
 		public Dictionary<float, string> CassieNukeAnnouncements { get; set; } = new Dictionary<float, string>();
 
+		[Description("Formatting for where the hint is placed on screen. The higher the number, the lower the text goes.")]
+		public int WarheadHintTextLower { get; set; } = 16;
+
 		// Item Spawning
 
 		[Description("The percent chance of each random bench spawn.")]

@@ -60,6 +60,9 @@ namespace ExtraAdditions
 			Exiled.Events.Handlers.Server.RoundStarted += autoNukeEvents.OnRoundStart;
 			Exiled.Events.Handlers.Server.RoundEnded += autoNukeEvents.OnRoundEnd;
 
+			Exiled.Events.Handlers.Warhead.Starting += autoNukeEvents.OnWarheadStart;
+			Exiled.Events.Handlers.Warhead.Stopping += autoNukeEvents.OnWarheadStop;
+
 			// Item Spawning
 
 			itemSpawningEvents = new ItemSpawning.EventHandlers();
@@ -109,6 +112,9 @@ namespace ExtraAdditions
 
 			Exiled.Events.Handlers.Server.RoundStarted -= autoNukeEvents.OnRoundStart;
 			Exiled.Events.Handlers.Server.RoundEnded -= autoNukeEvents.OnRoundEnd;
+
+			Exiled.Events.Handlers.Warhead.Starting -= autoNukeEvents.OnWarheadStart;
+			Exiled.Events.Handlers.Warhead.Stopping -= autoNukeEvents.OnWarheadStop;
 
 			autoNukeEvents = null;
 
