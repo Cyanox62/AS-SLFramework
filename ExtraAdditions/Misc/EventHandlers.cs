@@ -43,9 +43,12 @@ namespace ExtraAdditions.Misc
 		{
 			yield return Timing.WaitForSeconds(DecontaminationTime - 30);
 			for (int i = 30; i > 0; i--)
-			foreach (Player player in Player.List)
 			{
-				Plugin.AccessHintSystem(player, $"{new string('\n', Plugin.singleton.Config.DecontaminationHintTextLower)}{Plugin.singleton.Translation.Decontamination.Replace("{seconds}", i.ToString())}", 1f);
+				yield return Timing.WaitForSeconds(1f);
+				foreach (Player player in Player.List)
+				{
+					Plugin.AccessHintSystem(player, $"{new string('\n', Plugin.singleton.Config.DecontaminationHintTextLower)}{Plugin.singleton.Translation.Decontamination.Replace("{seconds}", i.ToString())}", 1f);
+				}
 			}
 		}
 
