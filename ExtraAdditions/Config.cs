@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Interfaces;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace ExtraAdditions
@@ -47,5 +48,23 @@ namespace ExtraAdditions
 
 		[Description("The amount of time in seconds before the nuke starts.")]
 		public float TimeUntilAutonuke { get; set; } = 900;
+
+		// Item Spawning
+
+		[Description("The percent chance of each random bench spawn.")]
+		public float BenchSpawnChance { get; set; } = 75;
+
+		[Description("The percent chance of each random bench spawn.")]
+		public Dictionary<ItemType, float> BenchItemSpawnWeights { get; set; } = new Dictionary<ItemType, float>()
+		{
+			{ ItemType.Medkit, 25f },
+			{ ItemType.Adrenaline, 25f },
+			{ ItemType.Coin, 25f },
+			{ ItemType.Ammo12gauge, 5f },
+			{ ItemType.Ammo44cal, 5f },
+			{ ItemType.Ammo556x45, 5f },
+			{ ItemType.Ammo762x39, 5f },
+			{ ItemType.Ammo9x19, 5f },
+		};
 	}
 }

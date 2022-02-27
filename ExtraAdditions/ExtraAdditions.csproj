@@ -60,6 +60,7 @@
     <Compile Include="FlashlightBattery\BatteryComponent.cs" />
     <Compile Include="FlashlightBattery\EventHandlers.cs" />
     <Compile Include="ItemSpawning\EventHandlers.cs" />
+    <Compile Include="ItemSpawning\WeightedRandom.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteKeycard\EventHandlers.cs" />

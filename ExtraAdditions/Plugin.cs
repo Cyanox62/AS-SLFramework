@@ -65,6 +65,11 @@ namespace ExtraAdditions
 			itemSpawningEvents = new ItemSpawning.EventHandlers();
 
 			Exiled.Events.Handlers.Server.RoundStarted += itemSpawningEvents.OnRoundStart;
+
+			foreach (var entry in Config.BenchItemSpawnWeights)
+			{
+				ItemSpawning.EventHandlers.itemDrops.addEntry(entry.Key, entry.Value);
+			}
 		}
 
 		public override void OnDisabled()
@@ -112,6 +117,8 @@ namespace ExtraAdditions
 			Exiled.Events.Handlers.Server.RoundStarted -= itemSpawningEvents.OnRoundStart;
 
 			itemSpawningEvents = null;
+
+			ItemSpawning.EventHandlers.itemDrops.Clear();
 		}
 
 		internal static void AccessHintSystem(Player p, string hint, float time)
