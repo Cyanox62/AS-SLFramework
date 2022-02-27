@@ -10,6 +10,6 @@ namespace ExtraAdditions
 
 		// Flashlight Battery
 
-		public string ElevatorBattery { get; private set; } = "Flashlight Batter: {percent}%";
+		public string FlashlightBattery { get; private set; } = "Flashlight Battery: {percent}%";
 	}
 }

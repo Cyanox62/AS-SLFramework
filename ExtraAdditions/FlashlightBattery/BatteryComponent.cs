@@ -5,21 +5,22 @@ namespace ExtraAdditions.FlashlightBattery
 {
 	class BatteryComponent : MonoBehaviour
 	{
-		// 4 min
-		private const float MaxBattery = 240f;
+		private float MaxBattery = Plugin.singleton.Config.FlashlightBattery;
 		private float CurrentBattery;
+		private bool IsDraining = false;
 
-		public void Init(float battery = MaxBattery)
+		public void Init(float battery)
 		{
 			CurrentBattery = battery;
 		}
 
 		private void Update()
 		{
-			CurrentBattery = Mathf.Clamp(CurrentBattery - Time.deltaTime, 0, MaxBattery);
+			if (IsDraining) CurrentBattery = Mathf.Clamp(CurrentBattery - Time.deltaTime, 0, MaxBattery);
 		}
 
 		public float GetMaxBattery() => MaxBattery;
 		public float GetRemainingBattery() => CurrentBattery;
+		public void SetDraining(bool val) => IsDraining = val;
 	}
 }

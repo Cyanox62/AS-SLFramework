@@ -48,6 +48,8 @@ namespace ExtraAdditions
 			Exiled.Events.Handlers.Player.DroppingItem += flashlightBatteryEvents.OnDroppingItem;
 			Exiled.Events.Handlers.Player.PickingUpItem += flashlightBatteryEvents.OnPickingUpItem;
 			Exiled.Events.Handlers.Player.Spawning += flashlightBatteryEvents.OnSpawn;
+			Exiled.Events.Handlers.Player.TogglingFlashlight += flashlightBatteryEvents.OnToggleFlashlight;
+			Exiled.Events.Handlers.Player.ChangingItem += flashlightBatteryEvents.OnChangingItem;
 		}
 
 		public override void OnDisabled()
@@ -78,6 +80,8 @@ namespace ExtraAdditions
 			Exiled.Events.Handlers.Player.DroppingItem -= flashlightBatteryEvents.OnDroppingItem;
 			Exiled.Events.Handlers.Player.PickingUpItem -= flashlightBatteryEvents.OnPickingUpItem;
 			Exiled.Events.Handlers.Player.Spawning -= flashlightBatteryEvents.OnSpawn;
+			Exiled.Events.Handlers.Player.TogglingFlashlight -= flashlightBatteryEvents.OnToggleFlashlight;
+			Exiled.Events.Handlers.Player.ChangingItem -= flashlightBatteryEvents.OnChangingItem;
 
 			flashlightBatteryEvents = null;
 		}
