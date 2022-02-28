@@ -44,9 +44,11 @@ namespace ExtraAdditions.ItemSpawning
 
 			List<Room> curveRooms = Room.List.Where(x => x.name.Contains("EZ_Curve")).ToList();
 			curveRooms.ShuffleList();
-			for (int i = 0; i < curveRooms.Count / (float)Plugin.singleton.Config.BenchSpawnChance; i++)
+			for (int i = 0; i < curveRooms.Count; i++)
 			//for (int i = 0; i < curveRooms.Count; i++)
 			{
+				if (UnityEngine.Random.Range(0, 100) > Plugin.singleton.Config.BenchSpawnChance) return;
+
 				Room room = curveRooms[i];
 				Vector3 pos = room.transform.position;
 				pos.y += 2;
@@ -73,9 +75,9 @@ namespace ExtraAdditions.ItemSpawning
 
 			List<Room> tRooms = Room.List.Where(x => x.name.Contains("EZ_ThreeWay")).ToList();
 			tRooms.ShuffleList();
-			for (int i = 0; i < tRooms.Count / (float)Plugin.singleton.Config.BenchSpawnChance; i++)
-			//for (int i = 0; i < tRooms.Count; i++)
+			for (int i = 0; i < tRooms.Count; i++)
 			{
+				if (UnityEngine.Random.Range(0, 100) > Plugin.singleton.Config.BenchSpawnChance) return;
 				Room room = tRooms[i];
 				Vector3 pos = room.transform.position;
 				pos.y += 2;
@@ -106,7 +108,6 @@ namespace ExtraAdditions.ItemSpawning
 			Vector3 uPos = uRoom.transform.position;
 			uPos.y += 2;
 
-			Log.Warn(GetPositionsUnder(uRoom, MaxWallThreshold, MinDeskThreshold).Count);
 			foreach (Vector3 location in GetPositionsUnder(uRoom, MaxWallThreshold, MinDeskThreshold))
 			{
 				Vector3 offset = uPos + location * 1.6f;
