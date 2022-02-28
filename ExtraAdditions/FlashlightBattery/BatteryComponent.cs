@@ -10,7 +10,7 @@ namespace ExtraAdditions.FlashlightBattery
 {
 	class BatteryComponent : MonoBehaviour
 	{
-		private float MaxBattery = 30;
+		private float MaxBattery = Plugin.singleton.Config.FlashlightBattery;
 		private float CurrentBattery;
 		private bool IsDraining = false;
 		private bool IsDead = false;
@@ -47,7 +47,6 @@ namespace ExtraAdditions.FlashlightBattery
 		{
 			if (!IsDead)
 			{
-				Log.Warn("killing flashlight");
 				TurnOffFlashlight();
 				if (EventHandlers.flashlightHints.ContainsKey(player))
 				{

@@ -38,7 +38,6 @@ namespace ExtraAdditions.RemoteKeycard
 			}
 			else
 			{
-				Log.Warn(ev.Door.RequiredPermissions.RequiredPermissions);
 				int perms = (int)ev.Door.RequiredPermissions.RequiredPermissions;
 				if (perms > (int)KeycardPermissions.ScpOverride) perms -= (int)KeycardPermissions.ScpOverride;
 				else if (perms % 2 == 1) perms %= 2;
