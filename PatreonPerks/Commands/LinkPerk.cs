@@ -40,7 +40,7 @@ namespace PatreonPerks.Commands
 						sb.Append("Perk List:\n");
 						for (int i = 0; i < Plugin.perkTypes.Count; i++)
 						{
-							sb.Append($"- {Plugin.perkTypes[i.ToString()]}");
+							sb.Append($"- {Plugin.perkTypes.ElementAt(i).Value.Name}");
 							if (i != Plugin.perkTypes.Count - 1) sb.Append("\n");
 						}
 						response = sb.ToString();
