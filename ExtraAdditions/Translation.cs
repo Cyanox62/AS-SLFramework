@@ -30,5 +30,6 @@ namespace ExtraAdditions
 		public string WarheadDetonation { get; private set; } = "<color=red>Warhead Detonation in {seconds} seconds</color>";
 		public string Decontamination { get; private set; } = "<color=red>Decontamination in {seconds} seconds</color>";
 		public string CassieInUse { get; private set; } = "CASSIE IN PROGRESS. PLEASE WAIT.";
+		public string UnitMessage { get; private set; } = "discord.gg/yourlink";
 	}
 }

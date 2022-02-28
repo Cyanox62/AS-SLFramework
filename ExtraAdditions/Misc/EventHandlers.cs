@@ -1,13 +1,9 @@
 ﻿using Exiled.API.Features;
 using Exiled.Events.EventArgs;
-using LightContainmentZoneDecontamination;
 using MEC;
-using System;
+using Respawning;
+using Respawning.NamingRules;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static LightContainmentZoneDecontamination.DecontaminationController;
 
 namespace ExtraAdditions.Misc
 {
@@ -24,6 +20,14 @@ namespace ExtraAdditions.Misc
 		{
 			isCassieInUse = false;
 			decontCoroutine = Timing.RunCoroutine(Decontamination());
+
+			RespawnManager.Singleton.NamingManager.AllUnitNames.Add(
+				new SyncUnit
+				{
+					UnitName = Plugin.singleton.Translation.UnitMessage,
+					SpawnableTeam = (byte)SpawnableTeamType.NineTailedFox
+				}
+			);
 
 			foreach (var entry in Plugin.singleton.Config.RoomColorOverrides)
 			{
