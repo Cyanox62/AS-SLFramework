@@ -5,14 +5,15 @@ using MEC;
 using InventorySystem.Items;
 using Exiled.API.Features.Items;
 using Exiled.API.Features;
+using UnityEngine;
 
 namespace ExtraAdditions.FlashlightBattery
 {
 	class EventHandlers
 	{
 		private Dictionary<ItemBase, BatteryComponent> heldFlashlights = new Dictionary<ItemBase, BatteryComponent>();
-		private Dictionary<Pickup, float> droppedFlashlights = new Dictionary<Pickup, float>();
-		private Dictionary<Player, CoroutineHandle> flashlightHints = new Dictionary<Player, CoroutineHandle>();
+		private Dictionary<Pickup, FlashlightData> droppedFlashlights = new Dictionary<Pickup, FlashlightData>();
+		internal static Dictionary<Player, CoroutineHandle> flashlightHints = new Dictionary<Player, CoroutineHandle>();
 
 		internal void OnRoundRestart()
 		{
@@ -27,8 +28,24 @@ namespace ExtraAdditions.FlashlightBattery
 			if (ev.NewItem.Type == ItemType.Flashlight && heldFlashlights.ContainsKey(ev.NewItem.Base))
 			{
 				BatteryComponent component = heldFlashlights[ev.NewItem.Base];
-				component.SetDraining(true);
-				flashlightHints.Add(ev.Player, Timing.RunCoroutine(ShowHint(ev.Player, component)));
+				if (component.IsBatteryDead())
+				{
+					Timing.CallDelayed(0.2f, () => component.TurnOffFlashlight());
+					Plugin.AccessHintSystem(ev.Player, $"{new string('\n', Plugin.singleton.Config.FlashlightHintTextLower)}{Plugin.singleton.Translation.FlashlightIsDead}", Plugin.singleton.Config.DeadFlashlightHintTime);
+				}
+				else
+				{
+					component.SetDraining(true);
+					if (!flashlightHints.ContainsKey(ev.Player))
+					{
+						flashlightHints.Add(ev.Player, Timing.RunCoroutine(ShowHint(ev.Player, component)));
+					}
+					else
+					{
+						Timing.KillCoroutines(flashlightHints[ev.Player]);
+						flashlightHints[ev.Player] = Timing.RunCoroutine(ShowHint(ev.Player, component));
+					}
+				}
 			}
 		}
 
@@ -37,15 +54,23 @@ namespace ExtraAdditions.FlashlightBattery
 			if (heldFlashlights.ContainsKey(ev.Flashlight.Base))
 			{
 				BatteryComponent component = heldFlashlights[ev.Flashlight.Base];
-				component.SetDraining(ev.NewState);
-				if (ev.NewState)
+				if (component.IsBatteryDead() && ev.NewState)
 				{
-					flashlightHints.Add(ev.Player, Timing.RunCoroutine(ShowHint(ev.Player, component)));
+					ev.NewState = false;
+					Plugin.AccessHintSystem(ev.Player, $"{new string('\n', Plugin.singleton.Config.FlashlightHintTextLower)}{Plugin.singleton.Translation.FlashlightIsDead}", Plugin.singleton.Config.DeadFlashlightHintTime);
 				}
-				else if (flashlightHints.ContainsKey(ev.Player))
+				else
 				{
-					Timing.KillCoroutines(flashlightHints[ev.Player]);
-					flashlightHints.Remove(ev.Player);
+					component.SetDraining(ev.NewState);
+					if (ev.NewState)
+					{
+						flashlightHints.Add(ev.Player, Timing.RunCoroutine(ShowHint(ev.Player, component)));
+					}
+					else if (flashlightHints.ContainsKey(ev.Player))
+					{
+						Timing.KillCoroutines(flashlightHints[ev.Player]);
+						flashlightHints.Remove(ev.Player);
+					}
 				}
 			}
 		}
@@ -57,7 +82,12 @@ namespace ExtraAdditions.FlashlightBattery
 				if (heldFlashlights.ContainsKey(ev.Item.Base))
 				{
 					ev.IsAllowed = false;
-					droppedFlashlights.Add(Item.Create(ItemType.Flashlight).Spawn(ev.Player.Position), heldFlashlights[ev.Item.Base].GetRemainingBattery());
+					BatteryComponent component = heldFlashlights[ev.Item.Base];
+					droppedFlashlights.Add(Item.Create(ItemType.Flashlight).Spawn(ev.Player.Position), new FlashlightData()
+					{
+						battery = component.GetRemainingBattery(),
+						isDead = component.IsBatteryDead()
+					});
 					heldFlashlights.Remove(ev.Item.Base);
 					ev.Player.RemoveItem(ev.Item);
 					if (flashlightHints.ContainsKey(ev.Player))
@@ -76,7 +106,15 @@ namespace ExtraAdditions.FlashlightBattery
 				ev.IsAllowed = false;
 				ItemBase b = ev.Player.AddItem(ItemType.Flashlight).Base;
 				BatteryComponent component = b.gameObject.AddComponent<BatteryComponent>();
-				component.Init(droppedFlashlights.ContainsKey(ev.Pickup) ? droppedFlashlights[ev.Pickup] : component.GetMaxBattery());
+				if (droppedFlashlights.ContainsKey(ev.Pickup))
+				{
+					FlashlightData data = droppedFlashlights[ev.Pickup];
+					component.Init(ev.Player, data.battery, data.isDead);
+				}	
+				else
+				{
+					component.Init(ev.Player);
+				}
 				heldFlashlights.Add(b, component);
 				ev.Pickup.Destroy();
 			}
@@ -91,7 +129,7 @@ namespace ExtraAdditions.FlashlightBattery
 					if (item.ItemTypeId == ItemType.Flashlight && !heldFlashlights.ContainsKey(item))
 					{
 						BatteryComponent component = item.gameObject.AddComponent<BatteryComponent>();
-						component.Init(Plugin.singleton.Config.FlashlightBattery);
+						component.Init(ev.Player);
 						heldFlashlights.Add(item, component);
 					}
 				}
@@ -103,7 +141,7 @@ namespace ExtraAdditions.FlashlightBattery
 			while (true)
 			{
 				int battery = (int)(component.GetRemainingBattery() / component.GetMaxBattery() * 100f);
-				string bString = $"{new string('\n', Plugin.singleton.Config.FlashlightHintTextLower)}{Plugin.singleton.Translation.FlashlightBattery.Replace("{percent}", battery.ToString())}";
+				string bString = $"{new string('\n', Plugin.singleton.Config.FlashlightHintTextLower)}{Plugin.singleton.Translation.FlashlightBattery.Replace("{percent}", Mathf.Clamp(battery, 0f, 100f).ToString())}";
 				if (battery <= 25)
 				{
 					bString = bString.Insert(Plugin.singleton.Config.FlashlightHintTextLower, battery <= 10 ? "<color=red>" : "<color=yellow>");
@@ -113,5 +151,11 @@ namespace ExtraAdditions.FlashlightBattery
 				yield return Timing.WaitForSeconds(1f);
 			}
 		}
+	}
+
+	class FlashlightData
+	{
+		public float battery;
+		public bool isDead;
 	}
 }

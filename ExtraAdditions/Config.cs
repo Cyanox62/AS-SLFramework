@@ -46,6 +46,9 @@ namespace ExtraAdditions
 		[Description("How long in seconds a flashlight battery lasts for.")]
 		public int FlashlightBattery { get; set; } = 240;
 
+		[Description("How long to display the flashlight dead battery hint.")]
+		public float DeadFlashlightHintTime { get; set; } = 1.5f;
+
 		[Description("Formatting for where the hint is placed on screen. The higher the number, the lower the text goes.")]
 		public int FlashlightHintTextLower { get; set; } = 10;
 

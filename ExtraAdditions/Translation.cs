@@ -24,6 +24,7 @@ namespace ExtraAdditions
 		// Flashlight Battery
 
 		public string FlashlightBattery { get; private set; } = "Flashlight Battery: {percent}%";
+		public string FlashlightIsDead { get; private set; } = "The flashlight is out of battery.";
 
 		// Misc
 
