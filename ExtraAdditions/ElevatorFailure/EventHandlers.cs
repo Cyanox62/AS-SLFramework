@@ -37,7 +37,6 @@ namespace ExtraAdditions.ElevatorFailure
 				IEnumerable<Exiled.API.Features.Lift> lifts = Exiled.API.Features.Lift.List.Where(x => x != lastBrokenLift);
 				Exiled.API.Features.Lift lift = lifts.ElementAt(UnityEngine.Random.Range(0, lifts.Count()));
 				curBrokenLift = lift;
-				Log.Warn(curBrokenLift.Type);
 				curBrokenLift.IsLocked = true;
 				yield return Timing.WaitForSeconds(UnityEngine.Random.Range(Plugin.singleton.Config.MinElevatorFailTime, Plugin.singleton.Config.MaxElevatorFailTime));
 				curBrokenLift.IsLocked = false;

@@ -1,6 +1,8 @@
-﻿using Exiled.API.Interfaces;
+﻿using Exiled.API.Enums;
+using Exiled.API.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
+using UnityEngine;
 
 namespace ExtraAdditions
 {
@@ -90,5 +92,11 @@ namespace ExtraAdditions
 
 		[Description("Formatting for where the hint is placed on screen. The higher the number, the lower the text goes.")]
 		public int DecontaminationHintTextLower { get; set; } = 15;
+
+		[Description("Overrides the rgb colors of certan rooms.")]
+		public Dictionary<RoomType, byte[]> RoomColorOverrides { get; set; } = new Dictionary<RoomType, byte[]>()
+		{
+			{ RoomType.EzGateA, new byte[] { 0, 0, 255, 1 } }
+		};
 	}
 }

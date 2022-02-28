@@ -78,6 +78,12 @@ namespace ExtraAdditions
 
 			Exiled.Events.Handlers.Warhead.Starting += miscEvents.OnWarheadStart;
 			Exiled.Events.Handlers.Warhead.Stopping += miscEvents.OnWarheadStop;
+
+			Exiled.Events.Handlers.Server.RoundStarted += miscEvents.OnRoundStart;
+
+			Exiled.Events.Handlers.Cassie.SendingCassieMessage += miscEvents.OnCassie;
+
+			Exiled.Events.Handlers.Player.IntercomSpeaking += miscEvents.OnIntercom;
 		}
 
 		public override void OnDisabled()
@@ -132,6 +138,12 @@ namespace ExtraAdditions
 
 			Exiled.Events.Handlers.Warhead.Starting -= miscEvents.OnWarheadStart;
 			Exiled.Events.Handlers.Warhead.Stopping -= miscEvents.OnWarheadStop;
+
+			Exiled.Events.Handlers.Server.RoundStarted -= miscEvents.OnRoundStart;
+
+			Exiled.Events.Handlers.Cassie.SendingCassieMessage -= miscEvents.OnCassie;
+			
+			Exiled.Events.Handlers.Player.IntercomSpeaking -= miscEvents.OnIntercom;
 
 			miscEvents = null;
 		}

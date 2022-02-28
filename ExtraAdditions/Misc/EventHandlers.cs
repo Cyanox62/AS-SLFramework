@@ -17,16 +17,41 @@ namespace ExtraAdditions.Misc
 
 		private CoroutineHandle warheadTimerCoroutine;
 		private CoroutineHandle decontCoroutine;
+		private CoroutineHandle intercomCoroutine;
+		private bool isCassieInUse = false;
 
 		internal void OnRoundStart()
 		{
+			isCassieInUse = false;
 			decontCoroutine = Timing.RunCoroutine(Decontamination());
+
+			foreach (var entry in Plugin.singleton.Config.RoomColorOverrides)
+			{
+				foreach (Room room in Room.Get(x => x.Type == entry.Key))
+				{
+					room.Color = new UnityEngine.Color32(entry.Value[0], entry.Value[1], entry.Value[2], entry.Value[3]);
+				}
+			}
 		}
 
 		internal void OnRestartingRound()
 		{
 			if (warheadTimerCoroutine.IsRunning) Timing.KillCoroutines(warheadTimerCoroutine);
 			if (decontCoroutine.IsRunning) Timing.KillCoroutines(decontCoroutine);
+			if (intercomCoroutine.IsRunning) Timing.KillCoroutines(intercomCoroutine);
+		}
+
+		internal void OnIntercom(IntercomSpeakingEventArgs ev) => ev.IsAllowed = !isCassieInUse;
+
+		internal void OnCassie(SendingCassieMessageEventArgs ev)
+		{
+			isCassieInUse = true;
+			Intercom.host.CustomContent = Plugin.singleton.Translation.CassieInUse;
+			intercomCoroutine = Timing.CallDelayed(6.3f + Cassie.CalculateDuration(ev.Words), () =>
+			{
+				isCassieInUse = false;
+				Intercom.host.CustomContent = string.Empty;
+			});
 		}
 
 		internal void OnWarheadStart(StartingEventArgs ev)

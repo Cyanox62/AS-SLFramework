@@ -38,8 +38,6 @@ namespace ExtraAdditions.ItemSpawning
 
 		internal void OnRoundStart()
 		{
-			foreach (Room room in Room.List.Where(x => x.Name.Contains("EZ"))) Log.Warn(room.Name);
-
 			List<Vector3> spawnPositions = new List<Vector3>();
 
 			List<Room> curveRooms = Room.List.Where(x => x.name.Contains("EZ_Curve")).ToList();
