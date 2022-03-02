@@ -198,9 +198,9 @@ namespace TokenShop
 
 		internal static void GiveTokens(Player player, int tokens, string reason, bool alert = true)
 		{
-			if (playerStats.ContainsKey(player.UserId))
+			if (playerStats.ContainsKey(player.UserId) && playerStats[player.UserId] != null)
 			{
-				if (Plugin.singleton.Config.RoleTokenMultipliers.ContainsKey(player.GroupName))
+				if (player.GroupName != null && Plugin.singleton.Config.RoleTokenMultipliers.ContainsKey(player.GroupName))
 				{
 					tokens = (int)(tokens * Plugin.singleton.Config.RoleTokenMultipliers[player.GroupName]);
 				}
