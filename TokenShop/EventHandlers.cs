@@ -149,13 +149,16 @@ namespace TokenShop
 			// Check if survived the entire round
 			foreach (Player player in survivingPlayers.Keys)
 			{
-				if (player.Role.Team == Team.SCP)
+				if (player != null)
 				{
-					GiveTokens(player, Plugin.singleton.Config.ScpSurviveTokens, Plugin.singleton.Translation.ScpSurviveReason);
-				}
-				else
-				{
-					GiveTokens(player, Plugin.singleton.Config.HumanSurviveTokens, Plugin.singleton.Translation.HumanSurviveReason);
+					if (player.Role.Team == Team.SCP)
+					{
+						GiveTokens(player, Plugin.singleton.Config.ScpSurviveTokens, Plugin.singleton.Translation.ScpSurviveReason);
+					}
+					else
+					{
+						GiveTokens(player, Plugin.singleton.Config.HumanSurviveTokens, Plugin.singleton.Translation.HumanSurviveReason);
+					}
 				}
 			}
 
@@ -176,7 +179,7 @@ namespace TokenShop
 
 			// Clear data
 			playerStats.Clear();
-			Timing.KillCoroutines(playerCoroutines.Values.ToArray());
+			Timing.KillCoroutines(playerCoroutines.Values?.ToArray());
 			playerCoroutines.Clear();
 
 			survivingPlayers.Clear();
