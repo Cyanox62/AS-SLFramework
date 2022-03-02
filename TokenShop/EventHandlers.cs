@@ -9,6 +9,8 @@ using System.Linq;
 using Exiled.API.Extensions;
 using TokenShop.Commands;
 using TokenShop.Perks;
+using Exiled.API.Features.DamageHandlers;
+using PlayerStatsSystem;
 
 namespace TokenShop
 {
@@ -53,17 +55,23 @@ namespace TokenShop
 			}
 		}
 
-		/*internal void OnPlayerDeath(DyingEventArgs ev)
+		internal void OnPlayerDeath(HurtingEventArgs ev)
 		{
 			if (playerStats.ContainsKey(ev.Target.UserId))
 			{
 				CustomDeathReason perk = (CustomDeathReason)playerStats[ev.Target.UserId].perks.Values.FirstOrDefault(x => x is CustomDeathReason);
 				if (perk != null)
 				{
-					perk.
+					//ev.Handler = new CustomReasonDamageHandler(perk.DeathReason);
+					Log("CUSTOM REASON: " + perk.DeathReason);
+					if (ev.Target.Health - ev.Amount <= 0)
+					{
+						ev.Target.Hurt(ev.Amount, "");
+						ev.IsAllowed = false;
+					}
 				}
 			}
-		}*/
+		}
 
 		internal void OnPickingUpItem(PickingUpItemEventArgs ev)
 		{

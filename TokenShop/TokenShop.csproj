@@ -99,6 +99,7 @@
     <Compile Include="Commands\Shop.cs" />
     <Compile Include="Commands\Token.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="CustomDamageHandler.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Perks\CustomDeathReason.cs" />
     <Compile Include="Perks\ParamaterizedItem.cs" />

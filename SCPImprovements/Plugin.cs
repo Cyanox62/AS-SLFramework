@@ -26,8 +26,11 @@ namespace SCPImprovements
             ev = new EventHandlers();
 
             Exiled.Events.Handlers.Player.Dying += ev.OnPlayerDeath;
+            Exiled.Events.Handlers.Player.ChangingRole += ev.OnChangeRole;
 
             Exiled.Events.Handlers.Scp106.Containing += ev.OnScp106Contain;
+            Exiled.Events.Handlers.Scp096.AddingTarget += ev.OnAddTarget;
+            Exiled.Events.Handlers.Scp096.CalmingDown += ev.OnEndRage;
 
             Exiled.Events.Handlers.Cassie.SendingCassieMessage += ev.OnCassie;
 
@@ -44,8 +47,11 @@ namespace SCPImprovements
             hInstance = null;
 
             Exiled.Events.Handlers.Player.Dying -= ev.OnPlayerDeath;
+            Exiled.Events.Handlers.Player.ChangingRole -= ev.OnChangeRole;
 
             Exiled.Events.Handlers.Scp106.Containing -= ev.OnScp106Contain;
+            Exiled.Events.Handlers.Scp096.AddingTarget -= ev.OnAddTarget;
+            Exiled.Events.Handlers.Scp096.CalmingDown -= ev.OnEndRage;
 
             Exiled.Events.Handlers.Cassie.SendingCassieMessage -= ev.OnCassie;
 

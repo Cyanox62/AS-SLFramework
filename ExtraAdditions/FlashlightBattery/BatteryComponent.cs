@@ -32,7 +32,6 @@ namespace ExtraAdditions.FlashlightBattery
 
 		private void Update()
 		{
-			Log.Warn(CurrentBattery);
 			if (IsDraining && !IsDead)
 			{
 				CurrentBattery = Mathf.Clamp(CurrentBattery - Time.deltaTime, 0f, MaxBattery);
