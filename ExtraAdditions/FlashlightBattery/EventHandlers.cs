@@ -28,22 +28,25 @@ namespace ExtraAdditions.FlashlightBattery
 			if (ev.NewItem.Type == ItemType.Flashlight && heldFlashlights.ContainsKey(ev.NewItem.Base))
 			{
 				BatteryComponent component = heldFlashlights[ev.NewItem.Base];
-				if (component.IsBatteryDead())
+				if (component != null)
 				{
-					Timing.CallDelayed(0.2f, () => component.TurnOffFlashlight());
-					Plugin.AccessHintSystem(ev.Player, $"{new string('\n', Plugin.singleton.Config.FlashlightHintTextLower)}{Plugin.singleton.Translation.FlashlightIsDead}", Plugin.singleton.Config.DeadFlashlightHintTime);
-				}
-				else
-				{
-					component.SetDraining(true);
-					if (!flashlightHints.ContainsKey(ev.Player))
+					if (component.IsBatteryDead())
 					{
-						flashlightHints.Add(ev.Player, Timing.RunCoroutine(ShowHint(ev.Player, component)));
+						Timing.CallDelayed(0.2f, () => component.TurnOffFlashlight());
+						Plugin.AccessHintSystem(ev.Player, $"{new string('\n', Plugin.singleton.Config.FlashlightHintTextLower)}{Plugin.singleton.Translation.FlashlightIsDead}", Plugin.singleton.Config.DeadFlashlightHintTime);
 					}
 					else
 					{
-						Timing.KillCoroutines(flashlightHints[ev.Player]);
-						flashlightHints[ev.Player] = Timing.RunCoroutine(ShowHint(ev.Player, component));
+						component.SetDraining(true);
+						if (!flashlightHints.ContainsKey(ev.Player))
+						{
+							flashlightHints.Add(ev.Player, Timing.RunCoroutine(ShowHint(ev.Player, component)));
+						}
+						else
+						{
+							Timing.KillCoroutines(flashlightHints[ev.Player]);
+							flashlightHints[ev.Player] = Timing.RunCoroutine(ShowHint(ev.Player, component));
+						}
 					}
 				}
 			}

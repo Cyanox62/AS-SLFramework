@@ -9,7 +9,7 @@ namespace ExtraAdditions.Misc
 {
 	class EventHandlers
 	{
-		private const int DecontaminationTime = 705;
+		private const int DecontaminationTime = 701;
 
 		private CoroutineHandle warheadTimerCoroutine;
 		private CoroutineHandle decontCoroutine;

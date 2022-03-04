@@ -108,15 +108,17 @@ namespace SCPImprovements
 
 		private IEnumerator<float> LookingAtScp096(Player scp)
 		{
-			Scp096Role scp096 = scp.Role.As<Scp096Role>();
-			while (Round.IsStarted)
+			if (scp.Role.Is(out Scp096Role scp096))
 			{
-				yield return Timing.WaitForSeconds(0.5f);
-				foreach (Player player in Player.Get(x => x.IsHuman))
+				while (Round.IsStarted)
 				{
-					if (!scp096.Targets.Contains(player) && IsLookingAt(player, scp))
+					yield return Timing.WaitForSeconds(0.5f);
+					foreach (Player player in Player.Get(x => x.IsHuman))
 					{
-						Plugin.AccessHintSystem(player, $"{new string('\n', Plugin.singleton.Config.Scp096VisionTextLower)}{Plugin.singleton.Translation.CanSee096}", 1f);
+						if (!scp096.Targets.Contains(player) && IsLookingAt(player, scp))
+						{
+							Plugin.AccessHintSystem(player, $"{new string('\n', Plugin.singleton.Config.Scp096VisionTextLower)}{Plugin.singleton.Translation.CanSee096}", 1f);
+						}
 					}
 				}
 			}
