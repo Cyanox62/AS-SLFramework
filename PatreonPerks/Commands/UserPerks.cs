@@ -28,7 +28,7 @@ namespace PatreonPerks.Commands
 				{
 					if (arguments.Count == 0)
 					{
-						response = "Usage: PERK [PERK NAME] [PARAMETER]";
+						response = "Usage: PERK [LIST / PERK NAME] (PARAMETER)";
 						return false;
 					}
 					string perk = arguments.ElementAt(0);
@@ -164,7 +164,7 @@ namespace PatreonPerks.Commands
 			}
 			else
 			{
-				response = "Usage: PERK [PERK NAME] [PARAMETER]";
+				response = "Usage: PERK [LIST / PERK NAME] (PARAMETER)";
 				return false;
 			}
 		}
