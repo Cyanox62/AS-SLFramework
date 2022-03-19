@@ -1,5 +1,7 @@
 ﻿using Exiled.API.Features;
+using Exiled.API.Features.DamageHandlers;
 using Exiled.Events.EventArgs;
+using MEC;
 using Newtonsoft.Json;
 using PatreonPerks.Perks;
 using System;
@@ -45,6 +47,13 @@ namespace PatreonPerks
 					}
 				}
 			}
+
+			Type t = typeof(AnnounceJoin);
+			AnnounceJoin settings = (AnnounceJoin)Plugin.GetPerkSettings(ev.Player, t);
+			if (Plugin.perkLinks.ContainsKey(ev.Player.GroupName) && Plugin.perkLinks[ev.Player.GroupName].Contains(t) && settings.Param != string.Empty)
+			{
+				Map.Broadcast(Plugin.singleton.Config.AnnounceJoinTime, Plugin.singleton.Translation.AnnounceJoin.Replace("{player}", ev.Player.Nickname));
+			}
 		}
 
 		internal void OnAssignGroup(ChangingGroupEventArgs ev)
@@ -67,14 +76,26 @@ namespace PatreonPerks
 			}
 		}
 
+		internal void OnPlayerHurt(HurtingEventArgs ev)
+		{
+			if (ev.Target.Health - ev.Amount <= 0)
+			{
+				Type t = typeof(CustomDeathReason);
+				CustomDeathReason settings = (CustomDeathReason)Plugin.GetPerkSettings(ev.Target, t);
+				if (Plugin.perkLinks.ContainsKey(ev.Target.GroupName) && Plugin.perkLinks[ev.Target.GroupName].Contains(t) && settings.Param != string.Empty)
+				{
+					ev.Target.Kill(settings.Param);
+				}
+			}
+		}
+
 		internal void OnIntercomUse(IntercomSpeakingEventArgs ev)
 		{
 			Type t = typeof(ExtendIntercom);
 			ExtendIntercom settings = (ExtendIntercom)Plugin.GetPerkSettings(ev.Player, t);
-			if (Plugin.perkLinks.ContainsKey(ev.Player.GroupName) && Plugin.perkLinks[ev.Player.GroupName].Contains(t) && settings.Param == "on")
+			if (settings != null && Plugin.perkLinks.ContainsKey(ev.Player.GroupName) && Plugin.perkLinks[ev.Player.GroupName].Contains(t) && settings.Param == "on")
 			{
-				Log.Warn("has it");
-				Intercom.host.speechRemainingTime = 30;
+				Intercom.host._speechTime = 30;
 			}
 		}
 	}

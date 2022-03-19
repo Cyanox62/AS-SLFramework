@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace PatreonPerks
 {
-    public class Plugin : Plugin<Config>
+    public class Plugin : Plugin<Config, Translation>
     {
         internal static string FolderFilePath = Path.Combine(Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED"), "Plugins"), "PatreonPerks");
         internal static string PatreonPerkLinks = Path.Combine(Path.Combine(Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED"), "Plugins"), "PatreonPerks"), "perkLinks.json");
@@ -30,6 +30,7 @@ namespace PatreonPerks
 		internal static Dictionary<string, List<Type>> perkLinks = new Dictionary<string, List<Type>>();
 
 		// Tracks player instances of perks
+		// userid, perk list
 		internal static Dictionary<string, List<IPerk>> userPerkSettings = new Dictionary<string, List<IPerk>>();
 		internal static JsonSerializerSettings userSerializeSettings = new JsonSerializerSettings()
 		{

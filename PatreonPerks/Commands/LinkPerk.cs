@@ -1,5 +1,7 @@
 ﻿using CommandSystem;
+using Exiled.API.Features;
 using Newtonsoft.Json;
+using PatreonPerks.Perks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -114,13 +116,15 @@ namespace PatreonPerks.Commands
 								return false;
 							}
 
-							/*foreach (var entry in Plugin.userPerkSettings)
+							foreach (var entry in Plugin.userPerkSettings)
 							{
-								if (entry.Key.GroupName == userGroup.groupName)
+								IEnumerable<string> perks = Plugin.userPerkSettings[entry.Key].Select(x => x.PerkName);
+								if (!perks.Contains(name) && Player.Get(entry.Key).GroupName == userGroup.groupName)
 								{
-									entry.Value.Add((Perk)Activator.CreateInstance(t));
+									//Log.Warn("adding perk in real time");
+									Plugin.userPerkSettings[entry.Key].Add((IPerk)Activator.CreateInstance(t));
 								}
-							}*/
+							}
 						}
 						else if (arg == "remove")
 						{
@@ -134,13 +138,17 @@ namespace PatreonPerks.Commands
 							}
 							response = $"Removed perk link '{name}' from group {userGroup.groupName}.";
 
-							/*foreach (var entry in Plugin.userPerkSettings)
+							foreach (var entry in Plugin.userPerkSettings)
 							{
-								if (entry.Key.GroupName == userGroup.groupName && entry.Value.Select().Contains(t))
+								for (int i = Plugin.userPerkSettings[entry.Key].Count - 1; i >= 0; i--)
 								{
-									entry.Value.Add((Perk)Activator.CreateInstance(t));
+									if (Plugin.userPerkSettings[entry.Key].Select(x => x.PerkName).Contains(name) && Player.Get(entry.Key).GroupName == userGroup.groupName)
+									{
+										//Log.Warn("removing perk in real time: " + Plugin.userPerkSettings[entry.Key][i].PerkName);
+										Plugin.userPerkSettings[entry.Key].RemoveAt(i);
+									}
 								}
-							}*/
+							}
 						}
 						else
 						{
