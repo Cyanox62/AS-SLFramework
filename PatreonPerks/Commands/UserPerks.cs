@@ -42,7 +42,8 @@ namespace PatreonPerks.Commands
 						{
 							Type t = Plugin.perkLinks[player.GroupName][i];
 							object settings = Plugin.GetPerkSettings(player, t);
-							sb.Append($"- {t.Name} | {((IPerk)settings).Param}");
+							IPerk cast = (IPerk)settings;
+							sb.Append($"- {t.Name} | {(cast.Param == string.Empty ? "None" : cast.Param)}");
 							if (i != Plugin.perkLinks[player.GroupName].Count - 1) sb.Append("\n");
 						}
 						response = sb.ToString();
