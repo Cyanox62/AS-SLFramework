@@ -55,6 +55,7 @@ namespace PatreonPerks
 			Exiled.Events.Handlers.Player.Verified += ev.OnPlayerVerified;
 			Exiled.Events.Handlers.Player.IntercomSpeaking += ev.OnIntercomUse;
 			Exiled.Events.Handlers.Player.ChangingGroup += ev.OnAssignGroup;
+			Exiled.Events.Handlers.Player.Hurting += ev.OnPlayerHurt;
 
 			Exiled.Events.Handlers.Server.RestartingRound += ev.OnRoundRestart;
 
@@ -79,6 +80,7 @@ namespace PatreonPerks
 			Exiled.Events.Handlers.Player.Verified -= ev.OnPlayerVerified;
 			Exiled.Events.Handlers.Player.IntercomSpeaking -= ev.OnIntercomUse;
 			Exiled.Events.Handlers.Player.ChangingGroup -= ev.OnAssignGroup;
+			Exiled.Events.Handlers.Player.Hurting -= ev.OnPlayerHurt;
 
 			Exiled.Events.Handlers.Server.RestartingRound -= ev.OnRoundRestart;
 

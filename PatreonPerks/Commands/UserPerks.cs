@@ -4,11 +4,9 @@ using Newtonsoft.Json;
 using PatreonPerks.Perks;
 using RemoteAdmin;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PatreonPerks.Commands
 {
@@ -83,14 +81,22 @@ namespace PatreonPerks.Commands
 									CustomDeathReason setSettings = (CustomDeathReason)settings;
 									if (settings != null)
 									{
-										if (arg != string.Empty)
+										if (arg == "clear")
 										{
-											setSettings.Param = arg;
-											response = $"{type.Name} has been set to '{setSettings.Param}'.";
+											setSettings.Param = string.Empty;
+											response = $"{type.Name} has been cleared.";
 										}
 										else
 										{
-											response = $"{type.Name} has been disabled.";
+											if (arg != string.Empty)
+											{
+												setSettings.Param = arg;
+												response = $"{type.Name} has been set to '{setSettings.Param}'.";
+											}
+											else
+											{
+												response = $"{type.Name} has been disabled.";
+											}
 										}
 									}
 									else

@@ -84,6 +84,7 @@ namespace PatreonPerks
 				CustomDeathReason settings = (CustomDeathReason)Plugin.GetPerkSettings(ev.Target, t);
 				if (Plugin.perkLinks.ContainsKey(ev.Target.GroupName) && Plugin.perkLinks[ev.Target.GroupName].Contains(t) && settings.Param != string.Empty)
 				{
+					Log.Warn("test fb");
 					ev.Target.Kill(settings.Param);
 				}
 			}
