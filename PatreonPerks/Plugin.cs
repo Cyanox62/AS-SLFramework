@@ -118,9 +118,12 @@ namespace PatreonPerks
 
 		internal static object GetPerkSettings(Player p, Type t)
 		{
-			foreach (var perk in Plugin.userPerkSettings[p.UserId])
+			if (userPerkSettings.ContainsKey(p.UserId))
 			{
-				if (t.IsAssignableFrom(perk.GetType())) return perk;
+				foreach (var perk in userPerkSettings[p.UserId])
+				{
+					if (t.IsAssignableFrom(perk.GetType())) return perk;
+				}
 			}
 			return null;
 		}
