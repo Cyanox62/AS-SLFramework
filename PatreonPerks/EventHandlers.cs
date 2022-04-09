@@ -50,7 +50,7 @@ namespace PatreonPerks
 
 			Type t = typeof(AnnounceJoin);
 			AnnounceJoin settings = (AnnounceJoin)Plugin.GetPerkSettings(ev.Player, t);
-			if (Plugin.perkLinks.ContainsKey(ev.Player.GroupName) && Plugin.perkLinks[ev.Player.GroupName].Contains(t) && settings.Param != string.Empty)
+			if (Plugin.perkLinks.ContainsKey(ev.Player.GroupName) && Plugin.perkLinks[ev.Player.GroupName].Contains(t) && settings?.Param != string.Empty)
 			{
 				Map.Broadcast(Plugin.singleton.Config.AnnounceJoinTime, Plugin.singleton.Translation.AnnounceJoin.Replace("{player}", ev.Player.Nickname));
 			}
